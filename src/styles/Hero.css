@@ -1,0 +1,705 @@
+/* Hero Section Stylesheet */
+
+.hero-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 130px 0 80px 0;
+  overflow: hidden;
+}
+
+.hero-container {
+  max-width: 1360px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 36px;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: 60px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Left Hero Typography */
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 24px;
+}
+
+.hero-tag::before {
+  content: '';
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background-color: var(--gold);
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(48px, 6.2vw, 88px);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.5px;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+
+.hero-highlight {
+  color: var(--gold);
+  font-style: italic;
+  font-weight: 500;
+  position: relative;
+}
+
+.hero-description {
+  font-family: var(--font-sans);
+  font-size: clamp(14px, 1.1vw, 17px);
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  max-width: 540px;
+  margin-bottom: 42px;
+}
+
+/* Dual CTA Button Group */
+.hero-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+/* Hero Social Strip */
+.hero-social-strip {
+  margin-bottom: 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hero-social-label {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-social-label::after {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background-color: var(--border-gold);
+}
+
+.hero-social-list {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hero-social-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+  border-radius: 2px;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.hero-social-pill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(229, 169, 60, 0.15), transparent);
+  transition: left 0.6s ease;
+}
+
+.hero-social-pill:hover::before {
+  left: 100%;
+}
+
+.hero-social-pill:hover {
+  transform: translateY(-3px);
+  border-color: var(--gold);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 20px var(--gold-glow);
+  background: rgba(229, 169, 60, 0.06);
+}
+
+.social-icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--gold);
+  transition: all 0.3s ease;
+}
+
+.hero-social-pill:hover .social-icon-box {
+  background: var(--gold);
+  color: #080808;
+  border-color: var(--gold);
+  transform: scale(1.08) rotate(4deg);
+}
+
+.social-text-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.social-platform {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+.hero-social-pill:hover .social-platform {
+  color: var(--gold);
+}
+
+.social-handle {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text-tertiary);
+  letter-spacing: 0.5px;
+}
+
+.social-arrow-hint {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  transition: transform 0.3s ease, color 0.3s ease;
+  margin-left: 2px;
+}
+
+.hero-social-pill:hover .social-arrow-hint {
+  transform: translate(2px, -2px);
+  color: var(--gold);
+}
+
+.scroll-indicator-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.scroll-indicator-wrap:hover {
+  color: var(--gold);
+}
+
+.scroll-arrow {
+  animation: floatSlow 2.2s ease-in-out infinite;
+  display: inline-block;
+}
+
+.scroll-divider {
+  width: 1px;
+  height: 18px;
+  background-color: var(--border-gold);
+}
+
+/* Right Hero Portrait Frame with 3D Tilt */
+.hero-visual-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1000px;
+}
+
+.hero-frame-card {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 4 / 5;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+/* Outer offset gold border frame (thickness 4px stroke) */
+.hero-frame-accent {
+  position: absolute;
+  top: 18px;
+  right: -18px;
+  width: 100%;
+  height: 100%;
+  border: 4px solid var(--gold);
+  pointer-events: none;
+  z-index: 1;
+  transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: 0 0 15px rgba(229, 169, 60, 0.25);
+}
+
+.hero-frame-card:hover .hero-frame-accent {
+  transform: translate(6px, 6px);
+  border-color: var(--gold-light);
+  box-shadow: 0 0 25px rgba(229, 169, 60, 0.45);
+}
+
+/* =========================================================================
+   INSIDE-IMAGE CINEMATIC LIGHT EFFECTS & ANIMATIONS
+   1. Moving diagonal light sheen / anamorphic sweep
+   2. Drifting warm spotlight / caustic glow
+   3. Vignette edge depth
+   ========================================================================= */
+.hero-image-light-sweep {
+  position: absolute;
+  top: -70%;
+  left: -70%;
+  width: 240%;
+  height: 240%;
+  pointer-events: none;
+  z-index: 3;
+  background: linear-gradient(
+    118deg,
+    transparent 0%,
+    transparent 42%,
+    rgba(255, 255, 255, 0.06) 47%,
+    rgba(255, 218, 120, 0.35) 49.2%,
+    rgba(255, 255, 255, 0.75) 50%,
+    rgba(255, 218, 120, 0.35) 50.8%,
+    rgba(255, 255, 255, 0.06) 53%,
+    transparent 58%,
+    transparent 100%
+  );
+  transform: translateX(-120%) translateY(-120%) rotate(24deg);
+  animation: heroLightSweep 6.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  mix-blend-mode: screen;
+}
+
+@keyframes heroLightSweep {
+  0% {
+    transform: translateX(-120%) translateY(-120%) rotate(24deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.95;
+  }
+  60% {
+    transform: translateX(65%) translateY(65%) rotate(24deg);
+    opacity: 0.95;
+  }
+  80%, 100% {
+    transform: translateX(120%) translateY(120%) rotate(24deg);
+    opacity: 0;
+  }
+}
+
+.hero-image-spotlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 4;
+  background: radial-gradient(
+    circle 200px at 45% 35%,
+    rgba(255, 215, 104, 0.24) 0%,
+    rgba(255, 255, 255, 0.08) 35%,
+    transparent 70%
+  );
+  mix-blend-mode: screen;
+  animation: heroSpotlightMove 8s ease-in-out infinite alternate;
+}
+
+@keyframes heroSpotlightMove {
+  0% {
+    transform: translate(-7%, -9%) scale(0.96);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(9%, 7%) scale(1.12);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate(-4%, 11%) scale(1.02);
+    opacity: 0.7;
+  }
+}
+
+.hero-image-vignette {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(0, 0, 0, 0.45);
+}
+
+.hero-frame-card:hover .hero-image-light-sweep {
+  animation-duration: 4.5s;
+}
+
+.hero-image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 2;
+  background-color: var(--bg-surface);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
+}
+
+.hero-portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: contrast(1.06) brightness(0.96);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+}
+
+/* Light mode: black background behind img_3 so it retains its dark luxury look */
+[data-theme='light'] .hero-image-container {
+  background-color: #080808 !important;
+}
+
+[data-theme='light'] .hero-portrait-img {
+  background-color: #080808 !important;
+}
+
+.hero-frame-card:hover .hero-portrait-img {
+  transform: scale(1.04);
+  filter: contrast(1.1) brightness(1.02);
+}
+
+/* Floating 12 Awards Badge from Home.png */
+.hero-awards-badge {
+  position: absolute;
+  bottom: 40px;
+  left: -24px;
+  background: var(--gold);
+  color: #080808;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px var(--gold-glow);
+  z-index: 3;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.hero-awards-badge:hover {
+  transform: translateY(-3px) scale(1.05);
+  background: var(--gold-light);
+}
+
+/* Background Ambient Glow */
+.hero-ambient-glow {
+  position: absolute;
+  top: 20%;
+  right: 15%;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  opacity: 0.5;
+  z-index: 1;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 960px) {
+  .hero-section {
+    padding: 100px 0 36px 0;
+    min-height: auto;
+  }
+
+  .hero-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0 24px;
+    text-align: left;
+  }
+
+  /* Flatten hero-content so its children interleave with hero-visual-wrapper */
+  .hero-content {
+    display: contents;
+  }
+
+  /* 1. Tagline */
+  .hero-tag {
+    order: 1;
+    margin-bottom: 16px;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+  }
+
+  /* 2. Title */
+  .hero-title {
+    order: 2;
+    font-size: clamp(34px, 8.5vw, 48px);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  /* 3. Description */
+  .hero-description {
+    order: 3;
+    font-size: clamp(13px, 3.4vw, 15px);
+    line-height: 1.7;
+    margin: 0 auto 24px auto;
+    max-width: 92%;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  /* 4. Dual Buttons on the SAME horizontal line */
+  .hero-btn-group {
+    order: 4;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 32px;
+    flex-wrap: nowrap;
+  }
+
+  .hero-btn-group .btn-gold-fill,
+  .hero-btn-group .btn-gold-outline {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 13px 8px;
+    font-size: clamp(9px, 2.5vw, 11px);
+    letter-spacing: clamp(1px, 0.4vw, 2px);
+    white-space: nowrap;
+    text-align: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  /* 5. Existing Home Page Image */
+  .hero-visual-wrapper {
+    order: 5;
+    width: 100%;
+    margin: 0 auto 32px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+  }
+
+  .hero-frame-card {
+    width: 100%;
+    max-width: min(340px, 84vw);
+    aspect-ratio: 4 / 5;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .hero-frame-accent {
+    top: 8px;
+    right: -6px;
+    border-width: 3px;
+  }
+
+  .hero-awards-badge {
+    left: 4px;
+    bottom: 16px;
+    font-size: 9.5px;
+    letter-spacing: 2px;
+    padding: 9px 18px;
+  }
+
+  /* 6. Social Media Links: All 3 on ONE horizontal line */
+  .hero-social-strip {
+    order: 6;
+    width: 100%;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .hero-social-label {
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    margin-bottom: 2px;
+  }
+
+  .hero-social-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    flex-wrap: nowrap;
+  }
+
+  .hero-social-pill {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 9px 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    box-sizing: border-box;
+  }
+
+  .social-icon-box {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border-radius: 50%;
+  }
+
+  .social-icon-box svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .social-platform {
+    font-size: clamp(8.5px, 2.3vw, 10px);
+    letter-spacing: 1px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  /* Hide handle and arrow hint so the 3 pills fit cleanly on 1 line */
+  .hero-social-pill .social-handle,
+  .hero-social-pill .social-arrow-hint {
+    display: none;
+  }
+
+  /* Hide desktop scroll indicator in Hero */
+  .hero-scroll-desktop {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    padding: 92px 0 28px 0;
+  }
+
+  .hero-container {
+    padding: 0 16px;
+  }
+
+  .hero-title {
+    font-size: clamp(32px, 8.8vw, 40px);
+    margin-bottom: 14px;
+  }
+
+  .hero-description {
+    font-size: 13.5px;
+    line-height: 1.65;
+    margin: 0 auto 22px auto;
+    text-align: center;
+    max-width: 96%;
+    text-wrap: balance;
+  }
+
+  .hero-btn-group {
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .hero-btn-group .btn-gold-fill,
+  .hero-btn-group .btn-gold-outline {
+    padding: 12px 6px;
+    font-size: 9.5px;
+    letter-spacing: 1px;
+  }
+
+  .hero-frame-card {
+    max-width: min(310px, 86vw);
+  }
+
+  .hero-frame-accent {
+    top: 7px;
+    right: -4px;
+  }
+
+  .hero-awards-badge {
+    left: 2px;
+    bottom: 12px;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    padding: 8px 14px;
+  }
+
+  .hero-social-list {
+    gap: 6px;
+  }
+
+  .hero-social-pill {
+    padding: 8px 3px;
+    gap: 4px;
+  }
+
+  .social-icon-box {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+  }
+
+  .social-icon-box svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .social-platform {
+    font-size: 8.5px;
+    letter-spacing: 0.6px;
+  }
+}

@@ -1,0 +1,257 @@
+/**
+ * Centralized Project Data Structure
+ * 
+ * Contains four types of creative work:
+ * 1. SHORT FILMS (type: "youtube")
+ * 2. YOUTUBE VIDEOS (type: "youtube")
+ * 3. INSTAGRAM / YOUTUBE REELS (type: "youtube" or "instagram")
+ * 4. MODELING / PHOTOGRAPHY (type: "image")
+ */
+
+import img2 from '../assets/img_2.jpeg'
+import imgBanner2 from '../assets/img_baner_2.jpeg'
+import imgBannerMiddle from '../assets/img_baner_middle.jpeg'
+import imgBanner1 from '../assets/img_banner_1.jpeg'
+
+export const PROJECTS = [
+  {
+    id: 1,
+    type: 'youtube',
+    category: 'Short Film',
+    categories: ['Short Film', 'YouTube'],
+    title: 'The Director',
+    description: 'A cinematic Telugu short film written & directed by Kullimetla Akhil. Turning every frame into an emotional narrative.',
+    year: '2026',
+    duration: '22:15',
+    featured: true,
+    thumbnail: 'https://i.ytimg.com/vi/QEH98yWQI3s/maxresdefault.jpg',
+    cover: 'https://i.ytimg.com/vi/QEH98yWQI3s/maxresdefault.jpg',
+    youtubeUrl: 'https://www.youtube.com/watch?v=QEH98yWQI3s',
+    tags: ['SHORT FILM', 'YOUTUBE', 'TELUGU', '4K UHD'],
+    role: 'Written & Directed by Akhil'
+  },
+  {
+    id: 2,
+    type: 'youtube',
+    category: 'Short Film',
+    categories: ['Short Film', 'YouTube'],
+    title: 'Akirodeka',
+    description: 'A Telugu cinematic short film directed and created by Akhil with poignant storytelling and emotional performances.',
+    year: '2026',
+    duration: '16:45',
+    thumbnail: 'https://i.ytimg.com/vi/gb_P1JHlHuE/maxresdefault.jpg',
+    cover: 'https://i.ytimg.com/vi/gb_P1JHlHuE/maxresdefault.jpg',
+    youtubeUrl: 'https://www.youtube.com/watch?v=gb_P1JHlHuE',
+    tags: ['SHORT FILM', 'YOUTUBE', 'TELUGU', 'DRAMA'],
+    role: 'Written & Directed by Akhil'
+  },
+  {
+    id: 3,
+    type: 'youtube',
+    category: 'Short Film',
+    categories: ['Short Film', 'YouTube'],
+    title: 'Coolie Disco',
+    description: 'A Telugu cinematic short film written & directed by Kullimetla Akhil, exploring high-energy storytelling and raw cinematic texture.',
+    year: '2026',
+    duration: '18:30',
+    thumbnail: 'https://i.ytimg.com/vi/JbX7mfc5Xjk/maxresdefault.jpg',
+    cover: 'https://i.ytimg.com/vi/JbX7mfc5Xjk/maxresdefault.jpg',
+    youtubeUrl: 'https://www.youtube.com/watch?v=JbX7mfc5Xjk',
+    tags: ['SHORT FILM', 'YOUTUBE', 'TELUGU', 'CINEMA'],
+    role: 'Written & Directed by Akhil'
+  },
+  {
+    id: 4,
+    type: 'youtube',
+    category: 'YouTube',
+    categories: ['Reels', 'YouTube'],
+    title: 'VERAPPA Fight Scene',
+    description: 'High-intensity cinematic action fight sequence choreographed and directed by Kullimetla Akhil with hard-hitting combat pacing.',
+    year: '2026',
+    duration: '04:20',
+    thumbnail: 'https://i.ytimg.com/vi/aLCnJ0BF1-8/maxresdefault.jpg',
+    cover: 'https://i.ytimg.com/vi/aLCnJ0BF1-8/maxresdefault.jpg',
+    youtubeUrl: 'https://www.youtube.com/watch?v=aLCnJ0BF1-8',
+    tags: ['ACTION', 'REELS', 'YOUTUBE', 'CINEMATIC'],
+    role: 'Action Direction & Editing'
+  },
+  {
+    id: 5,
+    type: 'youtube',
+    category: 'Short Film',
+    categories: ['Short Film', 'YouTube', 'Reels'],
+    title: 'The Director : Trailer',
+    description: 'Official trailer for the cinematic short film "The Director", written & directed by Kullimetla Akhil.',
+    year: '2026',
+    duration: '01:45',
+    thumbnail: 'https://i.ytimg.com/vi/hNx8MDhZF14/maxresdefault.jpg',
+    cover: 'https://i.ytimg.com/vi/hNx8MDhZF14/maxresdefault.jpg',
+    youtubeUrl: 'https://www.youtube.com/watch?v=hNx8MDhZF14',
+    tags: ['TRAILER', 'SHORT FILM', 'YOUTUBE', 'REELS'],
+    role: 'Written & Directed by Akhil'
+  },
+  {
+    id: 6,
+    type: 'youtube',
+    category: 'YouTube',
+    categories: ['YouTube', 'Reels'],
+    title: 'Where Is The Opportunity? | Song',
+    description: 'Telugu song and visual performance from the short film "The Director", written & directed by Kullimetla Akhil.',
+    year: '2026',
+    duration: '03:45',
+    thumbnail: 'https://i.ytimg.com/vi/npI1qn5ulH8/hqdefault.jpg',
+    cover: 'https://i.ytimg.com/vi/npI1qn5ulH8/hqdefault.jpg',
+    youtubeUrl: 'https://www.youtube.com/watch?v=npI1qn5ulH8',
+    tags: ['MUSIC VIDEO', 'SONG', 'REELS', 'YOUTUBE'],
+    role: 'Director & Performance'
+  },
+  {
+    id: 7,
+    type: 'youtube',
+    category: 'Short Film',
+    categories: ['Short Film', 'YouTube', 'Reels'],
+    title: 'The Director : Teaser',
+    description: 'Official teaser for the short film "The Director" | Written & Directed by Kullimetla Akhil.',
+    year: '2026',
+    duration: '01:10',
+    thumbnail: 'https://i.ytimg.com/vi/wWQeAAev5hw/maxresdefault.jpg',
+    cover: 'https://i.ytimg.com/vi/wWQeAAev5hw/maxresdefault.jpg',
+    youtubeUrl: 'https://www.youtube.com/watch?v=wWQeAAev5hw',
+    tags: ['TEASER', 'SHORT FILM', 'YOUTUBE', 'REELS'],
+    role: 'Written & Directed by Akhil'
+  },
+  {
+    id: 8,
+    type: 'youtube',
+    category: 'Reels',
+    categories: ['Reels'],
+    isReel: true,
+    title: 'Parents With Daughters VS Sons',
+    description: 'Relatable comedy short reel by Akhil exploring family dynamics with humorous observational timing.',
+    year: '2026',
+    duration: '00:55',
+    thumbnail: 'https://i.ytimg.com/vi/F04QasQtdLs/maxresdefault.jpg',
+    cover: 'https://i.ytimg.com/vi/F04QasQtdLs/maxresdefault.jpg',
+    youtubeUrl: 'https://www.youtube.com/watch?v=F04QasQtdLs',
+    tags: ['COMEDY', 'REEL', 'VIRAL', 'SHORTS'],
+    role: 'Creator & Performance'
+  },
+  {
+    id: 9,
+    type: 'youtube',
+    category: 'Short Film',
+    categories: ['Short Film', 'YouTube', 'Reels'],
+    title: 'GLIMPSE - The Director',
+    description: "It's not RAW, It's a STATEMENT | Cinematic glimpse of 'The Director' by Kullimetla Akhil.",
+    year: '2026',
+    duration: '01:25',
+    thumbnail: 'https://i.ytimg.com/vi/REuynLjMS18/maxresdefault.jpg',
+    cover: 'https://i.ytimg.com/vi/REuynLjMS18/maxresdefault.jpg',
+    youtubeUrl: 'https://www.youtube.com/watch?v=REuynLjMS18',
+    tags: ['GLIMPSE', 'SHORT FILM', 'REELS', 'YOUTUBE'],
+    role: 'Written & Directed by Akhil'
+  },
+  {
+    id: 10,
+    type: 'youtube',
+    category: 'Reels',
+    categories: ['Reels'],
+    isReel: true,
+    title: 'Telugu Comedy Content',
+    description: 'Fast-paced relatable Telugu comedy short-form reel by Akhil.',
+    year: '2026',
+    duration: '00:48',
+    thumbnail: 'https://i.ytimg.com/vi/Odh2uyWQUk0/maxresdefault.jpg',
+    cover: 'https://i.ytimg.com/vi/Odh2uyWQUk0/maxresdefault.jpg',
+    youtubeUrl: 'https://www.youtube.com/watch?v=Odh2uyWQUk0',
+    tags: ['COMEDY', 'REEL', 'VIRAL', 'TELUGU'],
+    role: 'Creator & Performance'
+  },
+  {
+    id: 11,
+    type: 'youtube',
+    category: 'Reels',
+    categories: ['Reels'],
+    isReel: true,
+    title: 'Comedy Sketch Reel',
+    description: 'Humorous Telugu comedy video content and entertainment by Akhil.',
+    year: '2026',
+    duration: '00:45',
+    thumbnail: 'https://i.ytimg.com/vi/uEJfv_R8H_8/maxresdefault.jpg',
+    cover: 'https://i.ytimg.com/vi/uEJfv_R8H_8/maxresdefault.jpg',
+    youtubeUrl: 'https://www.youtube.com/watch?v=uEJfv_R8H_8',
+    tags: ['COMEDY', 'REELS', 'ENTERTAINMENT'],
+    role: 'Creator & Performance'
+  },
+  {
+    id: 12,
+    type: 'youtube',
+    category: 'Short Film',
+    categories: ['Short Film', 'YouTube'],
+    title: 'Akirodeka : Trailer',
+    description: 'Official trailer for the Telugu short film "Akirodeka" | Written & Directed by Kullimetla Akhil.',
+    year: '2026',
+    duration: '01:30',
+    thumbnail: 'https://i.ytimg.com/vi/82QVC95OS70/maxresdefault.jpg',
+    cover: 'https://i.ytimg.com/vi/82QVC95OS70/maxresdefault.jpg',
+    youtubeUrl: 'https://www.youtube.com/watch?v=82QVC95OS70',
+    tags: ['TRAILER', 'SHORT FILM', 'YOUTUBE', 'TELUGU'],
+    role: 'Written & Directed by Akhil'
+  },
+  {
+    id: 13,
+    type: 'image',
+    category: 'Modeling',
+    categories: ['Modeling'],
+    title: 'Editorial Campaign',
+    description: 'High-fashion editorial campaign and visual modeling study by Akhil.',
+    year: '2026',
+    thumbnail: img2,
+    image: img2,
+    cover: img2,
+    tags: ['EDITORIAL', 'MODELING', '2026'],
+    role: 'Model & Creative Lead'
+  },
+  {
+    id: 14,
+    type: 'image',
+    category: 'Modeling',
+    categories: ['Modeling'],
+    title: 'Signature Collection II',
+    description: 'Luxury lifestyle and brand showcase portrait session featuring cinematic lighting.',
+    year: '2026',
+    thumbnail: imgBanner2,
+    image: imgBanner2,
+    cover: imgBanner2,
+    tags: ['LIFESTYLE', 'BRAND', 'MODELING'],
+    role: 'Model & Art Direction'
+  },
+  {
+    id: 15,
+    type: 'image',
+    category: 'Modeling',
+    categories: ['Modeling'],
+    title: 'Cinematic Editorial',
+    description: 'Moody atmospheric studio frame with dramatic chiaroscuro and tonal depth.',
+    year: '2026',
+    thumbnail: imgBannerMiddle,
+    image: imgBannerMiddle,
+    cover: imgBannerMiddle,
+    tags: ['STUDIO', 'EDITORIAL', 'PORTRAIT'],
+    role: 'Model & Visual Lead'
+  },
+  {
+    id: 16,
+    type: 'image',
+    category: 'Modeling',
+    categories: ['Modeling'],
+    title: 'Signature Collection I',
+    description: 'Contemporary fashion editorial and aesthetic portfolio study.',
+    year: '2026',
+    thumbnail: imgBanner1,
+    image: imgBanner1,
+    cover: imgBanner1,
+    tags: ['CAMPAIGN', 'HIGH FASHION', '2026'],
+    role: 'Model & Creative Direction'
+  }
+]

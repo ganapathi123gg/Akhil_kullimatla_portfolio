@@ -1,0 +1,753 @@
+/* About Section Stylesheet */
+
+.about-section {
+  padding: 100px 0 60px 0;
+  background-color: var(--bg-color);
+  position: relative;
+}
+
+.about-main-grid {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 70px;
+  align-items: start;
+  margin-bottom: 90px;
+}
+
+/* Left Portrait Card */
+.about-visual-col {
+  position: relative;
+}
+
+.about-frame-wrapper {
+  position: relative;
+  max-width: 480px;
+  width: 100%;
+}
+
+.about-frame-border {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: -14px;
+  bottom: -14px;
+  border: 4px solid var(--gold);
+  pointer-events: none;
+  z-index: 1;
+  transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: 0 0 15px rgba(229, 169, 60, 0.25);
+}
+
+.about-frame-wrapper:hover .about-frame-border {
+  transform: translate(6px, 6px);
+  border-color: var(--gold-light);
+  box-shadow: 0 0 25px rgba(229, 169, 60, 0.45);
+}
+
+.about-image-wrap {
+  position: relative;
+  overflow: hidden;
+  z-index: 2;
+  aspect-ratio: 4 / 5;
+  background: var(--bg-surface);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+}
+
+.about-director-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.05);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.about-frame-wrapper:hover .about-director-img {
+  transform: scale(1.03);
+}
+
+.about-role-badge {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  z-index: 3;
+  background: var(--gold);
+  color: #080808;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 10px 24px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Right Content Column */
+.about-content-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.about-sub {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-style: italic;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+  line-height: 1.4;
+}
+
+.about-paragraphs {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 36px;
+}
+
+.about-p {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+/* Skills Grid */
+.skills-block {
+  margin-top: 10px;
+  margin-bottom: 36px;
+}
+
+.skills-title {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.skills-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.skill-pill {
+  padding: 8px 18px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 1px;
+  border-radius: 2px;
+  transition: var(--transition-smooth);
+  cursor: default;
+}
+
+.skill-pill:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: var(--gold-subtle);
+  transform: translateY(-2px);
+}
+
+/* Signature Typography - Modern Luxury Cinematic Editorial */
+.about-signature-text {
+  font-family: 'Cinzel Decorative', 'Cinzel', var(--font-cinzel), serif;
+  font-size: clamp(22px, 2.5vw, 32px);
+  font-weight: 700;
+  letter-spacing: clamp(5px, 0.8vw, 8px);
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, #f6e3a7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  position: relative;
+  padding-bottom: 10px;
+  opacity: 0.95;
+  transition: var(--transition-smooth);
+}
+
+.about-signature-text::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 52px;
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+[data-theme='light'] .about-signature-text {
+  background: linear-gradient(135deg, #a67c1e 0%, #8c6a12 50%, #59420a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme='light'] .about-signature-text::after {
+  background: linear-gradient(90deg, #8c6a12, transparent);
+}
+
+/* ==========================================================================
+   THE JOURNEY / TIMELINE SUBSECTION
+   ========================================================================== */
+.journey-subsection {
+  margin-top: 70px;
+  padding-top: 40px;
+}
+
+.journey-header {
+  margin-bottom: 40px;
+}
+
+.journey-title {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+
+.journey-divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--border-gold);
+}
+
+.journey-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+
+.journey-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.journey-year {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.journey-item-title {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.journey-item-desc {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   AWARDS CARDS GRID — LUXURY MODERN FILM AWARDS STYLING
+   ========================================================================== */
+.awards-subsection {
+  margin-top: 90px;
+}
+
+/* Haute-Couture Title for Recognition for Creative Vision & Direction */
+.awards-creative-heading {
+  font-family: 'Italiana', 'Cinzel Decorative', var(--font-cinzel), serif;
+  font-size: clamp(28px, 3.6vw, 44px);
+  font-weight: 400;
+  letter-spacing: 2px;
+  line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+
+.awards-heading-highlight {
+  font-family: 'Cinzel Decorative', 'Italiana', var(--font-cinzel), serif;
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 55%, #e8ca74 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+[data-theme='light'] .awards-creative-heading {
+  color: #111111;
+}
+
+[data-theme='light'] .awards-heading-highlight {
+  background: linear-gradient(135deg, #a67c1e 0%, #8c6a12 55%, #59420a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.awards-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.award-card {
+  position: relative;
+  background: linear-gradient(160deg, rgba(24, 22, 18, 0.82) 0%, rgba(12, 12, 12, 0.94) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 6px;
+  padding: 28px 22px 24px;
+  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  backdrop-filter: blur(14px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Shimmering top accent line */
+.award-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
+  opacity: 0.35;
+  transition: opacity 0.4s ease, height 0.4s ease;
+}
+
+.award-card:hover::before {
+  opacity: 1;
+  height: 3px;
+}
+
+/* Ambient Radial Background Glow */
+.award-card::after {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.16) 0%, transparent 70%);
+  pointer-events: none;
+  transition: all 0.5s ease;
+  opacity: 0.4;
+}
+
+.award-card:hover::after {
+  opacity: 1;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.28) 0%, transparent 70%);
+}
+
+.award-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(212, 175, 55, 0.55);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.85), 0 0 25px rgba(212, 175, 55, 0.15);
+}
+
+.award-card-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.award-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.award-badge-pill {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--gold);
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  padding: 3px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.award-watermark-number {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.15);
+  letter-spacing: 1px;
+}
+
+.award-card:hover .award-watermark-number {
+  color: rgba(212, 175, 55, 0.45);
+}
+
+/* Golden Trophy Crest */
+.award-crest-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 66px;
+  height: 66px;
+  margin: 0 auto 18px;
+}
+
+.award-icon-wrap {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(35, 30, 20, 0.9) 0%, rgba(15, 15, 15, 0.95) 100%);
+  border: 1.5px solid rgba(212, 175, 55, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), inset 0 0 12px rgba(212, 175, 55, 0.15);
+  transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.award-card:hover .award-icon-wrap {
+  transform: scale(1.1);
+  border-color: var(--gold);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.8), 0 0 20px rgba(212, 175, 55, 0.4);
+}
+
+.award-icon-emoji {
+  font-size: 26px;
+  display: inline-block;
+  filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.5));
+}
+
+.award-card-body {
+  text-align: center;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.award-card-title {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  line-height: 1.25;
+  transition: color 0.3s ease;
+}
+
+.award-card:hover .award-card-title {
+  color: var(--gold-light);
+}
+
+.award-card-sub {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+  opacity: 0.95;
+}
+
+.award-card-desc {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.award-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.award-gold-star {
+  color: var(--gold);
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+.award-year-tag {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+}
+
+.award-card:hover .award-year-tag {
+  color: var(--text-primary);
+}
+
+/* Corner Filigree Accents */
+.award-corner-tl,
+.award-corner-br {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+  opacity: 0.35;
+  transition: opacity 0.3s ease, border-color 0.3s ease;
+}
+
+.award-corner-tl {
+  top: 6px;
+  left: 6px;
+  border-top: 1px solid var(--gold);
+  border-left: 1px solid var(--gold);
+}
+
+.award-corner-br {
+  bottom: 6px;
+  right: 6px;
+  border-bottom: 1px solid var(--gold);
+  border-right: 1px solid var(--gold);
+}
+
+.award-card:hover .award-corner-tl,
+.award-card:hover .award-corner-br {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   LIGHT MODE AWARDS CARDS — POLISHED LUXURY & HIGH-CONTRAST LEGIBLE TEXT
+   (Dark mode styles are 100% preserved and untouched)
+   ========================================================================== */
+[data-theme='light'] .award-card {
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.96) 0%, rgba(248, 245, 238, 0.98) 100%);
+  border: 1px solid rgba(179, 139, 30, 0.32);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(179, 139, 30, 0.06);
+}
+
+[data-theme='light'] .award-card:hover {
+  background: #ffffff;
+  border-color: rgba(179, 139, 30, 0.65);
+  box-shadow: 0 20px 42px rgba(0, 0, 0, 0.08), 0 0 22px rgba(179, 139, 30, 0.18);
+}
+
+[data-theme='light'] .award-card::before {
+  background: linear-gradient(90deg, transparent 0%, #b38b1e 50%, transparent 100%);
+  opacity: 0.65;
+}
+
+[data-theme='light'] .award-card::after {
+  background: radial-gradient(circle, rgba(179, 139, 30, 0.12) 0%, transparent 70%);
+}
+
+[data-theme='light'] .award-badge-pill {
+  color: #8c6a12;
+  background: rgba(179, 139, 30, 0.12);
+  border: 1px solid rgba(179, 139, 30, 0.4);
+  font-weight: 700;
+}
+
+[data-theme='light'] .award-watermark-number {
+  color: rgba(179, 139, 30, 0.25);
+  font-weight: 700;
+}
+
+[data-theme='light'] .award-card:hover .award-watermark-number {
+  color: rgba(179, 139, 30, 0.5);
+}
+
+[data-theme='light'] .award-crest-glow {
+  background: radial-gradient(circle, rgba(179, 139, 30, 0.18) 0%, transparent 70%);
+}
+
+[data-theme='light'] .award-icon-wrap {
+  background: linear-gradient(135deg, #ffffff 0%, #f6efe3 100%);
+  border: 1.5px solid rgba(179, 139, 30, 0.45);
+  box-shadow: 0 6px 16px rgba(179, 139, 30, 0.14), inset 0 0 10px rgba(179, 139, 30, 0.08);
+}
+
+[data-theme='light'] .award-card:hover .award-icon-wrap {
+  border-color: #b38b1e;
+  box-shadow: 0 10px 22px rgba(179, 139, 30, 0.25), 0 0 15px rgba(179, 139, 30, 0.3);
+}
+
+[data-theme='light'] .award-card-title {
+  color: #111111;
+  font-weight: 700;
+}
+
+[data-theme='light'] .award-card:hover .award-card-title {
+  color: #8c6a12;
+}
+
+[data-theme='light'] .award-card-sub {
+  color: #8c6a12;
+  font-weight: 700;
+  opacity: 1;
+}
+
+[data-theme='light'] .award-card-desc {
+  color: #383630;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+[data-theme='light'] .award-card-footer {
+  border-top: 1px solid rgba(179, 139, 30, 0.18);
+}
+
+[data-theme='light'] .award-year-tag {
+  color: #181715;
+  font-weight: 700;
+}
+
+[data-theme='light'] .award-card:hover .award-year-tag {
+  color: #8c6a12;
+}
+
+[data-theme='light'] .award-gold-star {
+  color: #8c6a12;
+  opacity: 0.85;
+}
+
+[data-theme='light'] .award-corner-tl,
+[data-theme='light'] .award-corner-br {
+  border-color: rgba(179, 139, 30, 0.5);
+}
+
+@media (max-width: 1100px) {
+  .awards-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 960px) {
+  .about-section {
+    padding: 70px 0 50px 0;
+  }
+
+  .about-main-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    margin-bottom: 60px;
+  }
+
+  /* Content column uses flex ordering on mobile */
+  .about-content-col {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  /* 1. Below the image: ugesh kullimatla */
+  .about-signature-text {
+    order: 1;
+    font-size: clamp(17px, 5.2vw, 22px);
+    letter-spacing: 3.5px;
+    margin-top: 4px;
+    margin-bottom: 12px;
+  }
+
+  /* 2. Below ugesh kullimatla: A Visual Storyteller & Director */
+  .about-heading {
+    order: 2;
+    font-size: clamp(28px, 7.5vw, 38px) !important;
+    line-height: 1.15;
+    margin-bottom: 20px !important;
+  }
+
+  /* 3. Below that: ABOUT ME */
+  .about-content-col .section-tag {
+    order: 3;
+    margin-bottom: 14px;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+  }
+
+  /* 4. Subtitle: Director, YouTuber, Actor, Model and editor... */
+  .about-sub {
+    order: 4;
+    font-size: 15.5px;
+    line-height: 1.55;
+    margin-bottom: 20px;
+  }
+
+  /* 5. 3 Bio paragraphs */
+  .about-paragraphs {
+    order: 5;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .about-p {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* 6. CORE DISCIPLINES & SKILLS */
+  .skills-block {
+    order: 6;
+    margin-top: 4px;
+    margin-bottom: 28px;
+  }
+
+  .skills-title {
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    margin-bottom: 12px;
+  }
+
+  .skills-pills {
+    gap: 8px;
+  }
+
+  .skill-pill {
+    padding: 7px 14px;
+    font-size: 11px;
+    letter-spacing: 0.8px;
+  }
+
+  .journey-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .awards-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .journey-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-signature-text {
+    font-size: 16px;
+    letter-spacing: 2.8px;
+  }
+}

@@ -1,0 +1,314 @@
+/* ==========================================================================
+   KIND WORDS / TESTIMONIALS — MODERN 2026 EDITORIAL CARDS SYSTEM
+   ========================================================================== */
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 32px;
+}
+
+@media (max-width: 1050px) {
+  .testimonials-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+  }
+}
+
+@media (max-width: 680px) {
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* Modern Editorial Testimonial Card */
+.modern-testi-card {
+  position: relative;
+  background: linear-gradient(165deg, rgba(24, 21, 16, 0.92) 0%, rgba(12, 12, 12, 0.98) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  border-radius: 14px;
+  padding: 30px 26px 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s ease,
+              border-color 0.4s ease;
+  overflow: hidden;
+}
+
+/* Shimmering Top Hairline */
+.modern-testi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold, #d4af37) 50%, transparent 100%);
+  opacity: 0.35;
+  transition: opacity 0.4s ease, height 0.4s ease;
+  pointer-events: none;
+}
+
+.modern-testi-card:hover::before {
+  opacity: 1;
+  height: 3px;
+}
+
+.modern-testi-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(212, 175, 55, 0.55);
+  box-shadow: 0 24px 55px rgba(0, 0, 0, 0.85), 0 0 30px rgba(212, 175, 55, 0.16);
+}
+
+/* Card Top: Stars & Quote Mark */
+.modern-testi-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.modern-testi-rating {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--gold, #d4af37);
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.modern-testi-stars-count {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--gold-light, #f4e2a8);
+  margin-left: 6px;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  padding: 2px 7px;
+  border-radius: 10px;
+}
+
+.modern-testi-quote-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--gold, #d4af37);
+  opacity: 0.6;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modern-testi-card:hover .modern-testi-quote-icon {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Quote Body with Modern Font Style */
+.modern-testi-quote-wrap {
+  position: relative;
+  flex-grow: 1;
+  margin-bottom: 26px;
+}
+
+.modern-testi-quote {
+  font-family: 'Plus Jakarta Sans', var(--font-sans, system-ui, sans-serif);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.2px;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* Bottom Profile & Social Area */
+.modern-testi-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(212, 175, 55, 0.16);
+  position: relative;
+  z-index: 2;
+}
+
+.modern-testi-profile-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.modern-testi-author-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Circle Profile Picture */
+.modern-testi-avatar-wrap {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  padding: 2.5px;
+  background: linear-gradient(135deg, var(--gold-light, #f4e2a8) 0%, var(--gold, #d4af37) 60%, #9e7b23 100%);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 12px rgba(212, 175, 55, 0.25);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.modern-testi-card:hover .modern-testi-avatar-wrap {
+  transform: scale(1.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 18px rgba(212, 175, 55, 0.45);
+}
+
+.modern-testi-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  background: #111;
+}
+
+/* Author Name & Role */
+.modern-testi-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.modern-testi-name {
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary, #ffffff);
+  letter-spacing: 0.5px;
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+.modern-testi-card:hover .modern-testi-name {
+  color: var(--gold-light, #f4e2a8);
+}
+
+.modern-testi-role-badge {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--gold, #d4af37);
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  padding: 2px 8px;
+  border-radius: 20px;
+  align-self: flex-start;
+}
+
+/* Instagram Social Button */
+.modern-testi-instagram-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: var(--text-primary, #ffffff);
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-decoration: none;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.modern-testi-instagram-btn svg {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.modern-testi-instagram-btn:hover {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  border-color: transparent;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220, 39, 67, 0.4);
+}
+
+.modern-testi-instagram-btn:hover svg {
+  transform: scale(1.15);
+}
+
+/* ==========================================================================
+   LIGHT MODE STYLING FOR KIND WORDS
+   ========================================================================== */
+[data-theme='light'] .modern-testi-card {
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.98) 0%, rgba(247, 244, 237, 0.99) 100%);
+  border: 1px solid rgba(179, 139, 30, 0.32);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), 0 2px 10px rgba(179, 139, 30, 0.08);
+}
+
+[data-theme='light'] .modern-testi-card:hover {
+  background: #ffffff;
+  border-color: rgba(179, 139, 30, 0.65);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.08), 0 0 24px rgba(179, 139, 30, 0.18);
+}
+
+[data-theme='light'] .modern-testi-quote {
+  color: #24221e;
+}
+
+[data-theme='light'] .modern-testi-name {
+  color: #111111;
+}
+
+[data-theme='light'] .modern-testi-card:hover .modern-testi-name {
+  color: #8c6a12;
+}
+
+[data-theme='light'] .modern-testi-role-badge {
+  color: #7a5a0c;
+  background: rgba(179, 139, 30, 0.12);
+  border-color: rgba(179, 139, 30, 0.4);
+}
+
+[data-theme='light'] .modern-testi-footer {
+  border-top-color: rgba(179, 139, 30, 0.2);
+}
+
+[data-theme='light'] .modern-testi-instagram-btn {
+  background: #f7f4ed;
+  border-color: rgba(179, 139, 30, 0.4);
+  color: #1b1a18;
+}
+
+[data-theme='light'] .modern-testi-instagram-btn:hover {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  color: #ffffff;
+}
+
+@media (max-width: 480px) {
+  .modern-testi-card {
+    padding: 22px 18px 20px;
+    border-radius: 12px;
+  }
+  .modern-testi-quote-p {
+    font-size: 14.5px;
+    line-height: 1.65;
+  }
+  .modern-testi-author-name {
+    font-size: 14px;
+  }
+}
+

@@ -1,0 +1,851 @@
+/* ==========================================================================
+   AWARDS & RECOGNITION SHOWCASE — MODERN 2026 LUXURY CARDS SYSTEM
+   Crafted with high-fashion aesthetics, 3D perspective tilt, and museum curation
+   ========================================================================== */
+
+/* Container & Filter Bar */
+.awards-modern-container {
+  width: 100%;
+  margin-top: 28px;
+}
+
+.awards-filter-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.awards-filter-pill {
+  appearance: none;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  color: var(--text-secondary, #a0a0a0);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.awards-filter-pill:hover {
+  color: var(--text-primary, #ffffff);
+  border-color: rgba(212, 175, 55, 0.5);
+  background: rgba(212, 175, 55, 0.08);
+  transform: translateY(-1px);
+}
+
+.awards-filter-pill.active {
+  color: #0b0b0b;
+  background: linear-gradient(135deg, var(--gold-light, #f4e2a8) 0%, var(--gold, #d4af37) 60%, #b89127 100%);
+  border-color: var(--gold, #d4af37);
+  box-shadow: 0 4px 18px rgba(212, 175, 55, 0.35);
+  font-weight: 700;
+}
+
+.awards-filter-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.08);
+  color: inherit;
+}
+
+.awards-filter-pill.active .awards-filter-count {
+  background: rgba(0, 0, 0, 0.2);
+  color: #000;
+}
+
+/* 3D Modern Awards Grid */
+.awards-modern-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+@media (max-width: 1100px) {
+  .awards-modern-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (max-width: 680px) {
+  .awards-modern-grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+}
+
+/* Single Award Card with 3D Canvas Perspective */
+.award-modern-card {
+  position: relative;
+  border-radius: 14px;
+  background: linear-gradient(165deg, rgba(26, 23, 18, 0.88) 0%, rgba(13, 13, 13, 0.96) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  padding: 20px 20px 22px;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(20px);
+  overflow: hidden;
+  transition: transform 0.2s ease-out, box-shadow 0.35s ease, border-color 0.35s ease;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+/* Subtle Golden Top Border Light */
+.award-modern-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold, #d4af37) 50%, transparent 100%);
+  opacity: 0.45;
+  transition: opacity 0.4s ease, height 0.4s ease;
+  pointer-events: none;
+}
+
+.award-modern-card:hover::before {
+  opacity: 1;
+  height: 3px;
+}
+
+/* Dynamic Cursor Reflection Spotlight */
+.award-card-spotlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.award-modern-card:hover .award-card-spotlight {
+  opacity: 1;
+}
+
+.award-modern-card:hover {
+  border-color: rgba(212, 175, 55, 0.58);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.85), 0 0 30px rgba(212, 175, 55, 0.16);
+}
+
+/* Card Header (Category Pill & Watermark) */
+.award-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.award-category-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--gold-light, #f4e2a8);
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  padding: 4px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.award-category-pill .award-icon-emoji {
+  font-size: 13px;
+}
+
+.award-card-index {
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: rgba(212, 175, 55, 0.45);
+  transition: color 0.3s ease;
+}
+
+.award-modern-card:hover .award-card-index {
+  color: var(--gold, #d4af37);
+}
+
+/* Award Media / Trophy Frame */
+.award-media-stage {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #090909;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  margin-bottom: 18px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.award-media-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+}
+
+.award-modern-card:hover .award-media-img {
+  transform: scale(1.06);
+  filter: brightness(1.08) contrast(1.04);
+}
+
+/* Subtle Vignette Gradient on Trophy Image */
+.award-media-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.25) 60%, rgba(13, 13, 13, 0.85) 100%);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Floating Inspect Button on Media */
+.award-inspect-badge {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(14, 13, 10, 0.85);
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  backdrop-filter: blur(8px);
+  color: var(--gold-light, #f4e2a8);
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  opacity: 0.9;
+  transform: translateY(0);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+}
+
+.award-modern-card:hover .award-inspect-badge {
+  opacity: 1;
+  background: rgba(212, 175, 55, 0.22);
+  border-color: var(--gold, #d4af37);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.3);
+}
+
+/* Top-Left Film Tag over Image */
+.award-film-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(10, 10, 10, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  backdrop-filter: blur(8px);
+}
+
+/* Award Body Content */
+.award-card-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  position: relative;
+  z-index: 2;
+}
+
+.award-title-main {
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--text-primary, #ffffff);
+  line-height: 1.3;
+  margin: 0 0 6px;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+}
+
+.award-modern-card:hover .award-title-main {
+  color: var(--gold-light, #f4e2a8);
+}
+
+.award-festival-sub {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--gold, #d4af37);
+  letter-spacing: 0.5px;
+  margin: 0 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.award-desc-text {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--text-tertiary, #b0b0b0);
+  margin: 0 0 14px;
+}
+
+/* Directorial Accreditation Tag */
+.award-credits-box {
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 2px solid var(--gold, #d4af37);
+  padding: 8px 12px;
+  border-radius: 0 6px 6px 0;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: auto;
+  margin-bottom: 16px;
+  letter-spacing: 0.3px;
+}
+
+/* Card Footer */
+.award-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
+  margin-top: auto;
+  position: relative;
+  z-index: 2;
+}
+
+.award-verified-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--gold, #d4af37);
+  text-transform: uppercase;
+}
+
+.award-verified-icon {
+  font-size: 11px;
+}
+
+.award-inspect-link-btn {
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: var(--text-primary, #ffffff);
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: all 0.25s ease;
+}
+
+.award-inspect-link-btn:hover {
+  color: var(--gold-light, #f4e2a8);
+  transform: translateX(2px);
+}
+
+/* Corner Filigree Borders */
+.award-corner-tl,
+.award-corner-br {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  pointer-events: none;
+  opacity: 0.35;
+  transition: opacity 0.3s ease, border-color 0.3s ease;
+  z-index: 3;
+}
+
+.award-corner-tl {
+  top: 7px;
+  left: 7px;
+  border-top: 1.5px solid var(--gold, #d4af37);
+  border-left: 1.5px solid var(--gold, #d4af37);
+}
+
+.award-corner-br {
+  bottom: 7px;
+  right: 7px;
+  border-bottom: 1.5px solid var(--gold, #d4af37);
+  border-right: 1.5px solid var(--gold, #d4af37);
+}
+
+.award-modern-card:hover .award-corner-tl,
+.award-modern-card:hover .award-corner-br {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   LIGHT MODE AWARDS CARDS — LUXURY PEARL & GOLD PALETTE
+   ========================================================================== */
+[data-theme='light'] .award-modern-card {
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.98) 0%, rgba(247, 244, 237, 0.99) 100%);
+  border: 1px solid rgba(179, 139, 30, 0.34);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), 0 2px 10px rgba(179, 139, 30, 0.08);
+}
+
+[data-theme='light'] .award-modern-card:hover {
+  background: #ffffff;
+  border-color: rgba(179, 139, 30, 0.7);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.09), 0 0 24px rgba(179, 139, 30, 0.2);
+}
+
+[data-theme='light'] .award-category-pill {
+  color: #7a5a0c;
+  background: rgba(179, 139, 30, 0.12);
+  border-color: rgba(179, 139, 30, 0.45);
+}
+
+[data-theme='light'] .award-card-index {
+  color: rgba(179, 139, 30, 0.4);
+}
+
+[data-theme='light'] .award-modern-card:hover .award-card-index {
+  color: #8c6a12;
+}
+
+[data-theme='light'] .award-media-stage {
+  border-color: rgba(179, 139, 30, 0.35);
+  background: #f0ebe1;
+}
+
+[data-theme='light'] .award-title-main {
+  color: #111111;
+  font-weight: 700;
+}
+
+[data-theme='light'] .award-modern-card:hover .award-title-main {
+  color: #8c6a12;
+}
+
+[data-theme='light'] .award-festival-sub {
+  color: #8c6a12;
+  font-weight: 700;
+}
+
+[data-theme='light'] .award-desc-text {
+  color: #3d3b36;
+}
+
+[data-theme='light'] .award-credits-box {
+  background: rgba(179, 139, 30, 0.07);
+  border-left-color: #8c6a12;
+  color: #1a1917;
+}
+
+[data-theme='light'] .award-card-footer {
+  border-top-color: rgba(179, 139, 30, 0.22);
+}
+
+[data-theme='light'] .award-verified-tag {
+  color: #7a5a0c;
+}
+
+[data-theme='light'] .award-inspect-link-btn {
+  color: #111111;
+}
+
+[data-theme='light'] .award-inspect-link-btn:hover {
+  color: #8c6a12;
+}
+
+[data-theme='light'] .award-inspect-badge {
+  background: rgba(255, 255, 255, 0.94);
+  color: #7a5a0c;
+  border-color: rgba(179, 139, 30, 0.5);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='light'] .awards-filter-pill {
+  background: #f8f6f0;
+  border-color: rgba(179, 139, 30, 0.3);
+  color: #4a473f;
+}
+
+[data-theme='light'] .awards-filter-pill:hover {
+  background: rgba(179, 139, 30, 0.12);
+  color: #111111;
+  border-color: #8c6a12;
+}
+
+[data-theme='light'] .awards-filter-pill.active {
+  background: linear-gradient(135deg, #b89127 0%, #8c6a12 100%);
+  color: #ffffff;
+  border-color: #8c6a12;
+  box-shadow: 0 4px 16px rgba(140, 106, 18, 0.35);
+}
+
+[data-theme='light'] .awards-filter-pill.active .awards-filter-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   CINEMATIC FULL-SCREEN AWARD LIGHTBOX / MODAL
+   ========================================================================== */
+.award-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(6, 6, 6, 0.88);
+  backdrop-filter: blur(18px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: awardModalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes awardModalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.award-modal-content {
+  position: relative;
+  background: linear-gradient(165deg, rgba(24, 21, 16, 0.96) 0%, rgba(11, 11, 11, 0.98) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 16px;
+  max-width: 940px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.9), 0 0 40px rgba(212, 175, 55, 0.2);
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  animation: awardModalScaleUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (max-width: 780px) {
+  .award-modal-content {
+    grid-template-columns: 1fr;
+    max-height: 86vh;
+  }
+}
+
+@keyframes awardModalScaleUp {
+  from {
+    transform: scale(0.94) translateY(12px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.award-modal-media-pane {
+  position: relative;
+  background: #050505;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 16px;
+  min-height: 380px;
+}
+
+.award-modal-img {
+  max-width: 100%;
+  max-height: 72vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+
+.award-modal-info-pane {
+  padding: 36px 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.award-modal-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.25s ease;
+}
+
+.award-modal-close-btn:hover {
+  background: rgba(212, 175, 55, 0.25);
+  border-color: var(--gold, #d4af37);
+  transform: rotate(90deg);
+}
+
+.award-modal-nav {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.award-modal-nav-btn {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.award-modal-nav-btn:hover {
+  background: rgba(212, 175, 55, 0.2);
+  border-color: var(--gold, #d4af37);
+  color: var(--gold-light, #f4e2a8);
+}
+
+/* ==========================================================================
+   INSPECT MODAL DARK MODE HIGH-VISIBILITY CONTRAST
+   Ensures trophy & award descriptions/text are crisp and crystal clear
+   ========================================================================== */
+.award-modal-info-pane .award-title-main {
+  color: #ffffff;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
+}
+
+.award-modal-info-pane .award-festival-sub {
+  color: var(--gold-light, #f4e2a8);
+  font-weight: 600;
+  letter-spacing: 0.8px;
+}
+
+.award-modal-info-pane .award-desc-text {
+  color: rgba(246, 243, 236, 0.92);
+  font-size: 14.5px;
+  line-height: 1.7;
+  font-weight: 400;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.award-modal-info-pane .award-credits-box {
+  background: rgba(212, 175, 55, 0.1);
+  border-left: 2px solid var(--gold, #d4af37);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.award-modal-info-pane .award-film-tag {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  color: #ffffff;
+}
+
+.award-modal-info-pane .award-card-index {
+  color: var(--gold, #d4af37);
+  font-weight: 700;
+}
+
+.award-modal-info-pane .award-verified-tag {
+  color: var(--gold, #d4af37);
+}
+
+/* ==========================================================================
+   LIGHT MODE INSPECT MODAL OVERRIDES
+   Turns detailed award inspect view into clean, luxury ivory & gold palette
+   ========================================================================== */
+[data-theme='light'] .award-modal-backdrop {
+  background: rgba(240, 237, 230, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+[data-theme='light'] .award-modal-content {
+  background: linear-gradient(165deg, #ffffff 0%, #faf7f0 100%);
+  border: 1px solid rgba(179, 139, 30, 0.38);
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.16), 0 0 35px rgba(179, 139, 30, 0.12);
+}
+
+[data-theme='light'] .award-modal-media-pane {
+  background: #f2ece0;
+  border-right: 1px solid rgba(179, 139, 30, 0.2);
+}
+
+[data-theme='light'] .award-modal-img {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.14);
+}
+
+[data-theme='light'] .award-modal-info-pane {
+  background: transparent;
+}
+
+[data-theme='light'] .award-modal-close-btn {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(179, 139, 30, 0.35);
+  color: #1a1917;
+}
+
+[data-theme='light'] .award-modal-close-btn:hover {
+  background: rgba(179, 139, 30, 0.18);
+  border-color: #8c6a12;
+  color: #8c6a12;
+}
+
+[data-theme='light'] .award-modal-nav {
+  border-top-color: rgba(179, 139, 30, 0.2);
+}
+
+[data-theme='light'] .award-modal-nav-btn {
+  background: #fdfcf9;
+  border: 1px solid rgba(179, 139, 30, 0.35);
+  color: #1a1917;
+}
+
+[data-theme='light'] .award-modal-nav-btn:hover {
+  background: rgba(179, 139, 30, 0.16);
+  border-color: #8c6a12;
+  color: #8c6a12;
+}
+
+[data-theme='light'] .award-modal-info-pane .award-film-tag {
+  background: rgba(179, 139, 30, 0.12);
+  border: 1px solid rgba(179, 139, 30, 0.35);
+  color: #7a5a0c;
+}
+
+[data-theme='light'] .award-modal-info-pane .award-title-main {
+  color: #111111;
+  text-shadow: none;
+}
+
+[data-theme='light'] .award-modal-info-pane .award-festival-sub {
+  color: #8c6a12;
+}
+
+[data-theme='light'] .award-modal-info-pane .award-desc-text {
+  color: #24221d;
+  font-size: 14.5px;
+  line-height: 1.7;
+  text-shadow: none;
+}
+
+[data-theme='light'] .award-modal-info-pane .award-credits-box {
+  background: rgba(179, 139, 30, 0.08);
+  border-left-color: #8c6a12;
+  color: #181715;
+}
+
+[data-theme='light'] .award-modal-info-pane .award-verified-tag {
+  color: #7a5a0c;
+}
+
+[data-theme='light'] .award-modal-info-pane .award-card-index {
+  color: #8c6a12;
+}
+
+/* ==========================================================================
+   MOBILE & TABLET RESPONSIVENESS ENHANCEMENTS (Small & Large Screens)
+   ========================================================================== */
+@media (max-width: 780px) {
+  .award-modal-backdrop {
+    padding: 12px;
+  }
+  .award-modal-content {
+    grid-template-columns: 1fr;
+    max-height: 88vh;
+    border-radius: 12px;
+  }
+  .award-modal-media-pane {
+    min-height: 220px;
+    max-height: 290px;
+    padding: 12px;
+  }
+  [data-theme='light'] .award-modal-media-pane {
+    border-right: none;
+    border-bottom: 1px solid rgba(179, 139, 30, 0.2);
+  }
+  .award-modal-info-pane {
+    padding: 22px 18px 24px;
+  }
+  .award-modal-close-btn {
+    top: 10px;
+    right: 10px;
+    width: 38px;
+    height: 38px;
+  }
+}
+
+@media (max-width: 480px) {
+  .award-modern-card {
+    padding: 16px 14px 18px;
+    border-radius: 10px;
+  }
+  .award-media-stage {
+    height: 210px;
+  }
+  .award-title-main {
+    font-size: 17px;
+  }
+  .award-modal-info-pane {
+    padding: 18px 14px 20px;
+  }
+}
+
+

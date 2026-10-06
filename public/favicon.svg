@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="12" fill="#080808"/>
+  <rect x="8" y="8" width="48" height="48" rx="8" fill="#121212" stroke="#d4af37" stroke-width="1.5"/>
+  <rect x="27" y="14" width="10" height="10" fill="#d4af37" transform="rotate(45 32 19)"/>
+  <text x="32" y="47" font-family="'Cinzel', serif, Georgia" font-size="24" font-weight="700" fill="#d4af37" text-anchor="middle" letter-spacing="1">A</text>
+</svg>

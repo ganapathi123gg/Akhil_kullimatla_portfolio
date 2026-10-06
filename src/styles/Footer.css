@@ -1,0 +1,236 @@
+/* Footer Stylesheet */
+
+.site-footer {
+  border-top: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface);
+  padding: 80px 0 40px 0;
+  position: relative;
+  z-index: 10;
+}
+
+.footer-main-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 0.8fr 1.4fr;
+  gap: 60px;
+  margin-bottom: 60px;
+}
+
+.footer-social-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-social-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-social-grid .hero-social-pill {
+  width: 100%;
+  max-width: 340px;
+}
+
+.footer-brand-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer-tagline {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--text-tertiary);
+  max-width: 320px;
+  line-height: 1.6;
+}
+
+.footer-col-title {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+
+.footer-links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+}
+
+.footer-link-btn {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
+  padding: 0;
+  display: inline-block;
+}
+
+.footer-link-btn:hover {
+  color: var(--gold);
+  transform: translateX(4px);
+}
+
+.footer-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 32px;
+  border-top: 1px solid var(--border-subtle);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.back-to-top-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.back-to-top-btn:hover {
+  color: var(--gold);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .site-footer {
+    padding: 60px 0 36px 0;
+  }
+
+  .footer-main-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    margin-bottom: 40px;
+  }
+
+  .footer-brand-col {
+    gap: 12px;
+  }
+
+  .footer-tagline {
+    font-size: 13px;
+    line-height: 1.55;
+    max-width: 100%;
+  }
+
+  .footer-col-title {
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    margin-bottom: 14px;
+  }
+
+  .footer-links-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  /* Redesigned Footer Social Links on Mobile - Sleek 2x2 Grid */
+  .footer-social-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 100%;
+  }
+
+  .footer-social-grid .hero-social-pill {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px 10px;
+    gap: 8px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .footer-social-grid .social-icon-box {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: 50%;
+  }
+
+  .footer-social-grid .social-icon-box svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .footer-social-grid .social-platform {
+    font-size: 9.5px;
+    letter-spacing: 1px;
+    font-weight: 700;
+  }
+
+  .footer-social-grid .social-handle {
+    font-size: 9px;
+    max-width: 105px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .footer-social-grid .social-arrow-hint {
+    display: none;
+  }
+
+  .footer-bottom-row {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+    padding-top: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-social-grid {
+    gap: 8px;
+  }
+
+  .footer-social-grid .hero-social-pill {
+    padding: 8px 8px;
+    gap: 6px;
+  }
+
+  .footer-social-grid .social-icon-box {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+  }
+
+  .footer-social-grid .social-icon-box svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .footer-social-grid .social-platform {
+    font-size: 9px;
+  }
+
+  .footer-social-grid .social-handle {
+    font-size: 8.5px;
+    max-width: 85px;
+  }
+}

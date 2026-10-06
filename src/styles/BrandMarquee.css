@@ -1,0 +1,109 @@
+/* Marquee Ticker Stylesheet */
+
+.marquee-section {
+  width: 100%;
+  overflow: hidden;
+  padding: 44px 0;
+  background-color: var(--bg-color);
+  position: relative;
+  user-select: none;
+}
+
+.marquee-label-wrap {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.marquee-subhead {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+}
+
+.marquee-track.scroll-left {
+  animation: scrollTrackLeft 36s linear infinite;
+}
+
+.marquee-track.scroll-right {
+  animation: scrollTrackRight 36s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.marquee-group {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  padding-right: 48px;
+}
+
+/* Big Role Ticker typography from Home.png */
+.role-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 48px;
+  font-family: var(--font-serif);
+  font-size: clamp(38px, 6vw, 76px);
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.role-item:hover {
+  color: var(--gold);
+}
+
+.role-cube {
+  width: 10px;
+  height: 10px;
+  background-color: var(--gold);
+  transform: rotate(45deg);
+  opacity: 0.8;
+}
+
+/* Brand Sponsor Logos Typography */
+.brand-item {
+  font-family: var(--font-cinzel);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 6px;
+  color: var(--text-tertiary);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.brand-item:hover {
+  color: var(--gold);
+  transform: scale(1.05);
+}
+
+@media (max-width: 600px) {
+  .marquee-section {
+    padding: 28px 0;
+  }
+  .marquee-group {
+    gap: 28px;
+    padding-right: 28px;
+  }
+  .role-item {
+    gap: 28px;
+    font-size: clamp(26px, 7vw, 42px);
+  }
+  .brand-item {
+    font-size: 16px;
+    letter-spacing: 4px;
+  }
+}
+

@@ -1,0 +1,57 @@
+/* Main Application Layout Styles */
+
+.app-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+}
+
+.main-content {
+  flex: 1;
+  width: 100%;
+  position: relative;
+}
+
+/* Section Anchor Spacing for Fixed Nav offset */
+.section-anchor {
+  scroll-margin-top: 84px;
+}
+
+/* Toast Notifications */
+.toast-notification {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-gold);
+  padding: 16px 24px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 25px var(--gold-glow);
+  z-index: 10003;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--text-primary);
+  border-radius: 2px;
+  animation: toastSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes toastSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.toast-icon {
+  color: var(--gold);
+  font-size: 16px;
+}

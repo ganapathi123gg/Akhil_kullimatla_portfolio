@@ -1,0 +1,123 @@
+/* Book Now Consultation Modal */
+
+.book-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(4, 4, 5, 0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  z-index: 10002;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.book-modal-container {
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) rgba(0, 0, 0, 0.4);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-gold);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9), 0 0 40px var(--gold-glow);
+  position: relative;
+  padding: 42px;
+  border-radius: 2px;
+  animation: modalScaleUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.book-modal-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.book-modal-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.book-modal-container::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 3px;
+}
+
+.book-modal-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: var(--transition-smooth);
+}
+
+.book-modal-back-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: var(--gold-subtle);
+  transform: translateX(-3px);
+}
+
+.book-modal-header {
+  margin-bottom: 28px;
+}
+
+.book-modal-title {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-top: 8px;
+}
+
+.book-budget-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.budget-btn {
+  padding: 12px 10px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: var(--transition-smooth);
+}
+
+.budget-btn.active,
+.budget-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: var(--gold-subtle);
+}
+
+@media (max-width: 600px) {
+  .book-modal-container {
+    padding: 28px 20px;
+  }
+  .book-budget-grid {
+    grid-template-columns: 1fr;
+  }
+}
