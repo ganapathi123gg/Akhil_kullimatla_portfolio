@@ -7,6 +7,8 @@
   flex-direction: column;
   gap: 40px;
   width: 100%;
+  max-width: 100%;
+  overflow: hidden;
   margin-top: 32px;
 }
 
@@ -101,6 +103,8 @@
   backdrop-filter: blur(14px);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
   transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  overflow: hidden;
+  max-width: 100%;
 }
 
 .deck-row-wrapper:hover {
@@ -223,6 +227,8 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .stage-edge-marker {
@@ -272,6 +278,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 /* ==========================================================================
@@ -1391,20 +1398,23 @@
   .deck-3d-stage {
     height: 430px;
     perspective: 700px;
+    overflow: hidden;
+    max-width: 100%;
   }
   .deck-3d-card {
-    width: clamp(270px, 84vw, 350px);
+    width: min(84vw, 340px);
+    max-width: calc(100% - 16px);
     height: 390px;
     grid-template-columns: 1fr;
     grid-template-rows: 180px 1fr;
   }
   .deck-3d-card.is-left {
-    transform: translateX(-36%) translateZ(-60px) scale(0.82) rotateY(8deg);
-    opacity: 0.3;
+    transform: translateX(-28%) translateZ(-50px) scale(0.82) rotateY(6deg);
+    opacity: 0.25;
   }
   .deck-3d-card.is-right {
-    transform: translateX(36%) translateZ(-60px) scale(0.82) rotateY(-8deg);
-    opacity: 0.3;
+    transform: translateX(28%) translateZ(-50px) scale(0.82) rotateY(-6deg);
+    opacity: 0.25;
   }
   .deck-card-media-box {
     height: 180px;
@@ -1449,11 +1459,22 @@
 @media (max-width: 440px) {
   .deck-3d-stage {
     height: 410px;
+    overflow: hidden;
+    max-width: 100%;
   }
   .deck-3d-card {
-    width: min(88vw, 320px);
+    width: min(84vw, 300px);
+    max-width: calc(100% - 12px);
     height: 375px;
     grid-template-rows: 170px 1fr;
+  }
+  .deck-3d-card.is-left {
+    transform: translateX(-22%) translateZ(-40px) scale(0.82) rotateY(5deg);
+    opacity: 0.2;
+  }
+  .deck-3d-card.is-right {
+    transform: translateX(22%) translateZ(-40px) scale(0.82) rotateY(-5deg);
+    opacity: 0.2;
   }
   .deck-card-media-box {
     height: 170px;

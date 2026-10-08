@@ -680,3 +680,13 @@
   }
 }
 
+@media (max-width: 480px) {
+  .work-view-all-cta-card {
+    padding: 22px 16px;
+  }
+  .work-view-all-cta-text {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
