@@ -2,7 +2,9 @@
 
 .marquee-section {
   width: 100%;
+  max-width: 100%;
   overflow: hidden;
+  contain: paint;
   padding: 44px 0;
   background-color: var(--bg-color);
   position: relative;

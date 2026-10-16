@@ -293,13 +293,17 @@
   margin-top: 100px;
   position: relative;
   width: 100%;
+  max-width: 100%;
   overflow: hidden;
+  contain: paint;
 }
 
 .bts-marquee-wrapper {
   position: relative;
   width: 100%;
+  max-width: 100%;
   overflow: hidden;
+  contain: paint;
   margin-top: 32px;
   padding: 12px 0 24px 0;
   mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);

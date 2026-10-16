@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'preact/hooks'
+import { useState, useEffect, useRef } from 'preact/hooks'
 import { CREATOR } from './data/creatorConfig'
 import { soundManager } from './utils/audio'
 import { CustomCursor } from './components/CustomCursor'
@@ -14,15 +14,31 @@ import { ContactSection } from './components/ContactSection'
 import { Footer } from './components/Footer'
 import { VideoModal } from './components/VideoModal'
 import { BookModal } from './components/BookModal'
+import { CinematicTransitionWrapper } from './components/CinematicTransition'
 
 import signatureBannerImg from './assets/signature_baner_updated.png'
 import directorNoteBg from './assets/baner_img.png'
-import theLastFrameImg from './assets/the-last-frame.jpg'
 
 import './styles/App.css'
 
+const VALID_ROUTES = ['home', 'about', 'work', 'showreel', 'contact']
+
+function getInitialRoute() {
+  if (typeof window !== 'undefined' && window.location.hash) {
+    const hash = window.location.hash.replace('#', '').toLowerCase()
+    if (VALID_ROUTES.includes(hash)) {
+      return hash
+    }
+  }
+  return 'home'
+}
+
 export function App() {
-  const [activeTab, setActiveTab] = useState('home')
+  const [currentRoute, setCurrentRoute] = useState(getInitialRoute)
+  const [previousRoute, setPreviousRoute] = useState(null)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [transitionPhase, setTransitionPhase] = useState('idle') // 'idle' | 'exiting' | 'entering'
+
   const [theme, setTheme] = useState('dark')
   const [soundEnabled, setSoundEnabled] = useState(true)
   const [selectedVideo, setSelectedVideo] = useState(null)
@@ -30,36 +46,73 @@ export function App() {
   const [isBookModalOpen, setIsBookModalOpen] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
 
+  const exitTimerRef = useRef(null)
+  const enterTimerRef = useRef(null)
+
   // Manage Theme Attribute on <html>
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
-  // Track active section on scroll with IntersectionObserver
-  useEffect(() => {
-    const sectionIds = ['home', 'about', 'work', 'showreel', 'contact']
-    const observers = []
+  // Centralized Cinematic Navigation Handler
+  const handleNavigate = (targetId, updateHistory = true) => {
+    const validTarget = VALID_ROUTES.includes(targetId) ? targetId : 'home'
 
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id)
-      if (!el) return
-
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setActiveTab(id)
-          }
-        },
-        { rootMargin: '-40% 0px -40% 0px' }
-      )
-      observer.observe(el)
-      observers.push(observer)
-    })
-
-    return () => {
-      observers.forEach((obs) => obs.disconnect())
+    // If navigating to current route, smooth scroll to top
+    if (validTarget === currentRoute && !isTransitioning) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
     }
-  }, [])
+
+    // Cancel any ongoing transition timers for rapid clicks
+    if (exitTimerRef.current) clearTimeout(exitTimerRef.current)
+    if (enterTimerRef.current) clearTimeout(enterTimerRef.current)
+
+    soundManager.playTick()
+    setPreviousRoute(currentRoute)
+    setIsTransitioning(true)
+    setTransitionPhase('exiting')
+
+    if (updateHistory && window.history && window.history.pushState) {
+      window.history.pushState(null, '', `#${validTarget}`)
+    }
+
+    // Snappy timings: mobile is even faster for low latency
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768
+    const exitDuration = isMobile ? 180 : 250
+    const enterDuration = isMobile ? 480 : 620
+
+    exitTimerRef.current = setTimeout(() => {
+      // Switch active scene at transition apex
+      setCurrentRoute(validTarget)
+      window.scrollTo(0, 0) // Reset scroll position to top
+      setTransitionPhase('entering')
+
+      enterTimerRef.current = setTimeout(() => {
+        setTransitionPhase('idle')
+        setIsTransitioning(false)
+      }, enterDuration)
+    }, exitDuration)
+  }
+
+  // Handle browser back/forward buttons (popstate) and hash changes
+  useEffect(() => {
+    const handleLocationChange = () => {
+      const target = getInitialRoute()
+      if (target !== currentRoute) {
+        handleNavigate(target, false)
+      }
+    }
+
+    window.addEventListener('popstate', handleLocationChange)
+    window.addEventListener('hashchange', handleLocationChange)
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange)
+      window.removeEventListener('hashchange', handleLocationChange)
+      if (exitTimerRef.current) clearTimeout(exitTimerRef.current)
+      if (enterTimerRef.current) clearTimeout(enterTimerRef.current)
+    }
+  }, [currentRoute, isTransitioning])
 
   // Show a quick toast notification
   const triggerToast = (msg) => {
@@ -68,22 +121,6 @@ export function App() {
     setTimeout(() => {
       setToastMessage('')
     }, 3500)
-  }
-
-  // Smooth navigation handler
-  const handleNavigate = (targetId) => {
-    soundManager.playTick()
-    setActiveTab(targetId)
-
-    const el = document.getElementById(targetId)
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' })
-      if (window.history.pushState) {
-        window.history.pushState(null, '', `#${targetId}`)
-      }
-    } else if (targetId === 'home') {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
   }
 
   const handleToggleTheme = () => {
@@ -134,8 +171,8 @@ export function App() {
 
       {/* Sticky Navigation matching Nav.png */}
       <Navbar
-        activeTab={activeTab}
-        onNavigate={handleNavigate}
+        activeTab={currentRoute}
+        onNavigate={(id) => handleNavigate(id, true)}
         theme={theme}
         onToggleTheme={handleToggleTheme}
         soundEnabled={soundEnabled}
@@ -144,64 +181,71 @@ export function App() {
       />
 
       <main class="main-content">
-        {/* HERO SECTION matching Home.png */}
-        <div id="home" class="section-anchor">
-          <Hero
-            onExploreWork={() => handleNavigate('work')}
-            onCollaborate={() => handleNavigate('contact')}
-          />
-        </div>
+        <CinematicTransitionWrapper
+          currentRoute={currentRoute}
+          previousRoute={previousRoute}
+          isTransitioning={isTransitioning}
+          transitionPhase={transitionPhase}
+        >
+          {/* HOME SCENE */}
+          {currentRoute === 'home' && (
+            <div id="home" class="scene-stage">
+              <Hero
+                onExploreWork={() => handleNavigate('work')}
+                onCollaborate={() => handleNavigate('contact')}
+              />
+              <StatsCounter />
+              <QuoteBanner
+                tag="SIGNATURE VISUAL"
+                quote={CREATOR.signatureStatement}
+                author={CREATOR.signatureSub}
+                bgImage={signatureBannerImg}
+                variant="signature-visual-banner"
+              />
+              <RoleMarquee roles={CREATOR.tickerRoles} />
+            </div>
+          )}
 
-        {/* STATS BAR (120K+ Subscribers, 40+ Films & Reels, 5M+ Views, 12 Awards) */}
-        <StatsCounter />
+          {/* ABOUT SCENE */}
+          {currentRoute === 'about' && (
+            <div id="about" class="scene-stage">
+              <AboutSection />
+              <QuoteBanner
+                tag="DIRECTOR'S NOTE"
+                quote={CREATOR.directorNote}
+                author={`${CREATOR.name} — DIRECTOR / EDITOR / MODEL`}
+                bgImage={directorNoteBg}
+                variant="directors-note-banner"
+              />
+            </div>
+          )}
 
-        {/* SIGNATURE VISUAL BANNER matching Home.png */}
-        <QuoteBanner
-          tag="SIGNATURE VISUAL"
-          quote={CREATOR.signatureStatement}
-          author={CREATOR.signatureSub}
-          bgImage={signatureBannerImg}
-          variant="signature-visual-banner"
-        />
+          {/* WORK SCENE */}
+          {currentRoute === 'work' && (
+            <div id="work" class="scene-stage">
+              <WorkSection onSelectVideo={handleSelectVideo} />
+              <BrandMarquee brands={CREATOR.brands} />
+            </div>
+          )}
 
-        {/* ROLE TICKER MARQUEE matching Home.png (DIRECTOR · YOUTUBER · MODEL · EDITOR · STORYTELLER) */}
-        <RoleMarquee roles={CREATOR.tickerRoles} />
+          {/* SHOWREEL SCENE */}
+          {currentRoute === 'showreel' && (
+            <div id="showreel" class="scene-stage">
+              <ShowreelSection onSelectVideo={handleSelectVideo} />
+            </div>
+          )}
 
-        {/* ABOUT SECTION matching About.png */}
-        <div id="about" class="section-anchor">
-          <AboutSection />
-        </div>
-
-        {/* DIRECTOR'S NOTE BANNER matching About.png */}
-        <QuoteBanner
-          tag="DIRECTOR'S NOTE"
-          quote={CREATOR.directorNote}
-          author={`${CREATOR.name} — DIRECTOR / EDITOR / MODEL`}
-          bgImage={directorNoteBg}
-          variant="directors-note-banner"
-        />
-
-        {/* SELECTED WORKS SECTION matching Work.png */}
-        <div id="work" class="section-anchor">
-          <WorkSection onSelectVideo={handleSelectVideo} />
-        </div>
-
-        {/* SHOWREEL SECTION matching Showreel.png */}
-        <div id="showreel" class="section-anchor">
-          <ShowreelSection onSelectVideo={handleSelectVideo} />
-        </div>
-
-        {/* BRAND SPONSORS MARQUEE matching Work.png (LUMEN, NOIR, VANTA, ARCLIGHT, etc.) */}
-        <BrandMarquee brands={CREATOR.brands} />
-
-        {/* CONTACT & FAQS SECTION matching Contact.png */}
-        <div id="contact" class="section-anchor">
-          <ContactSection />
-        </div>
+          {/* CONTACT SCENE */}
+          {currentRoute === 'contact' && (
+            <div id="contact" class="scene-stage">
+              <ContactSection />
+            </div>
+          )}
+        </CinematicTransitionWrapper>
       </main>
 
       {/* FOOTER matching all wireframes */}
-      <Footer onNavigate={handleNavigate} />
+      <Footer onNavigate={(id) => handleNavigate(id, true)} />
 
       {/* Video Lightbox Cinema Modal */}
       {selectedVideo && (

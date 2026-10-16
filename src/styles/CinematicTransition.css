@@ -1,0 +1,545 @@
+/* ==========================================================================
+   CINEMATIC ROUTE TRANSITION SYSTEM (2026 Director Portfolio Motion Language)
+   ========================================================================== */
+
+/* Main Stage Container */
+.cinematic-stage {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-height: calc(100vh - 84px);
+  overflow-x: hidden;
+  overflow-x: clip;
+  contain: paint;
+}
+
+/* Page Scene Container */
+.cinematic-scene {
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  transform-origin: 50% 30%;
+  will-change: auto;
+}
+
+.scene-stage {
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+}
+
+.cinematic-scene.is-animating {
+  will-change: transform, opacity, filter;
+}
+
+/* ==========================================================================
+   ROUTE-SPECIFIC MOTION SIGNATURES (600ms - 700ms)
+   ========================================================================== */
+
+/* 1. HOME -> ABOUT : Camera Push / Depth Transition */
+.trans-enter-depth-push {
+  animation: depthPushEnter 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.trans-exit-depth-push {
+  animation: depthPushExit 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes depthPushEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.98) translateY(14px);
+    filter: blur(4px);
+  }
+  60% {
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+}
+
+@keyframes depthPushExit {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.025);
+    filter: blur(3px);
+  }
+}
+
+/* 2. ABOUT -> WORK : Cinematic Film-Strip Horizontal Movement */
+.trans-enter-film-strip {
+  animation: filmStripEnter 0.62s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.trans-exit-film-strip {
+  animation: filmStripExit 0.26s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes filmStripEnter {
+  0% {
+    opacity: 0;
+    transform: translateX(24px) scale(0.99);
+    filter: blur(3px);
+  }
+  60% {
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes filmStripExit {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-24px) scale(0.99);
+  }
+}
+
+/* 3. WORK -> ABOUT : Film-Strip Reverse Movement */
+.trans-enter-film-reverse {
+  animation: filmReverseEnter 0.62s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.trans-exit-film-reverse {
+  animation: filmReverseExit 0.26s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes filmReverseEnter {
+  0% {
+    opacity: 0;
+    transform: translateX(-24px) scale(0.99);
+    filter: blur(3px);
+  }
+  60% {
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes filmReverseExit {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(24px) scale(0.99);
+  }
+}
+
+/* 4. WORK -> SHOWREEL : Cinematic Stage Aperture Reveal */
+.trans-enter-stage-reveal {
+  animation: stageRevealEnter 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.trans-exit-stage-reveal {
+  animation: stageRevealExit 0.26s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes stageRevealEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.975);
+    filter: blur(5px);
+  }
+  60% {
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes stageRevealExit {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+}
+
+/* 5. ANY -> CONTACT : Refined Cinematic Curtain Reveal */
+.trans-enter-curtain {
+  animation: curtainEnter 0.68s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.trans-exit-curtain {
+  animation: curtainExit 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes curtainEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.985) translateY(12px);
+    clip-path: inset(0 8% 0 8%);
+  }
+  60% {
+    clip-path: inset(0 0% 0 0%);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    clip-path: inset(0 0% 0 0%);
+  }
+}
+
+@keyframes curtainExit {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.99);
+  }
+}
+
+/* 6. ANY -> HOME : Cinematic Zoom-Out Stage Reset */
+.trans-enter-zoom-reset {
+  animation: zoomResetEnter 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.trans-exit-zoom-reset {
+  animation: zoomResetExit 0.26s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes zoomResetEnter {
+  0% {
+    opacity: 0;
+    transform: scale(1.02) translateY(-10px);
+    filter: blur(3px);
+  }
+  60% {
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+}
+
+@keyframes zoomResetExit {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.015);
+  }
+}
+
+/* 7. DEFAULT CINEMATIC FADE */
+.trans-enter-default {
+  animation: defaultEnter 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.trans-exit-default {
+  animation: defaultExit 0.24s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes defaultEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes defaultExit {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   CINEMATIC TRANSITION VEIL OVERLAY
+   ========================================================================== */
+.cinematic-veil-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9990;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  opacity: 0;
+  transition: opacity 0.22s ease-in-out;
+}
+
+.cinematic-veil-overlay.active {
+  opacity: 1;
+}
+
+/* Top & Bottom Cinematic Letterbox Mattes */
+.cinematic-matte-bar {
+  width: 100%;
+  height: 0px;
+  background: #080808;
+  transition: height 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cinematic-veil-overlay.active .cinematic-matte-bar {
+  height: 3px;
+}
+
+/* Central Golden Shimmer Scanner Line */
+.cinematic-shimmer-sweep {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold, #d4af37) 50%, transparent 100%);
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+.cinematic-veil-overlay.active .cinematic-shimmer-sweep {
+  opacity: 0.8;
+  animation: sweepDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes sweepDown {
+  0% {
+    transform: translateY(0vh);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   STAGGERED CONTENT ENTRANCE HIERARCHY
+   ========================================================================== */
+.cinematic-scene.is-entering .section-tag,
+.cinematic-scene.is-entering .hero-tag {
+  animation: staggerTag 0.55s 0.08s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.cinematic-scene.is-entering .hero-title,
+.cinematic-scene.is-entering .page-title,
+.cinematic-scene.is-entering .work-header h2,
+.cinematic-scene.is-entering .about-heading {
+  animation: staggerHeading 0.6s 0.14s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.cinematic-scene.is-entering .hero-visual-wrapper,
+.cinematic-scene.is-entering .about-visual-col,
+.cinematic-scene.is-entering .featured-film-box,
+.cinematic-scene.is-entering .showreel-hero-wrap {
+  animation: staggerVisual 0.65s 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.cinematic-scene.is-entering .hero-btn-group,
+.cinematic-scene.is-entering .filter-tabs-row,
+.cinematic-scene.is-entering .stats-bar-section,
+.cinematic-scene.is-entering .skills-block {
+  animation: staggerContent 0.6s 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes staggerTag {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes staggerHeading {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes staggerVisual {
+  0% {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes staggerContent {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   MOBILE OPTIMIZATION (Lightweight, No Heavy 3D, Touch Friendly)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .trans-enter-depth-push,
+  .trans-enter-film-strip,
+  .trans-enter-film-reverse,
+  .trans-enter-stage-reveal,
+  .trans-enter-curtain,
+  .trans-enter-zoom-reset {
+    animation-duration: 0.5s !important;
+  }
+
+  .trans-exit-depth-push,
+  .trans-exit-film-strip,
+  .trans-exit-film-reverse,
+  .trans-exit-stage-reveal,
+  .trans-exit-curtain,
+  .trans-exit-zoom-reset {
+    animation-duration: 0.2s !important;
+  }
+
+  /* Keep mobile blur lightweight for low-end GPU performance */
+  @keyframes depthPushEnter {
+    0% {
+      opacity: 0;
+      transform: translateY(10px) scale(0.99);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes depthPushExit {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.01);
+    }
+  }
+
+  @keyframes filmStripEnter {
+    0% {
+      opacity: 0;
+      transform: translateX(14px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes filmStripExit {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(-14px);
+    }
+  }
+
+  @keyframes stageRevealEnter {
+    0% {
+      opacity: 0;
+      transform: scale(0.99);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes curtainEnter {
+    0% {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes zoomResetEnter {
+    0% {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY: PREFERS-REDUCED-MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .cinematic-scene,
+  .trans-enter-depth-push,
+  .trans-enter-film-strip,
+  .trans-enter-film-reverse,
+  .trans-enter-stage-reveal,
+  .trans-enter-curtain,
+  .trans-enter-zoom-reset,
+  .trans-enter-default,
+  .trans-exit-depth-push,
+  .trans-exit-film-strip,
+  .trans-exit-film-reverse,
+  .trans-exit-stage-reveal,
+  .trans-exit-curtain,
+  .trans-exit-zoom-reset,
+  .trans-exit-default,
+  .cinematic-scene.is-entering * {
+    animation: none !important;
+    transition: opacity 0.2s linear !important;
+    transform: none !important;
+    filter: none !important;
+    clip-path: none !important;
+  }
+
+  .cinematic-shimmer-sweep {
+    display: none !important;
+  }
+}
