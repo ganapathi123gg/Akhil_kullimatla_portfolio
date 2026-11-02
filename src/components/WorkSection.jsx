@@ -69,7 +69,7 @@ export function WorkSection({ onSelectVideo }) {
   }
 
   return (
-    <section class="work-section" id="work" aria-label="Portfolio Work Section">
+    <section class="work-section" aria-label="Portfolio Work Section">
       <div class="container">
         {/* Header */}
         <div class="work-header">

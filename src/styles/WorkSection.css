@@ -314,6 +314,17 @@
 @media (max-width: 960px) {
   .featured-film-box {
     grid-template-columns: 1fr;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .featured-film-info {
+    padding: 32px 24px;
+    box-sizing: border-box;
+  }
+  .featured-meta-tags {
+    flex-wrap: wrap;
+    gap: 8px 12px;
   }
   .work-cards-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -325,6 +336,9 @@
 }
 
 @media (max-width: 600px) {
+  .featured-film-info {
+    padding: 24px 18px;
+  }
   .work-cards-grid {
     grid-template-columns: 1fr;
   }

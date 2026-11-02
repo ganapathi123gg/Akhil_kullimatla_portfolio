@@ -7,10 +7,8 @@
   position: relative;
   width: 100%;
   max-width: 100%;
+
   min-height: calc(100vh - 84px);
-  overflow-x: hidden;
-  overflow-x: clip;
-  contain: paint;
 }
 
 /* Page Scene Container */
@@ -22,13 +20,27 @@
   will-change: auto;
 }
 
+.cinematic-continuous-container {
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+}
+
+.cinematic-section {
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  transform-origin: 50% 30%;
+}
+
 .scene-stage {
   width: 100%;
   max-width: 100%;
   position: relative;
 }
 
-.cinematic-scene.is-animating {
+.cinematic-scene.is-animating,
+.cinematic-section.is-animating {
   will-change: transform, opacity, filter;
 }
 
@@ -40,6 +52,7 @@
 .trans-enter-depth-push {
   animation: depthPushEnter 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
 .trans-exit-depth-push {
   animation: depthPushExit 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
@@ -50,9 +63,11 @@
     transform: scale(0.98) translateY(14px);
     filter: blur(4px);
   }
+
   60% {
     filter: blur(0px);
   }
+
   100% {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -66,6 +81,7 @@
     transform: scale(1);
     filter: blur(0px);
   }
+
   100% {
     opacity: 0;
     transform: scale(1.025);
@@ -77,6 +93,7 @@
 .trans-enter-film-strip {
   animation: filmStripEnter 0.62s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
 .trans-exit-film-strip {
   animation: filmStripExit 0.26s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
@@ -87,9 +104,11 @@
     transform: translateX(24px) scale(0.99);
     filter: blur(3px);
   }
+
   60% {
     filter: blur(0px);
   }
+
   100% {
     opacity: 1;
     transform: translateX(0) scale(1);
@@ -102,6 +121,7 @@
     opacity: 1;
     transform: translateX(0) scale(1);
   }
+
   100% {
     opacity: 0;
     transform: translateX(-24px) scale(0.99);
@@ -112,6 +132,7 @@
 .trans-enter-film-reverse {
   animation: filmReverseEnter 0.62s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
 .trans-exit-film-reverse {
   animation: filmReverseExit 0.26s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
@@ -122,9 +143,11 @@
     transform: translateX(-24px) scale(0.99);
     filter: blur(3px);
   }
+
   60% {
     filter: blur(0px);
   }
+
   100% {
     opacity: 1;
     transform: translateX(0) scale(1);
@@ -137,51 +160,96 @@
     opacity: 1;
     transform: translateX(0) scale(1);
   }
+
   100% {
     opacity: 0;
     transform: translateX(24px) scale(0.99);
   }
 }
 
-/* 4. WORK -> SHOWREEL : Cinematic Stage Aperture Reveal */
-.trans-enter-stage-reveal {
-  animation: stageRevealEnter 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-.trans-exit-stage-reveal {
-  animation: stageRevealExit 0.26s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+/* 4. WORK -> PROJECT / DETAIL (Shared-Element / Project Card Expansion) */
+.trans-enter-card-expansion {
+  animation: cardExpansionEnter 0.68s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes stageRevealEnter {
+.trans-exit-card-expansion {
+  animation: cardExpansionExit 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes cardExpansionEnter {
   0% {
     opacity: 0;
-    transform: scale(0.975);
-    filter: blur(5px);
+    transform: scale(0.92) translateY(24px);
+    filter: blur(4px);
   }
+
   60% {
     filter: blur(0px);
   }
+
   100% {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) translateY(0);
     filter: blur(0px);
   }
 }
 
-@keyframes stageRevealExit {
+@keyframes cardExpansionExit {
   0% {
     opacity: 1;
     transform: scale(1);
   }
+
   100% {
     opacity: 0;
-    transform: scale(0.985);
+    transform: scale(0.96) translateY(-8px);
   }
 }
 
-/* 5. ANY -> CONTACT : Refined Cinematic Curtain Reveal */
+/* 5. PROJECT / DETAIL -> WORK (Reverse Expansion / Return to Collection) */
+.trans-enter-card-collapse {
+  animation: cardCollapseEnter 0.64s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.trans-exit-card-collapse {
+  animation: cardCollapseExit 0.26s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes cardCollapseEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(-10px);
+    filter: blur(3px);
+  }
+
+  60% {
+    filter: blur(0px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+}
+
+@keyframes cardCollapseExit {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.92) translateY(20px);
+  }
+}
+
+/* 6. ANY -> CONTACT : Refined Cinematic Curtain / Center Reveal */
 .trans-enter-curtain {
   animation: curtainEnter 0.68s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
 .trans-exit-curtain {
   animation: curtainExit 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
@@ -189,12 +257,14 @@
 @keyframes curtainEnter {
   0% {
     opacity: 0;
-    transform: scale(0.985) translateY(12px);
+    transform: scale(0.985) translateY(14px);
     clip-path: inset(0 8% 0 8%);
   }
+
   60% {
     clip-path: inset(0 0% 0 0%);
   }
+
   100% {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -207,16 +277,18 @@
     opacity: 1;
     transform: scale(1);
   }
+
   100% {
     opacity: 0;
     transform: scale(0.99);
   }
 }
 
-/* 6. ANY -> HOME : Cinematic Zoom-Out Stage Reset */
+/* 7. ANY -> HOME : Cinematic Zoom-Out Stage Reset */
 .trans-enter-zoom-reset {
   animation: zoomResetEnter 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
 .trans-exit-zoom-reset {
   animation: zoomResetExit 0.26s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
@@ -227,9 +299,11 @@
     transform: scale(1.02) translateY(-10px);
     filter: blur(3px);
   }
+
   60% {
     filter: blur(0px);
   }
+
   100% {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -242,16 +316,193 @@
     opacity: 1;
     transform: scale(1);
   }
+
   100% {
     opacity: 0;
     transform: scale(1.015);
   }
 }
 
-/* 7. DEFAULT CINEMATIC FADE */
+/* 7. SMOKE & MIST ENTRANCE KEYFRAMES (Any -> Home) */
+.trans-enter-smoke {
+  animation: smokeEnter 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.trans-exit-smoke {
+  animation: smokeExit 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes smokeEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(20px);
+    filter: blur(8px);
+  }
+
+  60% {
+    filter: blur(2px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+}
+
+@keyframes smokeExit {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.02);
+    filter: blur(4px);
+  }
+}
+
+/* 8. PINTEREST EDITORIAL TRANSITION KEYFRAMES */
+.trans-enter-slats {
+  animation: slatsSectionEnter 0.68s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.trans-exit-slats {
+  animation: slatsSectionExit 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slatsSectionEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.985);
+    filter: blur(4px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes slatsSectionExit {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.015);
+  }
+}
+
+.trans-enter-blade {
+  animation: bladeSectionEnter 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.trans-exit-blade {
+  animation: bladeSectionExit 0.26s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes bladeSectionEnter {
+  0% {
+    opacity: 0;
+    transform: translateX(32px) scale(0.99);
+    filter: blur(3px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes bladeSectionExit {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+}
+
+.trans-enter-letterbox {
+  animation: letterboxSectionEnter 0.68s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.trans-exit-letterbox {
+  animation: letterboxSectionExit 0.26s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes letterboxSectionEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+    filter: blur(5px) brightness(1.2);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px) brightness(1);
+  }
+}
+
+@keyframes letterboxSectionExit {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+
+.trans-enter-split {
+  animation: splitSectionEnter 0.68s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.trans-exit-split {
+  animation: splitSectionExit 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes splitSectionEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.975) translateY(14px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes splitSectionExit {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.99);
+  }
+}
+
+/* 9. DEFAULT CINEMATIC FADE */
 .trans-enter-default {
   animation: defaultEnter 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
 .trans-exit-default {
   animation: defaultExit 0.24s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
@@ -261,6 +512,7 @@
     opacity: 0;
     transform: translateY(12px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -271,120 +523,737 @@
   0% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
   }
 }
 
 /* ==========================================================================
-   CINEMATIC TRANSITION VEIL OVERLAY
+   EDITORIAL CHAPTER BADGE (Apex Typography Reveal across all transitions)
+   Inspired by high-end 2026 Pinterest & Awwwards Editorial Portfolios
    ========================================================================== */
-.cinematic-veil-overlay {
+.trans-editorial-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10002;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  animation: editorialBadgePulse 0.74s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.trans-badge-monogram {
+  font-size: 16px;
+  color: var(--gold, #d4af37);
+  filter: drop-shadow(0 0 12px var(--gold, #d4af37));
+  margin-bottom: 8px;
+  animation: monogramShine 0.74s ease-in-out infinite alternate;
+}
+
+.trans-badge-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  color: var(--gold, #d4af37);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.trans-badge-divider {
+  opacity: 0.5;
+}
+
+.trans-badge-title {
+  font-family: var(--font-serif, serif);
+  font-size: clamp(24px, 4.2vw, 44px);
+  font-weight: 500;
+  color: #ffffff;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.95), 0 0 40px rgba(212, 175, 55, 0.4);
+  white-space: nowrap;
+}
+
+.trans-badge-line {
+  margin-top: 14px;
+  width: 140px;
+  height: 1.5px;
+  background: rgba(212, 175, 55, 0.2);
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.trans-badge-line-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--gold, #d4af37), transparent);
+  animation: lineSweep 0.74s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes editorialBadgePulse {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -42%) scale(0.92);
+    filter: blur(8px);
+  }
+
+  32% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0px);
+  }
+
+  65% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -58%) scale(1.06);
+    filter: blur(6px);
+  }
+}
+
+@keyframes monogramShine {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: scale(1.15);
+    opacity: 1;
+    filter: drop-shadow(0 0 16px var(--gold, #d4af37));
+  }
+}
+
+@keyframes lineSweep {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  50% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ==========================================================================
+   1. TRANSITION: STAGGERED MULTI-COLUMN VELVET SLATS (Home -> About)
+   Inspired by Pinterest Pin 1 & 2: Editorial Web Layout & Parallax Slider Wipe
+   ========================================================================== */
+.trans-stage-slats {
   position: fixed;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
   pointer-events: none;
-  z-index: 9990;
+  display: flex;
+  overflow: hidden;
+}
+
+.slat-curtain {
+  position: relative;
+  width: 20%;
+  height: 100%;
+  background: linear-gradient(180deg, #070709 0%, #12100d 50%, #060608 100%);
+  transform: translateY(-101%);
+  animation: slatSlideCascade 0.76s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+  box-shadow: 0 12px 50px rgba(0, 0, 0, 0.95);
+  will-change: transform;
+}
+
+.slat-gold-hem {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold, #d4af37) 50%, transparent 100%);
+  box-shadow: 0 0 20px var(--gold, #d4af37), 0 0 40px rgba(212, 175, 55, 0.6);
+}
+
+.slat-texture-mesh {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.05), transparent 75%);
+  pointer-events: none;
+}
+
+.slat-col-1 {
+  animation-delay: 0.00s;
+}
+
+.slat-col-2 {
+  animation-delay: 0.04s;
+}
+
+.slat-col-3 {
+  animation-delay: 0.08s;
+}
+
+.slat-col-4 {
+  animation-delay: 0.12s;
+}
+
+.slat-col-5 {
+  animation-delay: 0.16s;
+}
+
+@keyframes slatSlideCascade {
+  0% {
+    transform: translateY(-101%);
+  }
+
+  36% {
+    transform: translateY(0%);
+  }
+
+  64% {
+    transform: translateY(0%);
+  }
+
+  100% {
+    transform: translateY(101%);
+  }
+}
+
+/* ==========================================================================
+   2. TRANSITION: DIAGONAL KINETIC BLADE & PARALLAX SLICE (About -> Work)
+   Inspired by Pinterest Pin 3 & 4: Creative Photo Gallery & Travel Slider Kinetic Slice
+   ========================================================================== */
+.trans-stage-blade {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.blade-flare-ambient {
+  position: absolute;
+  inset: -10vw;
+  background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.18), transparent 70%);
+  filter: blur(40px);
+  transform: translateX(-120%);
+  animation: bladeFlareSweep 0.7s cubic-bezier(0.85, 0, 0.15, 1) forwards;
+}
+
+.blade-runner {
+  position: absolute;
+  top: -35vh;
+  bottom: -35vh;
+  width: 160vw;
+  transform: skewX(-15deg) translateX(-135%);
+  will-change: transform;
+}
+
+.blade-trail {
+  background: linear-gradient(90deg, rgba(8, 7, 10, 0.8) 0%, rgba(212, 175, 55, 0.25) 100%);
+  filter: blur(12px);
+  animation: bladeRunnerSweep 0.7s 0.015s cubic-bezier(0.85, 0, 0.15, 1) forwards;
+}
+
+.blade-master {
+  background: linear-gradient(90deg, #050507 0%, #0d0c0a 82%, #1a160e 100%);
+  border-right: 2px solid var(--gold, #d4af37);
+  box-shadow: 25px 0 70px rgba(0, 0, 0, 0.98), 0 0 35px rgba(212, 175, 55, 0.6);
+  animation: bladeRunnerSweep 0.7s cubic-bezier(0.85, 0, 0.15, 1) forwards;
+}
+
+.blade-light-streak {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(212, 175, 55, 0.08) 50%, transparent 100%);
+}
+
+@keyframes bladeRunnerSweep {
+  0% {
+    transform: skewX(-15deg) translateX(-135%);
+  }
+
+  100% {
+    transform: skewX(-15deg) translateX(135%);
+  }
+}
+
+@keyframes bladeFlareSweep {
+  0% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   3. TRANSITION: ANAMORPHIC CINEMA LETTERBOX HORIZON WIPE (Work -> Showreel)
+   Inspired by Pinterest Pin 5: Smart Home / Cinema Minimalist Screen Transition
+   ========================================================================== */
+.trans-stage-letterbox {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  pointer-events: none;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  opacity: 0;
-  transition: opacity 0.22s ease-in-out;
+  overflow: hidden;
 }
 
-.cinematic-veil-overlay.active {
-  opacity: 1;
-}
-
-/* Top & Bottom Cinematic Letterbox Mattes */
-.cinematic-matte-bar {
+.letterbox-curtain {
+  position: relative;
   width: 100%;
-  height: 0px;
-  background: #080808;
-  transition: height 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  height: 0%;
+  background: linear-gradient(180deg, #050507 0%, #0a090b 100%);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.98);
+  will-change: height;
 }
 
-.cinematic-veil-overlay.active .cinematic-matte-bar {
-  height: 3px;
+.letterbox-curtain.curtain-top {
+  border-bottom: 2.5px solid var(--gold, #d4af37);
+  animation: letterboxTopMatte 0.72s cubic-bezier(0.85, 0, 0.15, 1) forwards;
 }
 
-/* Central Golden Shimmer Scanner Line */
-.cinematic-shimmer-sweep {
+.letterbox-curtain.curtain-bottom {
+  border-top: 2.5px solid var(--gold, #d4af37);
+  animation: letterboxBottomMatte 0.72s cubic-bezier(0.85, 0, 0.15, 1) forwards;
+}
+
+.letterbox-gold-rim {
   position: absolute;
-  top: 0;
   left: 0;
   right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent 0%, var(--gold, #d4af37) 50%, transparent 100%);
+  height: 1px;
+  box-shadow: 0 0 20px var(--gold, #d4af37);
+}
+
+.letterbox-anamorphic-core {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.letterbox-flare-streak {
+  width: 100vw;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, rgba(130, 210, 255, 0.4) 25%, #ffffff 50%, var(--gold, #d4af37) 75%, transparent 100%);
+  box-shadow: 0 0 35px var(--gold, #d4af37), 0 0 70px rgba(212, 175, 55, 0.85);
+  transform: scaleX(0);
   opacity: 0;
-  transform: translateY(-100%);
+  animation: letterboxFlareBeam 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.cinematic-veil-overlay.active .cinematic-shimmer-sweep {
-  opacity: 0.8;
-  animation: sweepDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.letterbox-flare-halo {
+  position: absolute;
+  width: 280px;
+  height: 70px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.6) 0%, transparent 70%);
+  filter: blur(14px);
+  opacity: 0;
+  animation: letterboxHaloGlow 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes sweepDown {
+@keyframes letterboxTopMatte {
   0% {
-    transform: translateY(0vh);
-    opacity: 0;
+    height: 0%;
   }
-  30% {
-    opacity: 0.9;
+
+  38% {
+    height: 50.5%;
   }
+
+  62% {
+    height: 50.5%;
+  }
+
   100% {
-    transform: translateY(100vh);
+    height: 0%;
+  }
+}
+
+@keyframes letterboxBottomMatte {
+  0% {
+    height: 0%;
+  }
+
+  38% {
+    height: 50.5%;
+  }
+
+  62% {
+    height: 50.5%;
+  }
+
+  100% {
+    height: 0%;
+  }
+}
+
+@keyframes letterboxFlareBeam {
+  0% {
     opacity: 0;
+    transform: scaleX(0);
+  }
+
+  38% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  62% {
+    opacity: 1;
+    transform: scaleX(1.3);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scaleX(1.7);
+  }
+}
+
+@keyframes letterboxHaloGlow {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  38% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+
+  62% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.8);
   }
 }
 
 /* ==========================================================================
-   STAGGERED CONTENT ENTRANCE HIERARCHY
+   4. TRANSITION: ARCHITECTURAL LUXURY DUAL-GATE SPLIT REVEAL (Showreel -> Contact)
+   Inspired by Pinterest Pin 6: Real Estate & Architectural Studio UI Transition
    ========================================================================== */
-.cinematic-scene.is-entering .section-tag,
-.cinematic-scene.is-entering .hero-tag {
-  animation: staggerTag 0.55s 0.08s cubic-bezier(0.16, 1, 0.3, 1) both;
+.trans-stage-split {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  pointer-events: none;
+  overflow: hidden;
 }
 
+.split-wing {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.5%;
+  background: linear-gradient(135deg, #060608 0%, #111014 100%);
+  box-shadow: 0 0 70px rgba(0, 0, 0, 0.98);
+  will-change: transform;
+}
+
+.split-wing.wing-left {
+  left: 0;
+  border-right: 2.5px solid var(--gold, #d4af37);
+  animation: splitWingLeftCascade 0.74s cubic-bezier(0.85, 0, 0.15, 1) forwards;
+}
+
+.split-wing.wing-right {
+  right: 0;
+  border-left: 2.5px solid var(--gold, #d4af37);
+  animation: splitWingRightCascade 0.74s cubic-bezier(0.85, 0, 0.15, 1) forwards;
+}
+
+.wing-gold-border {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: linear-gradient(180deg, transparent 0%, rgba(212, 175, 55, 0.9) 50%, transparent 100%);
+  box-shadow: 0 0 18px var(--gold, #d4af37);
+}
+
+.wing-left .wing-gold-border {
+  right: 0;
+}
+
+.wing-right .wing-gold-border {
+  left: 0;
+}
+
+.wing-inner-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(212, 175, 55, 0.05), transparent 75%);
+}
+
+.split-center-laser-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2.5px;
+  transform: translateX(-50%);
+  background: var(--gold, #d4af37);
+  box-shadow: 0 0 25px var(--gold, #d4af37), 0 0 50px rgba(212, 175, 55, 0.85);
+  animation: splitCenterLaserFlash 0.74s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes splitWingLeftCascade {
+  0% {
+    transform: translateX(-101%);
+  }
+
+  36% {
+    transform: translateX(0%);
+  }
+
+  64% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-101%);
+  }
+}
+
+@keyframes splitWingRightCascade {
+  0% {
+    transform: translateX(101%);
+  }
+
+  36% {
+    transform: translateX(0%);
+  }
+
+  64% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(101%);
+  }
+}
+
+@keyframes splitCenterLaserFlash {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) scaleY(0);
+  }
+
+  36% {
+    opacity: 1;
+    transform: translateX(-50%) scaleY(1);
+    width: 6px;
+  }
+
+  64% {
+    opacity: 1;
+    transform: translateX(-50%) scaleY(1);
+    width: 4px;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) scaleY(1);
+    width: 1px;
+  }
+}
+
+/* ==========================================================================
+   STAGGERED CONTENT ENTRANCE HIERARCHY (4-Tier Cinematic Reveal)
+   1. Page Heading: opacity 0 -> 1, translateY(20px) -> 0
+   2. Main Visual: opacity 0 -> 1, scale(0.98) -> 1
+   3. Supporting Content: subtle stagger (translateY(12px) -> 0)
+   4. Cards and Details: short and subtle entrance
+   ========================================================================== */
+
+/* 1. Page Headings */
+.cinematic-scene.is-entering .section-tag,
+.cinematic-scene.is-entering .hero-tag,
 .cinematic-scene.is-entering .hero-title,
 .cinematic-scene.is-entering .page-title,
 .cinematic-scene.is-entering .work-header h2,
-.cinematic-scene.is-entering .about-heading {
-  animation: staggerHeading 0.6s 0.14s cubic-bezier(0.16, 1, 0.3, 1) both;
+.cinematic-scene.is-entering .about-heading,
+.cinematic-scene.is-entering .about-signature-text,
+.cinematic-scene.is-entering .showreel-header-row,
+.cinematic-scene.is-entering .contact-section .section-tag,
+.cinematic-scene.is-entering .contact-section h2,
+.cinematic-section.is-entering .section-tag,
+.cinematic-section.is-entering .hero-tag,
+.cinematic-section.is-entering .hero-title,
+.cinematic-section.is-entering .page-title,
+.cinematic-section.is-entering .work-header h2,
+.cinematic-section.is-entering .about-heading,
+.cinematic-section.is-entering .about-signature-text,
+.cinematic-section.is-entering .showreel-header-row,
+.cinematic-section.is-entering .contact-section .section-tag,
+.cinematic-section.is-entering .contact-section h2,
+.cinematic-section.is-in-view .section-tag,
+.cinematic-section.is-in-view .hero-tag,
+.cinematic-section.is-in-view .hero-title,
+.cinematic-section.is-in-view .page-title,
+.cinematic-section.is-in-view .work-header h2,
+.cinematic-section.is-in-view .about-heading,
+.cinematic-section.is-in-view .about-signature-text,
+.cinematic-section.is-in-view .showreel-header-row,
+.cinematic-section.is-in-view .contact-section .section-tag,
+.cinematic-section.is-in-view .contact-section h2 {
+  animation: staggerHeading 0.58s 0.08s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* 2. Main Visuals */
 .cinematic-scene.is-entering .hero-visual-wrapper,
 .cinematic-scene.is-entering .about-visual-col,
 .cinematic-scene.is-entering .featured-film-box,
-.cinematic-scene.is-entering .showreel-hero-wrap {
-  animation: staggerVisual 0.65s 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+.cinematic-scene.is-entering .master-player-card,
+.cinematic-scene.is-entering .contact-form-box,
+.cinematic-section.is-entering .hero-visual-wrapper,
+.cinematic-section.is-entering .about-visual-col,
+.cinematic-section.is-entering .featured-film-box,
+.cinematic-section.is-entering .master-player-card,
+.cinematic-section.is-entering .contact-form-box,
+.cinematic-section.is-in-view .hero-visual-wrapper,
+.cinematic-section.is-in-view .about-visual-col,
+.cinematic-section.is-in-view .featured-film-box,
+.cinematic-section.is-in-view .master-player-card,
+.cinematic-section.is-in-view .contact-form-box {
+  animation: staggerVisual 0.62s 0.16s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* 3. Supporting Content */
+.cinematic-scene.is-entering .hero-description,
 .cinematic-scene.is-entering .hero-btn-group,
+.cinematic-scene.is-entering .hero-social-strip,
+.cinematic-scene.is-entering .about-sub,
+.cinematic-scene.is-entering .about-paragraphs,
+.cinematic-scene.is-entering .work-header .about-p,
 .cinematic-scene.is-entering .filter-tabs-row,
-.cinematic-scene.is-entering .stats-bar-section,
-.cinematic-scene.is-entering .skills-block {
-  animation: staggerContent 0.6s 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+.cinematic-scene.is-entering .showreel-desc-metrics-grid,
+.cinematic-scene.is-entering .contact-left-col,
+.cinematic-section.is-entering .hero-description,
+.cinematic-section.is-entering .hero-btn-group,
+.cinematic-section.is-entering .hero-social-strip,
+.cinematic-section.is-entering .about-sub,
+.cinematic-section.is-entering .about-paragraphs,
+.cinematic-section.is-entering .work-header .about-p,
+.cinematic-section.is-entering .filter-tabs-row,
+.cinematic-section.is-entering .showreel-desc-metrics-grid,
+.cinematic-section.is-entering .contact-left-col,
+.cinematic-section.is-in-view .hero-description,
+.cinematic-section.is-in-view .hero-btn-group,
+.cinematic-section.is-in-view .hero-social-strip,
+.cinematic-section.is-in-view .about-sub,
+.cinematic-section.is-in-view .about-paragraphs,
+.cinematic-section.is-in-view .work-header .about-p,
+.cinematic-section.is-in-view .filter-tabs-row,
+.cinematic-section.is-in-view .showreel-desc-metrics-grid,
+.cinematic-section.is-in-view .contact-left-col {
+  animation: staggerSupporting 0.55s 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-@keyframes staggerTag {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* 4. Cards and Details */
+.cinematic-scene.is-entering .stats-bar-section,
+.cinematic-scene.is-entering .stat-item,
+.cinematic-scene.is-entering .skills-block,
+.cinematic-scene.is-entering .skills-pills,
+.cinematic-scene.is-entering .journey-subsection,
+.cinematic-scene.is-entering .journey-item,
+.cinematic-scene.is-entering .awards-modern-container,
+.cinematic-scene.is-entering .awards-filter-bar,
+.cinematic-scene.is-entering .award-modern-card,
+.cinematic-scene.is-entering .work-cards-grid,
+.cinematic-scene.is-entering .work-card,
+.cinematic-scene.is-entering .watch-more-deck-container,
+.cinematic-scene.is-entering .bts-card,
+.cinematic-scene.is-entering .testi-card,
+.cinematic-scene.is-entering .contact-social-grid,
+.cinematic-scene.is-entering .faqs-section,
+.cinematic-scene.is-entering .faq-item,
+.cinematic-section.is-entering .stats-bar-section,
+.cinematic-section.is-entering .stat-item,
+.cinematic-section.is-entering .skills-block,
+.cinematic-section.is-entering .skills-pills,
+.cinematic-section.is-entering .journey-subsection,
+.cinematic-section.is-entering .journey-item,
+.cinematic-section.is-entering .awards-modern-container,
+.cinematic-section.is-entering .awards-filter-bar,
+.cinematic-section.is-entering .award-modern-card,
+.cinematic-section.is-entering .work-cards-grid,
+.cinematic-section.is-entering .work-card,
+.cinematic-section.is-entering .watch-more-deck-container,
+.cinematic-section.is-entering .bts-card,
+.cinematic-section.is-entering .testi-card,
+.cinematic-section.is-entering .contact-social-grid,
+.cinematic-section.is-entering .faqs-section,
+.cinematic-section.is-entering .faq-item,
+.cinematic-section.is-in-view .stats-bar-section,
+.cinematic-section.is-in-view .stat-item,
+.cinematic-section.is-in-view .skills-block,
+.cinematic-section.is-in-view .skills-pills,
+.cinematic-section.is-in-view .journey-subsection,
+.cinematic-section.is-in-view .journey-item,
+.cinematic-section.is-in-view .awards-modern-container,
+.cinematic-section.is-in-view .awards-filter-bar,
+.cinematic-section.is-in-view .award-modern-card,
+.cinematic-section.is-in-view .work-cards-grid,
+.cinematic-section.is-in-view .work-card,
+.cinematic-section.is-in-view .watch-more-deck-container,
+.cinematic-section.is-in-view .bts-card,
+.cinematic-section.is-in-view .testi-card,
+.cinematic-section.is-in-view .contact-social-grid,
+.cinematic-section.is-in-view .faqs-section,
+.cinematic-section.is-in-view .faq-item {
+  animation: staggerCards 0.5s 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @keyframes staggerHeading {
   0% {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(20px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -394,22 +1263,36 @@
 @keyframes staggerVisual {
   0% {
     opacity: 0;
-    transform: scale(0.985);
+    transform: scale(0.98);
   }
+
   100% {
     opacity: 1;
     transform: scale(1);
   }
 }
 
-@keyframes staggerContent {
+@keyframes staggerSupporting {
   0% {
     opacity: 0;
     transform: translateY(12px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes staggerCards {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -417,30 +1300,34 @@
    MOBILE OPTIMIZATION (Lightweight, No Heavy 3D, Touch Friendly)
    ========================================================================== */
 @media (max-width: 768px) {
+
   .trans-enter-depth-push,
   .trans-enter-film-strip,
   .trans-enter-film-reverse,
-  .trans-enter-stage-reveal,
+  .trans-enter-card-expansion,
+  .trans-enter-card-collapse,
   .trans-enter-curtain,
   .trans-enter-zoom-reset {
-    animation-duration: 0.5s !important;
+    animation-duration: 0.48s !important;
   }
 
   .trans-exit-depth-push,
   .trans-exit-film-strip,
   .trans-exit-film-reverse,
-  .trans-exit-stage-reveal,
+  .trans-exit-card-expansion,
+  .trans-exit-card-collapse,
   .trans-exit-curtain,
   .trans-exit-zoom-reset {
-    animation-duration: 0.2s !important;
+    animation-duration: 0.18s !important;
   }
 
-  /* Keep mobile blur lightweight for low-end GPU performance */
+  /* Keep mobile animations lightweight with pure transform & opacity (no blur) */
   @keyframes depthPushEnter {
     0% {
       opacity: 0;
       transform: translateY(10px) scale(0.99);
     }
+
     100% {
       opacity: 1;
       transform: translateY(0) scale(1);
@@ -451,6 +1338,7 @@
     0% {
       opacity: 1;
     }
+
     100% {
       opacity: 0;
       transform: scale(1.01);
@@ -462,6 +1350,7 @@
       opacity: 0;
       transform: translateX(14px);
     }
+
     100% {
       opacity: 1;
       transform: translateX(0);
@@ -472,20 +1361,79 @@
     0% {
       opacity: 1;
     }
+
     100% {
       opacity: 0;
       transform: translateX(-14px);
     }
   }
 
-  @keyframes stageRevealEnter {
+  @keyframes filmReverseEnter {
     0% {
       opacity: 0;
-      transform: scale(0.99);
+      transform: translateX(-14px);
     }
+
     100% {
       opacity: 1;
-      transform: scale(1);
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes filmReverseExit {
+    0% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0;
+      transform: translateX(14px);
+    }
+  }
+
+  @keyframes cardExpansionEnter {
+    0% {
+      opacity: 0;
+      transform: scale(0.96) translateY(14px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  @keyframes cardExpansionExit {
+    0% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+  }
+
+  @keyframes cardCollapseEnter {
+    0% {
+      opacity: 0;
+      transform: scale(0.98) translateY(-8px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  @keyframes cardCollapseExit {
+    0% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0;
+      transform: scale(0.96) translateY(12px);
     }
   }
 
@@ -494,6 +1442,7 @@
       opacity: 0;
       transform: translateY(8px);
     }
+
     100% {
       opacity: 1;
       transform: translateY(0);
@@ -505,10 +1454,99 @@
       opacity: 0;
       transform: translateY(-8px);
     }
+
     100% {
       opacity: 1;
       transform: translateY(0);
     }
+  }
+
+  /* Snappier mobile content entrance */
+  .cinematic-scene.is-entering .section-tag,
+  .cinematic-scene.is-entering .hero-tag,
+  .cinematic-scene.is-entering .hero-title,
+  .cinematic-scene.is-entering .page-title,
+  .cinematic-scene.is-entering .work-header h2,
+  .cinematic-scene.is-entering .about-heading,
+  .cinematic-scene.is-entering .showreel-header-row,
+  .cinematic-scene.is-entering .contact-section .section-tag,
+  .cinematic-scene.is-entering .contact-section h2,
+  .cinematic-section.is-entering .section-tag,
+  .cinematic-section.is-entering .hero-title,
+  .cinematic-section.is-entering .work-header h2,
+  .cinematic-section.is-entering .about-heading,
+  .cinematic-section.is-entering .showreel-header-row,
+  .cinematic-section.is-entering .contact-section h2,
+  .cinematic-section.is-in-view .section-tag,
+  .cinematic-section.is-in-view .hero-title,
+  .cinematic-section.is-in-view .work-header h2,
+  .cinematic-section.is-in-view .about-heading,
+  .cinematic-section.is-in-view .showreel-header-row,
+  .cinematic-section.is-in-view .contact-section h2 {
+    animation-duration: 0.45s !important;
+    animation-delay: 0.05s !important;
+  }
+
+  .cinematic-scene.is-entering .hero-visual-wrapper,
+  .cinematic-scene.is-entering .about-visual-col,
+  .cinematic-scene.is-entering .featured-film-box,
+  .cinematic-scene.is-entering .master-player-card,
+  .cinematic-scene.is-entering .contact-form-box,
+  .cinematic-section.is-entering .hero-visual-wrapper,
+  .cinematic-section.is-entering .about-visual-col,
+  .cinematic-section.is-entering .featured-film-box,
+  .cinematic-section.is-entering .master-player-card,
+  .cinematic-section.is-entering .contact-form-box,
+  .cinematic-section.is-in-view .hero-visual-wrapper,
+  .cinematic-section.is-in-view .about-visual-col,
+  .cinematic-section.is-in-view .featured-film-box,
+  .cinematic-section.is-in-view .master-player-card,
+  .cinematic-section.is-in-view .contact-form-box {
+    animation-duration: 0.48s !important;
+    animation-delay: 0.12s !important;
+  }
+
+  .cinematic-scene.is-entering .hero-description,
+  .cinematic-scene.is-entering .hero-btn-group,
+  .cinematic-scene.is-entering .hero-social-strip,
+  .cinematic-scene.is-entering .about-sub,
+  .cinematic-scene.is-entering .about-paragraphs,
+  .cinematic-scene.is-entering .work-header .about-p,
+  .cinematic-scene.is-entering .filter-tabs-row,
+  .cinematic-scene.is-entering .showreel-desc-metrics-grid,
+  .cinematic-scene.is-entering .contact-left-col,
+  .cinematic-section.is-entering .hero-btn-group,
+  .cinematic-section.is-entering .about-paragraphs,
+  .cinematic-section.is-entering .filter-tabs-row,
+  .cinematic-section.is-entering .contact-left-col,
+  .cinematic-section.is-in-view .hero-btn-group,
+  .cinematic-section.is-in-view .about-paragraphs,
+  .cinematic-section.is-in-view .filter-tabs-row,
+  .cinematic-section.is-in-view .contact-left-col {
+    animation-duration: 0.45s !important;
+    animation-delay: 0.18s !important;
+  }
+
+  .cinematic-scene.is-entering .stats-bar-section,
+  .cinematic-scene.is-entering .stat-item,
+  .cinematic-scene.is-entering .skills-block,
+  .cinematic-scene.is-entering .journey-subsection,
+  .cinematic-scene.is-entering .awards-modern-container,
+  .cinematic-scene.is-entering .work-cards-grid,
+  .cinematic-scene.is-entering .watch-more-deck-container,
+  .cinematic-scene.is-entering .testi-card,
+  .cinematic-scene.is-entering .contact-social-grid,
+  .cinematic-scene.is-entering .faqs-section,
+  .cinematic-section.is-entering .stats-bar-section,
+  .cinematic-section.is-entering .awards-modern-container,
+  .cinematic-section.is-entering .work-cards-grid,
+  .cinematic-section.is-entering .faqs-section,
+  .cinematic-section.is-in-view .stats-bar-section,
+  .cinematic-section.is-in-view .awards-modern-container,
+  .cinematic-section.is-in-view .work-cards-grid,
+  .cinematic-section.is-in-view .faqs-section {
+    animation-duration: 0.42s !important;
+    animation-delay: 0.22s !important;
   }
 }
 
@@ -516,27 +1554,37 @@
    ACCESSIBILITY: PREFERS-REDUCED-MOTION
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
+
   .cinematic-scene,
+  .cinematic-section,
   .trans-enter-depth-push,
   .trans-enter-film-strip,
   .trans-enter-film-reverse,
-  .trans-enter-stage-reveal,
+  .trans-enter-card-expansion,
+  .trans-enter-card-collapse,
   .trans-enter-curtain,
   .trans-enter-zoom-reset,
   .trans-enter-default,
   .trans-exit-depth-push,
   .trans-exit-film-strip,
   .trans-exit-film-reverse,
-  .trans-exit-stage-reveal,
+  .trans-exit-card-expansion,
+  .trans-exit-card-collapse,
   .trans-exit-curtain,
   .trans-exit-zoom-reset,
   .trans-exit-default,
-  .cinematic-scene.is-entering * {
+  .cinematic-scene.is-entering *,
+  .cinematic-section.is-entering *,
+  .cinematic-section.is-in-view * {
     animation: none !important;
-    transition: opacity 0.2s linear !important;
+    transition: opacity 0.15s linear !important;
     transform: none !important;
     filter: none !important;
     clip-path: none !important;
+  }
+
+  .cinematic-veil-overlay {
+    display: none !important;
   }
 
   .cinematic-shimmer-sweep {

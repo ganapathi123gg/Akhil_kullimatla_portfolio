@@ -16,7 +16,7 @@ export function ShowreelSection({ onSelectVideo }) {
   }
 
   return (
-    <section class="showreel-section" id="showreel">
+    <section class="showreel-section">
       <div class="container">
         {/* Top Header & Timecode Badge */}
         <div class="showreel-hero-wrap">

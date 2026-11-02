@@ -22,7 +22,7 @@ export const CREATOR = {
   heroHeading: 'Kullimatla',
   heroHighlight: 'Akhil',
   heroDescription:
-    'TELL STORIES THROUGH SHORT FILMS, YOUTUBE, AND REELS — DIRECTING WITH PURPOSE, CREATING WITH PASSION, AND TURNING EVERY FRAME INTO A CINEMATIC EXPERIENCE.',
+    'Tell stories through short films, YouTube, and reels — directing with purpose, creating with passion, and turning every frame into a cinematic experience.',
   heroBadge: '3 AWARDS',
   awardsCount: '3',
 

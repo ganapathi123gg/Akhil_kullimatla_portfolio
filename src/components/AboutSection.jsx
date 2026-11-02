@@ -5,7 +5,7 @@ import '../styles/AboutSection.css'
 
 export function AboutSection() {
   return (
-    <section class="about-section" id="about">
+    <section class="about-section">
       <div class="container">
         {/* Main 2-Column Grid */}
         <div class="about-main-grid">

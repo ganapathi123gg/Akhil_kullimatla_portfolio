@@ -64,6 +64,7 @@ export function Navbar({
                   type="button"
                   class={`nav-link ${activeTab === item.id ? 'active' : ''}`}
                   onClick={() => handleNavClick(item.id)}
+                  data-nav-id={item.id}
                   data-cursor="hover"
                 >
                   {item.label}
@@ -150,6 +151,7 @@ export function Navbar({
                 type="button"
                 class={`mobile-nav-link ${activeTab === item.id ? 'active' : ''}`}
                 onClick={() => handleNavClick(item.id)}
+                data-nav-id={item.id}
               >
                 <span>{item.label}</span>
                 <span class="arrow">→</span>
