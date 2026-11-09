@@ -775,8 +775,8 @@
 
 .blade-master {
   background: linear-gradient(90deg, #050507 0%, #0d0c0a 82%, #1a160e 100%);
-  border-right: 2px solid var(--gold, #d4af37);
-  box-shadow: 25px 0 70px rgba(0, 0, 0, 0.98), 0 0 35px rgba(212, 175, 55, 0.6);
+  border-right: none;
+  box-shadow: 25px 0 70px rgba(0, 0, 0, 0.98);
   animation: bladeRunnerSweep 0.7s cubic-bezier(0.85, 0, 0.15, 1) forwards;
 }
 
