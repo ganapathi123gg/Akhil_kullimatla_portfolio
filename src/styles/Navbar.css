@@ -127,7 +127,8 @@
 
 .nav-link.active {
   color: var(--gold);
-  font-weight: 500;
+  font-weight: 600;
+  text-shadow: 0 0 12px var(--gold-glow);
 }
 
 .nav-link::after {
@@ -136,8 +137,9 @@
   bottom: 0;
   left: 0;
   width: 0%;
-  height: 1px;
+  height: 2px;
   background-color: var(--gold);
+  box-shadow: 0 0 10px var(--gold-glow);
   transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -328,9 +330,23 @@
   color: var(--gold);
 }
 
+.mobile-nav-link.active {
+  font-weight: 700;
+  padding-left: 12px;
+  border-left: 3px solid var(--gold);
+  text-shadow: 0 0 16px var(--gold-glow);
+}
+
 .mobile-nav-link span.arrow {
   font-size: 18px;
   opacity: 0.6;
+  transition: transform 0.3s ease, opacity 0.3s ease, color 0.3s ease;
+}
+
+.mobile-nav-link.active span.arrow {
+  opacity: 1;
+  color: var(--gold);
+  transform: translateX(4px);
 }
 
 .mobile-footer-actions {

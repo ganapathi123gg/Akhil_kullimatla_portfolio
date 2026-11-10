@@ -61,6 +61,7 @@ export function App() {
   const isTransitioningRef = useRef(false)
   const activeTabRef = useRef(activeTab)
   const lastTransitionTimeRef = useRef(0)
+  const lastTransitionFinishTimeRef = useRef(0)
   const scrollTransitionsReadyRef = useRef(false)
 
   // Keep activeTabRef synchronized
@@ -72,7 +73,7 @@ export function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       scrollTransitionsReadyRef.current = true
-    }, 400)
+    }, 1800)
     return () => clearTimeout(timer)
   }, [])
 
@@ -129,11 +130,13 @@ export function App() {
 
     setTimeout(() => {
       if (validTarget === 'home') {
-        window.scrollTo({ top: 0, behavior: 'smooth' })
+        window.scrollTo({ top: 0, behavior: 'auto' })
       } else {
         const el = document.getElementById(validTarget)
         if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          const headerHeight = isMobile ? 72 : 84
+          const targetTop = el.getBoundingClientRect().top + window.scrollY - headerHeight
+          window.scrollTo({ top: Math.max(0, targetTop), behavior: 'auto' })
         }
       }
     }, scrollTiming)
@@ -144,6 +147,7 @@ export function App() {
       setIsTransitioning(false)
       setTransitionTarget(null)
       isTransitioningRef.current = false
+      lastTransitionFinishTimeRef.current = Date.now()
     }, duration)
   }
 
@@ -169,68 +173,137 @@ export function App() {
       observers.push(viewObserver)
     })
 
-    // 2. Mouse Wheel Navigation: Natural smooth scrolling with page-to-page transitions
+    const getSectionRect = (id) => {
+      const el = document.getElementById(id)
+      return el ? el.getBoundingClientRect() : null
+    }
+
+    // 2. Real-time 60fps Scroll Spy for Navbar Active Indicator
+    let rafId = null
+    const updateActiveSectionOnScroll = () => {
+      if (isTransitioningRef.current) return
+
+      const scrollY = window.scrollY || window.pageYOffset || 0
+      const windowHeight = window.innerHeight
+      const docHeight = document.documentElement.scrollHeight
+      const headerOffset = window.innerWidth <= 768 ? 72 : 84
+
+      // Extreme Top: window.scrollY <= 80 is always 'home'
+      if (scrollY <= 80) {
+        if (activeTabRef.current !== 'home') {
+          activeTabRef.current = 'home'
+          setActiveTab('home')
+        }
+        return
+      }
+
+      // Extreme Bottom: within 80px of page bottom is always 'contact'
+      if (windowHeight + scrollY >= docHeight - 80) {
+        if (activeTabRef.current !== 'contact') {
+          activeTabRef.current = 'contact'
+          setActiveTab('contact')
+        }
+        return
+      }
+
+      // Middle sections: find the section that occupies the primary reading area (35% down viewport)
+      const triggerY = headerOffset + (windowHeight - headerOffset) * 0.35
+
+      for (let i = 0; i < sectionIds.length; i++) {
+        const id = sectionIds[i]
+        const el = document.getElementById(id)
+        if (!el) continue
+
+        const rect = el.getBoundingClientRect()
+        if (rect.top <= triggerY && rect.bottom > triggerY) {
+          if (activeTabRef.current !== id) {
+            activeTabRef.current = id
+            setActiveTab(id)
+            if (window.history && window.history.replaceState) {
+              window.history.replaceState(null, '', `#${id}`)
+            }
+          }
+          return
+        }
+      }
+    }
+
+    const handleScroll = () => {
+      if (rafId) cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(updateActiveSectionOnScroll)
+    }
+
+    // 3. Mouse Wheel Boundary Navigation
+    // Allows full natural scrolling through section content.
+    // Triggers transition ONLY when user reaches the complete ending (or top) of a section.
     let wheelAcc = 0
     let wheelTimer = null
 
     const handleWheel = (e) => {
       if (!scrollTransitionsReadyRef.current) return
       if (isTransitioningRef.current) return
-      if (Date.now() - lastTransitionTimeRef.current < 750) return
+      if (Date.now() - lastTransitionFinishTimeRef.current < 450) return
 
-      wheelAcc += e.deltaY
-
-      if (wheelTimer) clearTimeout(wheelTimer)
-      wheelTimer = setTimeout(() => {
-        wheelAcc = 0
-      }, 180)
-
-      const currentIndex = sectionIds.indexOf(activeTabRef.current)
+      const currentId = activeTabRef.current
+      const currentIndex = sectionIds.indexOf(currentId)
       if (currentIndex === -1) return
 
-      // Scroll Down -> Smooth transition to next section
-      if (wheelAcc > 45 && currentIndex < sectionIds.length - 1) {
-        wheelAcc = 0
-        const nextTarget = sectionIds[currentIndex + 1]
-        handleNavigate(nextTarget, true)
-      }
-      // Scroll Up -> Smooth transition to previous section
-      else if (wheelAcc < -45 && currentIndex > 0) {
-        wheelAcc = 0
-        const prevTarget = sectionIds[currentIndex - 1]
-        handleNavigate(prevTarget, true)
-      }
-    }
+      const currentRect = getSectionRect(currentId)
+      if (!currentRect) return
 
-    // 3. Scrollbar Drag & Viewport Synchronizer (updates activeTab as user scrolls)
-    let scrollSyncTimer = null
-    const handleScrollSync = () => {
-      if (isTransitioningRef.current) return
-      if (scrollSyncTimer) clearTimeout(scrollSyncTimer)
-      scrollSyncTimer = setTimeout(() => {
-        if (isTransitioningRef.current) return
-        const midPoint = window.innerHeight * 0.45
+      const windowHeight = window.innerHeight
 
-        for (let i = 0; i < sectionIds.length; i++) {
-          const id = sectionIds[i]
-          const el = document.getElementById(id)
-          if (!el) continue
-          const rect = el.getBoundingClientRect()
-          if (rect.top <= midPoint && rect.bottom >= midPoint) {
-            if (activeTabRef.current !== id) {
-              activeTabRef.current = id
-              setActiveTab(id)
-              if (window.history && window.history.replaceState) {
-                window.history.replaceState(null, '', `#${id}`)
-              }
-            }
-            break
+      // Scrolling Down -> Next Section
+      if (e.deltaY > 0) {
+        if (currentIndex < sectionIds.length - 1) {
+          // Check if current section has reached its complete bottom ending
+          const isAtBottom = currentRect.bottom <= windowHeight + 35
+          if (!isAtBottom) {
+            wheelAcc = 0
+            return // Allow natural scroll through section
+          }
+
+          // User is at the very ending of the section and scrolling down further -> trigger transition
+          wheelAcc += e.deltaY
+          if (wheelTimer) clearTimeout(wheelTimer)
+          wheelTimer = setTimeout(() => {
+            wheelAcc = 0
+          }, 200)
+
+          if (wheelAcc >= 40) {
+            wheelAcc = 0
+            const nextTarget = sectionIds[currentIndex + 1]
+            handleNavigate(nextTarget, true)
           }
         }
-      }, 100)
+      }
+      // Scrolling Up -> Previous Section
+      else if (e.deltaY < 0) {
+        if (currentIndex > 0) {
+          // Check if current section has reached its top
+          const isAtTop = currentRect.top >= -30
+          if (!isAtTop) {
+            wheelAcc = 0
+            return // Allow natural scroll through section
+          }
+
+          // User is at top of section and scrolling up further -> trigger transition
+          wheelAcc += e.deltaY
+          if (wheelTimer) clearTimeout(wheelTimer)
+          wheelTimer = setTimeout(() => {
+            wheelAcc = 0
+          }, 200)
+
+          if (wheelAcc <= -40) {
+            wheelAcc = 0
+            const prevTarget = sectionIds[currentIndex - 1]
+            handleNavigate(prevTarget, true)
+          }
+        }
+      }
     }
 
-    // 4. Mobile Touch Swipe Navigation
+    // 4. Mobile / Tablet Touch Swipe Navigation
     let touchStartY = 0
     let touchStartX = 0
 
@@ -243,71 +316,94 @@ export function App() {
 
     const handleTouchEnd = (e) => {
       if (!scrollTransitionsReadyRef.current) return
-      const now = Date.now()
-      if (isTransitioningRef.current || now - lastTransitionTimeRef.current < 750) return
+      if (isTransitioningRef.current) return
+      if (Date.now() - lastTransitionFinishTimeRef.current < 450) return
       if (!e.changedTouches || !e.changedTouches[0]) return
 
       const deltaY = touchStartY - e.changedTouches[0].clientY
       const deltaX = Math.abs(touchStartX - e.changedTouches[0].clientX)
-      if (Math.abs(deltaY) < deltaX) return
 
-      const currentIndex = sectionIds.indexOf(activeTabRef.current)
+      if (Math.abs(deltaY) < deltaX * 1.2) return
+      if (Math.abs(deltaY) < 40) return
+
+      const currentId = activeTabRef.current
+      const currentIndex = sectionIds.indexOf(currentId)
       if (currentIndex === -1) return
 
-      // Swipe Up -> Transition to Next Page
-      if (deltaY > 35 && currentIndex < sectionIds.length - 1) {
-        const nextTarget = sectionIds[currentIndex + 1]
-        handleNavigate(nextTarget, true)
-      }
-      // Swipe Down -> Transition to Previous Page
-      else if (deltaY < -35 && currentIndex > 0) {
-        const prevTarget = sectionIds[currentIndex - 1]
-        handleNavigate(prevTarget, true)
-      }
-    }
+      const currentRect = getSectionRect(currentId)
+      if (!currentRect) return
 
-    // 5. Keyboard Navigation (Arrow keys / PageUp / PageDown / Space)
-    const handleKeyDown = (e) => {
-      if (!scrollTransitionsReadyRef.current) return
-      const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : ''
-      if (activeTag === 'input' || activeTag === 'textarea' || activeTag === 'select') return
+      const windowHeight = window.innerHeight
 
-      const now = Date.now()
-      if (isTransitioningRef.current || now - lastTransitionTimeRef.current < 750) return
-
-      const currentIndex = sectionIds.indexOf(activeTabRef.current)
-      if (currentIndex === -1) return
-
-      if (e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) {
-        if (currentIndex < sectionIds.length - 1) {
-          e.preventDefault()
+      // Swipe Up -> Scrolling Down
+      if (deltaY > 40 && currentIndex < sectionIds.length - 1) {
+        const isAtBottom = currentRect.bottom <= windowHeight + 45
+        if (isAtBottom) {
           const nextTarget = sectionIds[currentIndex + 1]
           handleNavigate(nextTarget, true)
         }
-      } else if (e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) {
-        if (currentIndex > 0) {
-          e.preventDefault()
+      }
+      // Swipe Down -> Scrolling Up
+      else if (deltaY < -40 && currentIndex > 0) {
+        const isAtTop = currentRect.top >= -35
+        if (isAtTop) {
           const prevTarget = sectionIds[currentIndex - 1]
           handleNavigate(prevTarget, true)
         }
       }
     }
 
+    // 5. Keyboard Navigation (ArrowDown / ArrowUp / PageDown / PageUp / Space)
+    const handleKeyDown = (e) => {
+      if (!scrollTransitionsReadyRef.current) return
+      const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : ''
+      if (activeTag === 'input' || activeTag === 'textarea' || activeTag === 'select') return
+      if (isTransitioningRef.current) return
+      if (Date.now() - lastTransitionFinishTimeRef.current < 450) return
+
+      const currentId = activeTabRef.current
+      const currentIndex = sectionIds.indexOf(currentId)
+      if (currentIndex === -1) return
+
+      const currentRect = getSectionRect(currentId)
+      if (!currentRect) return
+
+      if (e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) {
+        if (currentIndex < sectionIds.length - 1) {
+          const isAtBottom = currentRect.bottom <= window.innerHeight + 35
+          if (isAtBottom) {
+            e.preventDefault()
+            const nextTarget = sectionIds[currentIndex + 1]
+            handleNavigate(nextTarget, true)
+          }
+        }
+      } else if (e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) {
+        if (currentIndex > 0) {
+          const isAtTop = currentRect.top >= -30
+          if (isAtTop) {
+            e.preventDefault()
+            const prevTarget = sectionIds[currentIndex - 1]
+            handleNavigate(prevTarget, true)
+          }
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
     window.addEventListener('wheel', handleWheel, { passive: true })
-    window.addEventListener('scroll', handleScrollSync, { passive: true })
     window.addEventListener('touchstart', handleTouchStart, { passive: true })
     window.addEventListener('touchend', handleTouchEnd, { passive: true })
     window.addEventListener('keydown', handleKeyDown)
 
     return () => {
       observers.forEach((obs) => obs.disconnect())
+      if (rafId) cancelAnimationFrame(rafId)
+      if (wheelTimer) clearTimeout(wheelTimer)
+      window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('wheel', handleWheel)
-      window.removeEventListener('scroll', handleScrollSync)
       window.removeEventListener('touchstart', handleTouchStart)
       window.removeEventListener('touchend', handleTouchEnd)
       window.removeEventListener('keydown', handleKeyDown)
-      if (wheelTimer) clearTimeout(wheelTimer)
-      if (scrollSyncTimer) clearTimeout(scrollSyncTimer)
     }
   }, [])
 
@@ -403,7 +499,10 @@ export function App() {
         <SmokeRevealOverlay
           isActive={isInitialSmokeActive}
           isInitial={true}
-          onComplete={() => setIsInitialSmokeActive(false)}
+          onComplete={() => {
+            setIsInitialSmokeActive(false)
+            scrollTransitionsReadyRef.current = true
+          }}
         />
       )}
 
@@ -504,10 +603,9 @@ export function App() {
             } ${inViewSections.showreel ? 'is-in-view' : ''}`}
           >
             <ShowreelSection onSelectVideo={handleSelectVideo} />
+            {/* BRAND SPONSORS MARQUEE matching Work.png */}
+            <BrandMarquee brands={CREATOR.brands} />
           </div>
-
-          {/* BRAND SPONSORS MARQUEE matching Work.png */}
-          <BrandMarquee brands={CREATOR.brands} />
 
           {/* 5. CONTACT & FAQS SECTION matching Contact.png */}
           <div
