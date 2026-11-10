@@ -27,7 +27,7 @@ export function Navbar({
     { id: 'home', label: 'Home' },
     { id: 'about', label: 'About' },
     { id: 'work', label: 'Work' },
-    { id: 'showreel', label: 'Showreel' },
+    { id: 'showreel', label: 'Showreels' },
     { id: 'contact', label: 'Contact' },
   ]
 

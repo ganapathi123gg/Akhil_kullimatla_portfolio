@@ -110,17 +110,9 @@ export function App() {
     isTransitioningRef.current = true
     lastTransitionTimeRef.current = Date.now()
 
-    // Immediately update active tab references so subsequent gestures recognize the new location
-    activeTabRef.current = validTarget
-    setActiveTab(validTarget)
-
     // Trigger full smoke effect on Home scene activation
     if (validTarget === 'home') {
       setIsHomeSmokeActive(true)
-    }
-
-    if (updateHistory && window.history && window.history.pushState) {
-      window.history.pushState(null, '', `#${validTarget}`)
     }
 
     // Coordinate scroll at the apex of the luxury transition veil (when screen is fully masked)
@@ -138,6 +130,14 @@ export function App() {
           const targetTop = el.getBoundingClientRect().top + window.scrollY - headerHeight
           window.scrollTo({ top: Math.max(0, targetTop), behavior: 'auto' })
         }
+      }
+
+      // Update active tab references at the apex when the next page becomes active behind the veil
+      activeTabRef.current = validTarget
+      setActiveTab(validTarget)
+
+      if (updateHistory && window.history && window.history.pushState) {
+        window.history.pushState(null, '', `#${validTarget}`)
       }
     }, scrollTiming)
 
@@ -208,6 +208,8 @@ export function App() {
 
       // Middle sections: find the section that occupies the primary reading area (35% down viewport)
       const triggerY = headerOffset + (windowHeight - headerOffset) * 0.35
+      let bestId = null
+      let maxVisible = -1
 
       for (let i = 0; i < sectionIds.length; i++) {
         const id = sectionIds[i]
@@ -215,15 +217,26 @@ export function App() {
         if (!el) continue
 
         const rect = el.getBoundingClientRect()
-        if (rect.top <= triggerY && rect.bottom > triggerY) {
-          if (activeTabRef.current !== id) {
-            activeTabRef.current = id
-            setActiveTab(id)
-            if (window.history && window.history.replaceState) {
-              window.history.replaceState(null, '', `#${id}`)
-            }
-          }
-          return
+        // Primary check: section containing trigger line
+        if (rect.top <= triggerY && rect.bottom >= triggerY) {
+          bestId = id
+          break
+        }
+        // Fallback: calculate visible height of section in viewport
+        const visibleTop = Math.max(headerOffset, rect.top)
+        const visibleBottom = Math.min(windowHeight, rect.bottom)
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop)
+        if (visibleHeight > maxVisible) {
+          maxVisible = visibleHeight
+          bestId = id
+        }
+      }
+
+      if (bestId && activeTabRef.current !== bestId) {
+        activeTabRef.current = bestId
+        setActiveTab(bestId)
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState(null, '', `#${bestId}`)
         }
       }
     }
@@ -257,7 +270,7 @@ export function App() {
       if (e.deltaY > 0) {
         if (currentIndex < sectionIds.length - 1) {
           // Check if current section has reached its complete bottom ending
-          const isAtBottom = currentRect.bottom <= windowHeight + 35
+          const isAtBottom = currentRect.bottom <= windowHeight + 50
           if (!isAtBottom) {
             wheelAcc = 0
             return // Allow natural scroll through section
@@ -270,7 +283,7 @@ export function App() {
             wheelAcc = 0
           }, 200)
 
-          if (wheelAcc >= 40) {
+          if (wheelAcc >= 35) {
             wheelAcc = 0
             const nextTarget = sectionIds[currentIndex + 1]
             handleNavigate(nextTarget, true)
@@ -281,7 +294,7 @@ export function App() {
       else if (e.deltaY < 0) {
         if (currentIndex > 0) {
           // Check if current section has reached its top
-          const isAtTop = currentRect.top >= -30
+          const isAtTop = currentRect.top >= -35
           if (!isAtTop) {
             wheelAcc = 0
             return // Allow natural scroll through section
@@ -370,7 +383,7 @@ export function App() {
 
       if (e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) {
         if (currentIndex < sectionIds.length - 1) {
-          const isAtBottom = currentRect.bottom <= window.innerHeight + 35
+          const isAtBottom = currentRect.bottom <= windowHeight + 50
           if (isAtBottom) {
             e.preventDefault()
             const nextTarget = sectionIds[currentIndex + 1]
@@ -379,7 +392,7 @@ export function App() {
         }
       } else if (e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) {
         if (currentIndex > 0) {
-          const isAtTop = currentRect.top >= -30
+          const isAtTop = currentRect.top >= -35
           if (isAtTop) {
             e.preventDefault()
             const prevTarget = sectionIds[currentIndex - 1]
@@ -430,8 +443,9 @@ export function App() {
   // Handle browser back/forward buttons (popstate) and hash changes
   useEffect(() => {
     const handleLocationChange = () => {
+      if (isTransitioningRef.current) return
       const target = getInitialRoute()
-      if (target !== activeTab) {
+      if (target !== activeTabRef.current) {
         handleNavigate(target, false)
       }
     }
@@ -441,9 +455,8 @@ export function App() {
     return () => {
       window.removeEventListener('popstate', handleLocationChange)
       window.removeEventListener('hashchange', handleLocationChange)
-      if (exitTimerRef.current) clearTimeout(exitTimerRef.current)
     }
-  }, [activeTab])
+  }, [])
 
   // Show a quick toast notification
   const triggerToast = (msg) => {
