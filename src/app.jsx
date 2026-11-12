@@ -14,6 +14,8 @@ import { ContactSection } from './components/ContactSection'
 import { Footer } from './components/Footer'
 import { VideoModal } from './components/VideoModal'
 import { BookModal } from './components/BookModal'
+import { TrophyDetailsPage } from './components/TrophyDetailsPage'
+import { VideoLibraryPage } from './components/VideoLibraryPage'
 import {
   CinematicTransitionWrapper,
   getTransitionClassPair,
@@ -56,6 +58,13 @@ export function App() {
   const [lastClickedVideoId, setLastClickedVideoId] = useState(null)
   const [isBookModalOpen, setIsBookModalOpen] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
+
+  // Dedicated Full-Page Views State (Modification 5)
+  const [inspectedAward, setInspectedAward] = useState(null)
+  const [isVideoLibraryOpen, setIsVideoLibraryOpen] = useState(false)
+  const [videoLibraryCategory, setVideoLibraryCategory] = useState('All')
+  const savedScrollYRef = useRef(0)
+  const savedTabRef = useRef('home')
 
   const exitTimerRef = useRef(null)
   const isTransitioningRef = useRef(false)
@@ -117,8 +126,9 @@ export function App() {
 
     // Coordinate scroll at the apex of the luxury transition veil (when screen is fully masked)
     const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768
-    const scrollTiming = isMobile ? 260 : 300
-    const duration = isMobile ? 680 : 760
+    const isSlatsOrHome = validTarget === 'about' || validTarget === 'home'
+    const scrollTiming = isSlatsOrHome ? (isMobile ? 260 : 300) : (isMobile ? 390 : 440)
+    const duration = isSlatsOrHome ? (isMobile ? 680 : 760) : (isMobile ? 1000 : 1080)
 
     setTimeout(() => {
       if (validTarget === 'home') {
@@ -444,6 +454,36 @@ export function App() {
   useEffect(() => {
     const handleLocationChange = () => {
       if (isTransitioningRef.current) return
+      const hash = (typeof window !== 'undefined' && window.location.hash)
+        ? window.location.hash.replace('#', '').toLowerCase()
+        : ''
+
+      // Handle dedicated views history navigation
+      if (hash === 'video-library' || hash === 'archive' || hash === 'complete-archive' || hash === 'all-videos') {
+        if (!isVideoLibraryOpen) {
+          savedScrollYRef.current = window.scrollY
+          savedTabRef.current = activeTabRef.current
+          setIsVideoLibraryOpen(true)
+        }
+        return
+      } else if (isVideoLibraryOpen && !hash.includes('video-library') && !hash.includes('archive')) {
+        setIsVideoLibraryOpen(false)
+        window.scrollTo({ top: savedScrollYRef.current, behavior: 'instant' })
+      }
+
+      if (hash.startsWith('trophy')) {
+        // Keep trophy open if already active, or default to first award
+        if (!inspectedAward && CREATOR.awards && CREATOR.awards.length > 0) {
+          savedScrollYRef.current = window.scrollY
+          savedTabRef.current = activeTabRef.current
+          setInspectedAward(CREATOR.awards[0])
+        }
+        return
+      } else if (inspectedAward && !hash.startsWith('trophy')) {
+        setInspectedAward(null)
+        window.scrollTo({ top: savedScrollYRef.current, behavior: 'instant' })
+      }
+
       const target = getInitialRoute()
       if (target !== activeTabRef.current) {
         handleNavigate(target, false)
@@ -456,7 +496,7 @@ export function App() {
       window.removeEventListener('popstate', handleLocationChange)
       window.removeEventListener('hashchange', handleLocationChange)
     }
-  }, [])
+  }, [isVideoLibraryOpen, inspectedAward])
 
   // Show a quick toast notification
   const triggerToast = (msg) => {
@@ -504,6 +544,64 @@ export function App() {
     soundManager.playTick()
     setIsBookModalOpen(true)
   }
+
+  // Open / Close Dedicated Trophy Inspection Page (Modification 5)
+  const handleOpenTrophyDetails = (award) => {
+    savedScrollYRef.current = window.scrollY
+    savedTabRef.current = activeTabRef.current
+    setInspectedAward(award)
+    soundManager.playChime()
+    if (window.history && window.history.pushState) {
+      window.history.pushState({ modal: 'trophy', id: award?.id }, '', '#trophy-details')
+    }
+  }
+
+  const handleCloseTrophyDetails = () => {
+    setInspectedAward(null)
+    soundManager.playPop()
+    const savedY = savedScrollYRef.current
+    const savedTab = savedTabRef.current
+    if (window.history && window.location.hash.startsWith('#trophy')) {
+      window.history.replaceState(null, '', `#${savedTab}`)
+    }
+    setTimeout(() => {
+      window.scrollTo({ top: savedY, behavior: 'instant' })
+    }, 20)
+  }
+
+  // Open / Close Dedicated Video Library Page (Modification 5)
+  const handleOpenVideoLibrary = (category = 'All') => {
+    savedScrollYRef.current = window.scrollY
+    savedTabRef.current = activeTabRef.current
+    setVideoLibraryCategory(category)
+    setIsVideoLibraryOpen(true)
+    soundManager.playChime()
+    if (window.history && window.history.pushState) {
+      window.history.pushState({ modal: 'video-library' }, '', '#video-library')
+    }
+  }
+
+  const handleCloseVideoLibrary = () => {
+    setIsVideoLibraryOpen(false)
+    soundManager.playPop()
+    const savedY = savedScrollYRef.current
+    const savedTab = savedTabRef.current
+    if (window.history && window.location.hash.startsWith('#video-library')) {
+      window.history.replaceState(null, '', `#${savedTab}`)
+    }
+    setTimeout(() => {
+      window.scrollTo({ top: savedY, behavior: 'instant' })
+    }, 20)
+  }
+
+  // Global listener for open-video-archive event
+  useEffect(() => {
+    const onOpenArchive = (e) => {
+      handleOpenVideoLibrary(e?.detail?.category || 'All')
+    }
+    window.addEventListener('open-video-archive', onOpenArchive)
+    return () => window.removeEventListener('open-video-archive', onOpenArchive)
+  }, [])
 
   return (
     <div class="app-wrapper">
@@ -554,11 +652,9 @@ export function App() {
           {/* 1. HOME SECTION matching Home.png */}
           <div
             id="home"
-            class={`section-anchor cinematic-section ${
-              activeTab === 'home' ? 'is-active' : ''
-            } ${transitionTarget === 'home' ? transitionPair.enterClass : ''} ${
-              inViewSections.home ? 'is-in-view' : ''
-            }`}
+            class={`section-anchor cinematic-section ${activeTab === 'home' ? 'is-active' : ''
+              } ${transitionTarget === 'home' ? transitionPair.enterClass : ''} ${inViewSections.home ? 'is-in-view' : ''
+              }`}
           >
             <Hero
               onExploreWork={() => handleNavigate('work')}
@@ -578,13 +674,11 @@ export function App() {
           {/* 2. ABOUT SECTION matching About.png */}
           <div
             id="about"
-            class={`section-anchor cinematic-section ${
-              activeTab === 'about' ? 'is-active' : ''
-            } ${transitionTarget === 'about' ? transitionPair.enterClass : ''} ${
-              inViewSections.about ? 'is-in-view' : ''
-            }`}
+            class={`section-anchor cinematic-section ${activeTab === 'about' ? 'is-active' : ''
+              } ${transitionTarget === 'about' ? transitionPair.enterClass : ''} ${inViewSections.about ? 'is-in-view' : ''
+              }`}
           >
-            <AboutSection />
+            <AboutSection onInspectTrophy={handleOpenTrophyDetails} />
             <QuoteBanner
               tag="DIRECTOR'S NOTE"
               quote={CREATOR.directorNote}
@@ -597,23 +691,22 @@ export function App() {
           {/* 3. WORK SECTION matching Work.png */}
           <div
             id="work"
-            class={`section-anchor cinematic-section ${
-              activeTab === 'work' ? 'is-active' : ''
-            } ${transitionTarget === 'work' ? transitionPair.enterClass : ''} ${
-              inViewSections.work ? 'is-in-view' : ''
-            }`}
+            class={`section-anchor cinematic-section ${activeTab === 'work' ? 'is-active' : ''
+              } ${transitionTarget === 'work' ? transitionPair.enterClass : ''} ${inViewSections.work ? 'is-in-view' : ''
+              }`}
           >
-            <WorkSection onSelectVideo={handleSelectVideo} />
+            <WorkSection
+              onSelectVideo={handleSelectVideo}
+              onOpenAllWorks={() => handleOpenVideoLibrary('All')}
+            />
           </div>
 
           {/* 4. SHOWREEL SECTION matching Showreel.png */}
           <div
             id="showreel"
-            class={`section-anchor cinematic-section ${
-              activeTab === 'showreel' ? 'is-active' : ''
-            } ${
-              transitionTarget === 'showreel' ? transitionPair.enterClass : ''
-            } ${inViewSections.showreel ? 'is-in-view' : ''}`}
+            class={`section-anchor cinematic-section ${activeTab === 'showreel' ? 'is-active' : ''
+              } ${transitionTarget === 'showreel' ? transitionPair.enterClass : ''
+              } ${inViewSections.showreel ? 'is-in-view' : ''}`}
           >
             <ShowreelSection onSelectVideo={handleSelectVideo} />
             {/* BRAND SPONSORS MARQUEE matching Work.png */}
@@ -623,11 +716,9 @@ export function App() {
           {/* 5. CONTACT & FAQS SECTION matching Contact.png */}
           <div
             id="contact"
-            class={`section-anchor cinematic-section ${
-              activeTab === 'contact' ? 'is-active' : ''
-            } ${
-              transitionTarget === 'contact' ? transitionPair.enterClass : ''
-            } ${inViewSections.contact ? 'is-in-view' : ''}`}
+            class={`section-anchor cinematic-section ${activeTab === 'contact' ? 'is-active' : ''
+              } ${transitionTarget === 'contact' ? transitionPair.enterClass : ''
+              } ${inViewSections.contact ? 'is-in-view' : ''}`}
           >
             <ContactSection />
           </div>
@@ -647,6 +738,30 @@ export function App() {
         isOpen={isBookModalOpen}
         onClose={() => setIsBookModalOpen(false)}
       />
+
+      {/* Dedicated Full-Page Trophy Details Page (Modification 5 - Part 1) */}
+      {inspectedAward && (
+        <TrophyDetailsPage
+          award={inspectedAward}
+          allAwards={CREATOR.awards}
+          onClose={handleCloseTrophyDetails}
+          onSelectAward={(a) => setInspectedAward(a)}
+          onExploreVideo={() => {
+            handleCloseTrophyDetails()
+            handleOpenVideoLibrary('Shortfilms')
+          }}
+        />
+      )}
+
+      {/* Dedicated Full-Page Video Library Page (Modification 5 - Part 2) */}
+      {isVideoLibraryOpen && (
+        <VideoLibraryPage
+          isOpen={isVideoLibraryOpen}
+          onClose={handleCloseVideoLibrary}
+          onSelectVideo={handleSelectVideo}
+          initialCategory={videoLibraryCategory}
+        />
+      )}
 
       {/* Toast Feedback */}
       {toastMessage && (

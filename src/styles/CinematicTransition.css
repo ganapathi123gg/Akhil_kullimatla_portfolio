@@ -399,18 +399,24 @@
 }
 
 .trans-enter-blade {
-  animation: bladeSectionEnter 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: bladeSectionEnter 0.92s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .trans-exit-blade {
-  animation: bladeSectionExit 0.26s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: bladeSectionExit 0.32s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes bladeSectionEnter {
   0% {
     opacity: 0;
-    transform: translateX(32px) scale(0.99);
-    filter: blur(3px);
+    transform: translateX(28px) scale(0.99);
+    filter: blur(4px);
+  }
+
+  38% {
+    opacity: 0;
+    transform: translateX(28px) scale(0.99);
+    filter: blur(4px);
   }
 
   100% {
@@ -433,18 +439,24 @@
 }
 
 .trans-enter-letterbox {
-  animation: letterboxSectionEnter 0.68s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: letterboxSectionEnter 0.95s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .trans-exit-letterbox {
-  animation: letterboxSectionExit 0.26s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: letterboxSectionExit 0.32s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes letterboxSectionEnter {
   0% {
     opacity: 0;
-    transform: scale(0.96);
-    filter: blur(5px) brightness(1.2);
+    transform: scale(0.97);
+    filter: blur(5px) brightness(1.15);
+  }
+
+  42% {
+    opacity: 0;
+    transform: scale(0.97);
+    filter: blur(5px) brightness(1.15);
   }
 
   100% {
@@ -467,17 +479,22 @@
 }
 
 .trans-enter-split {
-  animation: splitSectionEnter 0.68s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: splitSectionEnter 0.95s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .trans-exit-split {
-  animation: splitSectionExit 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: splitSectionExit 0.32s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes splitSectionEnter {
   0% {
     opacity: 0;
-    transform: scale(0.975) translateY(14px);
+    transform: scale(0.98) translateY(14px);
+  }
+
+  42% {
+    opacity: 0;
+    transform: scale(0.98) translateY(14px);
   }
 
   100% {
@@ -755,7 +772,7 @@
   background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.18), transparent 70%);
   filter: blur(40px);
   transform: translateX(-120%);
-  animation: bladeFlareSweep 0.7s cubic-bezier(0.85, 0, 0.15, 1) forwards;
+  animation: bladeFlareSweep 1.05s cubic-bezier(0.76, 0, 0.24, 1) forwards;
 }
 
 .blade-runner {
@@ -770,14 +787,14 @@
 .blade-trail {
   background: linear-gradient(90deg, rgba(8, 7, 10, 0.8) 0%, rgba(212, 175, 55, 0.25) 100%);
   filter: blur(12px);
-  animation: bladeRunnerSweep 0.7s 0.015s cubic-bezier(0.85, 0, 0.15, 1) forwards;
+  animation: bladeRunnerSweep 1.05s 0.02s cubic-bezier(0.76, 0, 0.24, 1) forwards;
 }
 
 .blade-master {
   background: linear-gradient(90deg, #050507 0%, #0d0c0a 82%, #1a160e 100%);
   border-right: none;
   box-shadow: 25px 0 70px rgba(0, 0, 0, 0.98);
-  animation: bladeRunnerSweep 0.7s cubic-bezier(0.85, 0, 0.15, 1) forwards;
+  animation: bladeRunnerSweep 1.05s cubic-bezier(0.76, 0, 0.24, 1) forwards;
 }
 
 .blade-light-streak {
@@ -840,12 +857,12 @@
 
 .letterbox-curtain.curtain-top {
   border-bottom: 2.5px solid var(--gold, #d4af37);
-  animation: letterboxTopMatte 0.72s cubic-bezier(0.85, 0, 0.15, 1) forwards;
+  animation: letterboxTopMatte 1.08s cubic-bezier(0.76, 0, 0.24, 1) forwards;
 }
 
 .letterbox-curtain.curtain-bottom {
   border-top: 2.5px solid var(--gold, #d4af37);
-  animation: letterboxBottomMatte 0.72s cubic-bezier(0.85, 0, 0.15, 1) forwards;
+  animation: letterboxBottomMatte 1.08s cubic-bezier(0.76, 0, 0.24, 1) forwards;
 }
 
 .letterbox-gold-rim {
@@ -875,7 +892,7 @@
   box-shadow: 0 0 35px var(--gold, #d4af37), 0 0 70px rgba(212, 175, 55, 0.85);
   transform: scaleX(0);
   opacity: 0;
-  animation: letterboxFlareBeam 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: letterboxFlareBeam 1.08s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .letterbox-flare-halo {
@@ -886,7 +903,7 @@
   background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.6) 0%, transparent 70%);
   filter: blur(14px);
   opacity: 0;
-  animation: letterboxHaloGlow 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: letterboxHaloGlow 1.08s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes letterboxTopMatte {
@@ -996,13 +1013,13 @@
 .split-wing.wing-left {
   left: 0;
   border-right: 2.5px solid var(--gold, #d4af37);
-  animation: splitWingLeftCascade 0.74s cubic-bezier(0.85, 0, 0.15, 1) forwards;
+  animation: splitWingLeftCascade 1.08s cubic-bezier(0.76, 0, 0.24, 1) forwards;
 }
 
 .split-wing.wing-right {
   right: 0;
   border-left: 2.5px solid var(--gold, #d4af37);
-  animation: splitWingRightCascade 0.74s cubic-bezier(0.85, 0, 0.15, 1) forwards;
+  animation: splitWingRightCascade 1.08s cubic-bezier(0.76, 0, 0.24, 1) forwards;
 }
 
 .wing-gold-border {
@@ -1037,7 +1054,7 @@
   transform: translateX(-50%);
   background: var(--gold, #d4af37);
   box-shadow: 0 0 25px var(--gold, #d4af37), 0 0 50px rgba(212, 175, 55, 0.85);
-  animation: splitCenterLaserFlash 0.74s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: splitCenterLaserFlash 1.08s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes splitWingLeftCascade {

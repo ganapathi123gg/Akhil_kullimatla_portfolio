@@ -20,60 +20,23 @@ export function WatchMoreCarousel({ videos = [], onSelectVideo }) {
   // Complete archive collection combining all videos from Work page + Watch More Library
   const allArchiveItems = getAllArchiveItems()
 
-  // View All Modal State
-  const [isViewAllOpen, setIsViewAllOpen] = useState(false)
-  const [viewAllScope, setViewAllScope] = useState('All') // 'All' | 'Shortfilms' | 'Youtube' | etc.
-  const [searchQuery, setSearchQuery] = useState('')
-
-  // Listen for global open archive event (e.g. from Work page "VIEW ALL MY WORKS")
-  useEffect(() => {
-    const handleOpenArchive = (e) => {
-      setIsViewAllOpen(true)
-      if (e?.detail?.category) {
-        setViewAllScope(e.detail.category)
-      }
-    }
-    window.addEventListener('open-video-archive', handleOpenArchive)
-
-    // Deep link support (#archive or #complete-archive)
-    if (
-      window.location.hash === '#archive' ||
-      window.location.hash === '#complete-archive' ||
-      window.location.hash === '#all-videos'
-    ) {
-      setIsViewAllOpen(true)
-    }
-
-    return () => window.removeEventListener('open-video-archive', handleOpenArchive)
-  }, [])
-
   // 1st Row: Auto-rotate from left to right (smooth lazy sliding window motion)
   useEffect(() => {
-    if (isHovered1 || row1Items.length <= 1 || isViewAllOpen) return
+    if (isHovered1 || row1Items.length <= 1) return
     const interval = setInterval(() => {
       setRow1Index((prev) => (prev + 1) % row1Items.length)
     }, 4400)
     return () => clearInterval(interval)
-  }, [isHovered1, row1Items.length, isViewAllOpen])
+  }, [isHovered1, row1Items.length])
 
   // 2nd Row: Auto-rotate in reverse direction with organic offset cadence
   useEffect(() => {
-    if (isHovered2 || row2Items.length <= 1 || isViewAllOpen) return
+    if (isHovered2 || row2Items.length <= 1) return
     const interval = setInterval(() => {
       setRow2Index((prev) => (prev - 1 + row2Items.length) % row2Items.length)
     }, 4800)
     return () => clearInterval(interval)
-  }, [isHovered2, row2Items.length, isViewAllOpen])
-
-  // ESC key to close View All modal
-  useEffect(() => {
-    if (!isViewAllOpen) return
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setIsViewAllOpen(false)
-    }
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isViewAllOpen])
+  }, [isHovered2, row2Items.length])
 
   // Manual rotation handlers for Row 1
   const handlePrevRow1 = () => {
@@ -131,71 +94,10 @@ export function WatchMoreCarousel({ videos = [], onSelectVideo }) {
     dragStartX2.current = null
   }
 
-  // Open & Close View All
+  // Open View All Video Library (Dispatches global open-video-archive)
   const handleOpenViewAll = (scope = 'All') => {
-    setViewAllScope(scope)
-    setSearchQuery('')
-    setIsViewAllOpen(true)
-  }
-
-  const handleCloseViewAll = () => {
-    setIsViewAllOpen(false)
-    setSearchQuery('')
-  }
-
-  // Check if an item belongs to a target category section
-  const matchesSection = (item, targetSec) => {
-    if (!targetSec || targetSec.toLowerCase() === 'all') return true
-    const norm = (s) => (s || '').toLowerCase().replace(/[\s-_]+/g, '')
-    const t = norm(targetSec)
-    const itemCats = (item.categories || [item.category]).map(norm)
-
-    if (itemCats.includes(t)) return true
-    if (t === 'shortfilms' && (itemCats.includes('shortfilm') || norm(item.category) === 'shortfilm')) return true
-    if (t === 'youtube' && (item.type === 'youtube' || item.youtubeId || item.youtubeUrl || item.categories?.includes('Youtube'))) return true
-    if (t === 'reels' && (itemCats.includes('reel') || item.isReel)) return true
-    if (t === 'comedy' && itemCats.includes('comedy')) return true
-    if (t === 'songs' && (itemCats.includes('song') || itemCats.includes('coversong') || itemCats.includes('musicvideo'))) return true
-    if (t === 'vlog' && itemCats.includes('vlog')) return true
-    if (t === 'moviereviews' && (itemCats.includes('review') || itemCats.includes('reaction'))) return true
-    if (t === 'trailer' && itemCats.includes('trailer')) return true
-    if (t === 'teaser' && (itemCats.includes('teaser') || itemCats.includes('glimpse') || norm(item.category) === 'glimpse')) return true
-    if (t === 'model' && (itemCats.includes('model') || itemCats.includes('modeling') || item.type === 'image')) return true
-    return false
-  }
-
-  // Calculate count for each section tab
-  const getCategoryCount = (sec) => {
-    if (sec === 'All') return allArchiveItems.length
-    return allArchiveItems.filter((item) => matchesSection(item, sec)).length
-  }
-
-  // Get filtered items for View All
-  const getViewAllItems = () => {
-    let list = allArchiveItems
-    if (viewAllScope !== 'All') {
-      list = list.filter((item) => matchesSection(item, viewAllScope))
-    }
-
-    if (!searchQuery.trim()) return list
-    const q = searchQuery.toLowerCase().trim()
-    return list.filter(
-      (v) =>
-        v.title?.toLowerCase().includes(q) ||
-        v.category?.toLowerCase().includes(q) ||
-        v.categories?.some((c) => c.toLowerCase().includes(q)) ||
-        v.tags?.some((t) => t.toLowerCase().includes(q))
-    )
-  }
-
-  // Jump to specific video in the rotating deck
-  const handleJumpToVideo = (item) => {
-    if (item.rowNumber === 1 && typeof item.rowIndex === 'number') {
-      setRow1Index(item.rowIndex)
-    } else if (item.rowNumber === 2 && typeof item.rowIndex === 'number') {
-      setRow2Index(item.rowIndex)
-    }
-    handleCloseViewAll()
+    const category = scope === 'row1' ? 'Shortfilms' : (scope === 'row2' ? 'Youtube' : 'All')
+    window.dispatchEvent(new CustomEvent('open-video-archive', { detail: { category } }))
   }
 
   // Get the 3 visible videos for a row (Left, Center, Right)
@@ -318,119 +220,6 @@ export function WatchMoreCarousel({ videos = [], onSelectVideo }) {
       </div>
     )
   }
-
-  // Render a Card for the Archive / All Videos Library
-  const renderArchiveFeaturedCard = (v) => {
-    const isImage = v.type === 'image' || v.category === 'MODEL' || v.category === 'Modeling'
-    const category = v.primaryCategory || v.category || (isImage ? 'MODEL' : 'SHORT FILM')
-    const isReel = v.isReel || category.toUpperCase().includes('REEL')
-
-    let actionLabel = 'WATCH FILM'
-    if (isImage) actionLabel = 'VIEW EDITORIAL'
-    else if (isReel) actionLabel = 'WATCH REEL'
-    else if (category.includes('SONG')) actionLabel = 'PLAY SONG'
-    else if (category.includes('TRAILER')) actionLabel = 'WATCH TRAILER'
-    else if (category.includes('TEASER') || category.includes('GLIMPSE')) actionLabel = 'WATCH TEASER'
-    else if (category.includes('VLOG')) actionLabel = 'WATCH VLOG'
-    else if (category.includes('REVIEW') || category.includes('REACTION')) actionLabel = 'WATCH REVIEW'
-
-    const desc =
-      v.description ||
-      `A cinematic Telugu ${category.toLowerCase()} written & directed by Kullimetla Akhil. Turning every frame into an emotional narrative.`
-
-    return (
-      <div
-        key={`archive-${v.id || v.youtubeId || v.title}`}
-        class="deck-archive-featured-box"
-      >
-        {/* Left Side: 16:9 Media Box */}
-        <div
-          class="deck-archive-media"
-          onClick={() => {
-            onSelectVideo?.(v)
-            handleCloseViewAll()
-          }}
-          data-cursor={isImage ? 'hover' : 'play'}
-          role="button"
-          tabIndex={0}
-          aria-label={`Open ${v.title}`}
-        >
-          <img
-            src={v.cover || v.thumbnail || v.image}
-            alt={v.title}
-            class="deck-archive-img"
-            loading="lazy"
-          />
-          <div class="deck-archive-media-overlay" />
-
-          {/* Central Round Gold Play / View Button */}
-          <div class="deck-archive-play-btn">
-            {isImage ? (
-              <span style={{ fontSize: '18px', color: '#080808', fontWeight: 800 }}>◈</span>
-            ) : (
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
-                <polygon points="5 3 19 12 5 21 5 3" />
-              </svg>
-            )}
-          </div>
-
-          {/* Duration Badge */}
-          {v.duration && (
-            <span class="deck-archive-duration">{v.duration}</span>
-          )}
-
-          {/* Primary Category Badge */}
-          <span class="deck-archive-row-badge">{category.toUpperCase()}</span>
-        </div>
-
-        {/* Right Side: Information Column */}
-        <div class="deck-archive-info">
-          <span class="deck-archive-kicker">
-            <span class="kicker-highlight">{category.toUpperCase()}</span>
-          </span>
-          <h4 class="deck-archive-title">{v.title}</h4>
-          <p class="deck-archive-desc">{desc}</p>
-
-          <div class="deck-archive-meta-tags">
-            {v.categories?.map((cat) => (
-              <span class="meta-tag" key={cat}>{cat.toUpperCase()}</span>
-            ))}
-            {v.year && <span class="meta-tag">{v.year}</span>}
-          </div>
-
-          <div class="deck-archive-actions">
-            <button
-              type="button"
-              class="btn-gold-fill deck-archive-watch-btn"
-              onClick={() => {
-                onSelectVideo?.(v)
-                handleCloseViewAll()
-              }}
-              aria-label={`Open ${v.title}`}
-            >
-              <span class="deck-archive-play-symbol">{isImage ? '◈' : '▷'}</span>
-              <span>{actionLabel}</span>
-            </button>
-          </div>
-
-          <span class="deck-archive-credits">{v.role || 'Written & Directed by Akhil'}</span>
-        </div>
-      </div>
-    )
-  }
-
-  // Display sections for 'All' tab in the archive
-  const displaySections = [
-    { key: 'Shortfilms', badge: 'SHORT FILMS', title: 'SHORT FILMS & NARRATIVES', hint: 'Original scripted Telugu cinematic short films' },
-    { key: 'Reels', badge: 'REELS', title: 'CINEMATIC REELS & COMBAT EDITS', hint: 'High-energy visual edits, action & performance reels' },
-    { key: 'Comedy', badge: 'COMEDY', title: 'COMEDY & ENTERTAINMENT', hint: 'Relatable Telugu comedy sketches & viral humor' },
-    { key: 'Songs', badge: 'SONGS', title: 'SONGS & MUSIC VIDEOS', hint: 'Official covers and soundtrack visual presentations' },
-    { key: 'Vlog', badge: 'VLOGS', title: 'VLOGS & REAL-LIFE MOMENTS', hint: 'Lifestyle, food reviews & on-set crew moments' },
-    { key: 'Movie Reviews', badge: 'REVIEWS', title: 'MOVIE REVIEWS & FIRST-DAY TALKS', hint: 'In-depth film analyses, trailer reactions & public reviews' },
-    { key: 'Trailer', badge: 'TRAILERS', title: 'OFFICIAL TRAILERS', hint: 'Full-length theatrical-style trailers' },
-    { key: 'teaser', badge: 'TEASERS', title: 'TEASERS & GLIMPSES', hint: 'Atmospheric teasers, first looks & mood glimpses' },
-    { key: 'Model', badge: 'MODELING', title: 'EDITORIAL CAMPAIGNS & MODELING', hint: 'High-fashion editorial campaigns & portrait studies' },
-  ]
 
   return (
     <div class="watch-more-deck-container" id="watch-more-deck">
@@ -635,137 +424,6 @@ export function WatchMoreCarousel({ videos = [], onSelectVideo }) {
           />
         </div>
       </div>
-
-      {/* ========================================================
-          VIEW ALL VIDEOS MODAL ARCHIVE (Complete Video Archive)
-          ======================================================== */}
-      {isViewAllOpen && (
-        <div class="deck-viewall-overlay" onClick={handleCloseViewAll}>
-          <div class="deck-viewall-modal" onClick={(e) => e.stopPropagation()}>
-            <div class="deck-viewall-header">
-              <div class="deck-viewall-header-info">
-                <span class="section-tag">COMPLETE VIDEO ARCHIVE</span>
-                <h3 class="deck-viewall-title">
-                  All Videos Library <span class="deck-viewall-count">({allArchiveItems.length})</span>
-                </h3>
-                <p class="deck-viewall-subtitle">
-                  Browse, search, and stream Kullimetla Akhil's complete repertoire of short films, YouTube productions, reels, comedy sketches, songs, reviews, trailers, teasers, and modeling campaigns.
-                </p>
-              </div>
-
-              <button
-                type="button"
-                class="deck-viewall-close-btn"
-                onClick={handleCloseViewAll}
-                aria-label="Close All Videos"
-                data-cursor="hover"
-              >
-                <span>✕ CLOSE ARCHIVE</span>
-              </button>
-            </div>
-
-            {/* Filter Tabs & Search Bar */}
-            <div class="deck-viewall-controls-bar">
-              <div class="deck-viewall-tabs">
-                {ARCHIVE_SECTIONS.map((sec) => (
-                  <button
-                    key={sec}
-                    type="button"
-                    class={`deck-viewall-tab ${viewAllScope === sec ? 'active' : ''}`}
-                    onClick={() => setViewAllScope(sec)}
-                    data-cursor="hover"
-                  >
-                    {sec.toUpperCase()} ({getCategoryCount(sec)})
-                  </button>
-                ))}
-              </div>
-
-              <div class="deck-viewall-search-wrap">
-                <span class="deck-search-icon">🔍</span>
-                <input
-                  type="text"
-                  class="deck-viewall-search-input"
-                  placeholder={`Search ${allArchiveItems.length} works by title, section, or tag...`}
-                  value={searchQuery}
-                  onInput={(e) => setSearchQuery(e.target.value)}
-                />
-                {searchQuery && (
-                  <button
-                    type="button"
-                    class="deck-search-clear-btn"
-                    onClick={() => setSearchQuery('')}
-                    aria-label="Clear search"
-                  >
-                    ✕
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Archive Body: Categorized Sections or Filtered Grid */}
-            <div class="deck-archive-scroll-container">
-              {searchQuery.trim() ? (
-                <div class="deck-archive-grid">
-                  {getViewAllItems().length === 0 ? (
-                    <div class="deck-viewall-empty">
-                      <p>No works found matching "{searchQuery}"</p>
-                      <button
-                        type="button"
-                        class="btn-gold-fill"
-                        onClick={() => setSearchQuery('')}
-                      >
-                        Clear Filter
-                      </button>
-                    </div>
-                  ) : (
-                    getViewAllItems().map((v) => renderArchiveFeaturedCard(v))
-                  )}
-                </div>
-              ) : viewAllScope === 'All' ? (
-                <div class="deck-archive-sections">
-                  {displaySections.map((sec) => {
-                    const secItems = allArchiveItems.filter((item) => matchesSection(item, sec.key))
-                    if (secItems.length === 0) return null
-                    return (
-                      <div class="deck-archive-row-section" key={sec.key}>
-                        <div class="deck-archive-section-header">
-                          <div class="deck-archive-section-title-wrap">
-                            <span class="deck-archive-section-pill">{sec.badge}</span>
-                            <h4 class="deck-archive-section-title">{sec.title}</h4>
-                            <span class="deck-archive-section-count">({secItems.length} {secItems.length === 1 ? 'Work' : 'Works'})</span>
-                          </div>
-                          <span class="deck-archive-section-hint">{sec.hint}</span>
-                        </div>
-
-                        <div class="deck-archive-grid">
-                          {secItems.map((v) => renderArchiveFeaturedCard(v))}
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              ) : (
-                <div class="deck-archive-sections">
-                  <div class="deck-archive-row-section">
-                    <div class="deck-archive-section-header">
-                      <div class="deck-archive-section-title-wrap">
-                        <span class="deck-archive-section-pill">{viewAllScope.toUpperCase()}</span>
-                        <h4 class="deck-archive-section-title">{viewAllScope.toUpperCase()} COLLECTION</h4>
-                        <span class="deck-archive-section-count">({getViewAllItems().length} {getViewAllItems().length === 1 ? 'Work' : 'Works'})</span>
-                      </div>
-                      <span class="deck-archive-section-hint">Showing all projects in {viewAllScope}</span>
-                    </div>
-
-                    <div class="deck-archive-grid">
-                      {getViewAllItems().map((v) => renderArchiveFeaturedCard(v))}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

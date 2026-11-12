@@ -9,12 +9,24 @@ export function CustomCursor() {
   const mousePos = useRef({ x: -100, y: -100 })
   const followerPos = useRef({ x: -100, y: -100 })
   const animFrame = useRef(null)
+  const isEnabledRef = useRef(true)
 
   const [hoverState, setHoverState] = useState({ active: false, type: 'default', label: '' })
   const [isClicking, setIsClicking] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
+    // Only enable on desktop pointer devices (never simulate on touchscreens / mobile)
+    const isTouchOnly =
+      typeof window !== 'undefined' &&
+      window.matchMedia &&
+      window.matchMedia('(hover: none) and (pointer: coarse)').matches
+
+    if (isTouchOnly) {
+      isEnabledRef.current = false
+      return
+    }
+
     document.body.classList.add('custom-cursor-active')
 
     const detectHover = (target) => {
@@ -23,10 +35,19 @@ export function CustomCursor() {
         return
       }
 
-      const interactive = target.closest('[data-cursor], a, button, .work-card, .watch-card, .master-player-card, .featured-film-media, .deck-3d-card, .award-modern-card, .modern-testi-card')
+      // Broad interactive selector supporting all portfolio sections & dedicated pages
+      const interactive = target.closest(
+        '[data-cursor], a, button, input, select, textarea, [role="button"], [role="tab"], [tabindex="0"], ' +
+        '.work-card, .watch-card, .master-player-card, .featured-film-media, .deck-3d-card, .award-modern-card, ' +
+        '.modern-testi-card, .vlib-project-card, .vlib-category-tab, .trophy-stage-frame, .stage-nav-btn, ' +
+        '.trophy-back-action-btn, .trophy-close-x-btn, .vlib-close-x-btn, .trophy-media-container'
+      )
+
       if (interactive) {
         const customType = interactive.getAttribute('data-cursor') || 'hover'
-        const customLabel = interactive.getAttribute('data-cursor-label') || (customType === 'play' ? 'PLAY' : customType === 'view' ? 'VIEW' : '')
+        const customLabel =
+          interactive.getAttribute('data-cursor-label') ||
+          (customType === 'play' ? 'PLAY' : customType === 'view' ? 'VIEW' : '')
         setHoverState({ active: true, type: customType, label: customLabel })
       } else {
         setHoverState({ active: false, type: 'default', label: '' })
@@ -38,10 +59,10 @@ export function CustomCursor() {
       if (dotRef.current) {
         dotRef.current.style.transform = `translate3d(${clientX}px, ${clientY}px, 0) translate(-50%, -50%)`
       }
-      if (!isVisible) setIsVisible(true)
+      setIsVisible(true)
     }
 
-    // Mouse events (Desktop)
+    // High performance mouse tracking across entire viewport (including dedicated full-page overlays)
     const onMouseMove = (e) => {
       updatePosition(e.clientX, e.clientY)
       detectHover(e.target)
@@ -50,29 +71,9 @@ export function CustomCursor() {
     const onMouseDown = () => setIsClicking(true)
     const onMouseUp = () => setIsClicking(false)
     const onMouseLeave = () => setIsVisible(false)
-    const onMouseEnter = () => setIsVisible(true)
-
-    // Touch events (Mobile & Tablet)
-    const onTouchStart = (e) => {
-      if (e.touches && e.touches.length > 0) {
-        const t = e.touches[0]
-        updatePosition(t.clientX, t.clientY)
-        setIsClicking(true)
-        detectHover(e.target)
-      }
-    }
-
-    const onTouchMove = (e) => {
-      if (e.touches && e.touches.length > 0) {
-        const t = e.touches[0]
-        updatePosition(t.clientX, t.clientY)
-        const elem = document.elementFromPoint(t.clientX, t.clientY)
-        if (elem) detectHover(elem)
-      }
-    }
-
-    const onTouchEnd = () => {
-      setIsClicking(false)
+    const onMouseEnter = (e) => {
+      setIsVisible(true)
+      updatePosition(e.clientX, e.clientY)
     }
 
     window.addEventListener('mousemove', onMouseMove, { passive: true })
@@ -81,13 +82,7 @@ export function CustomCursor() {
     document.addEventListener('mouseleave', onMouseLeave)
     document.addEventListener('mouseenter', onMouseEnter)
 
-    // Mobile touch listeners with passive mode for 60fps performance
-    window.addEventListener('touchstart', onTouchStart, { passive: true })
-    window.addEventListener('touchmove', onTouchMove, { passive: true })
-    window.addEventListener('touchend', onTouchEnd, { passive: true })
-    window.addEventListener('touchcancel', onTouchEnd, { passive: true })
-
-    // Silky smooth trailing interpolation loop (lerp factor 0.22)
+    // Silky smooth trailing interpolation loop (lerp factor 0.22 for tactile luxury feel)
     const smoothLoop = () => {
       followerPos.current.x += (mousePos.current.x - followerPos.current.x) * 0.22
       followerPos.current.y += (mousePos.current.y - followerPos.current.y) * 0.22
@@ -106,16 +101,10 @@ export function CustomCursor() {
       window.removeEventListener('mouseup', onMouseUp)
       document.removeEventListener('mouseleave', onMouseLeave)
       document.removeEventListener('mouseenter', onMouseEnter)
-      window.removeEventListener('touchstart', onTouchStart)
-      window.removeEventListener('touchmove', onTouchMove)
-      window.removeEventListener('touchend', onTouchEnd)
-      window.removeEventListener('touchcancel', onTouchEnd)
       if (animFrame.current) cancelAnimationFrame(animFrame.current)
       document.body.classList.remove('custom-cursor-active')
     }
-  }, [isVisible])
-
-  if (!isVisible) return null
+  }, []) // Empty dependency array: runs once, never tears down on visibility change
 
   const isMedia = hoverState.type === 'play'
   const isHovered = hoverState.active
@@ -125,13 +114,15 @@ export function CustomCursor() {
       {/* Precision Core Dot */}
       <div
         ref={dotRef}
-        class={`custom-cursor-dot ${isHovered ? 'is-hovered' : ''} ${isMedia ? 'is-media' : ''}`}
+        class={`custom-cursor-dot ${isVisible ? 'is-visible' : ''} ${isHovered ? 'is-hovered' : ''} ${isMedia ? 'is-media' : ''}`}
+        aria-hidden="true"
       />
 
       {/* Smooth Trailing Follower Ring */}
       <div
         ref={followerRef}
-        class={`custom-cursor-follower ${isHovered ? 'is-hovered' : ''} ${isMedia ? 'is-media' : ''} ${isClicking ? 'is-clicking' : ''}`}
+        class={`custom-cursor-follower ${isVisible ? 'is-visible' : ''} ${isHovered ? 'is-hovered' : ''} ${isMedia ? 'is-media' : ''} ${isClicking ? 'is-clicking' : ''}`}
+        aria-hidden="true"
       >
         <span ref={labelRef} class="cursor-label">
           {hoverState.label}

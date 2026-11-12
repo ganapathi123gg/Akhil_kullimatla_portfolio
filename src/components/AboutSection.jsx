@@ -1,9 +1,10 @@
 import { CREATOR } from '../data/creatorConfig'
 import aboutDirectorImg from '../assets/akhil_directer_img.png'
 import { AwardsShowcase } from './AwardsShowcase'
+import { DirectorsCutJourney } from './DirectorsCutJourney'
 import '../styles/AboutSection.css'
 
-export function AboutSection() {
+export function AboutSection({ onInspectTrophy }) {
   return (
     <section class="about-section">
       <div class="container">
@@ -58,24 +59,8 @@ export function AboutSection() {
           </div>
         </div>
 
-        {/* The Journey Section */}
-        <div class="journey-subsection">
-          <div class="journey-header">
-            <div class="section-tag">THE JOURNEY</div>
-            <h3 class="journey-title">From First Reel to Director's Chair</h3>
-            <div class="journey-divider" />
-          </div>
-
-          <div class="journey-grid">
-            {CREATOR.journey.map((item, idx) => (
-              <div class="journey-item" key={idx}>
-                <div class="journey-year">{item.year}</div>
-                <h4 class="journey-item-title">{item.title}</h4>
-                <p class="journey-item-desc">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* The Journey Section - Director's Cut Redesign */}
+        <DirectorsCutJourney />
 
         {/* Awards & Recognition Section */}
         <div class="awards-subsection">
@@ -84,7 +69,7 @@ export function AboutSection() {
             Recognition for <span class="awards-heading-highlight">Creative Vision & Direction</span>
           </h3>
 
-          <AwardsShowcase />
+          <AwardsShowcase onInspectTrophy={onInspectTrophy} />
         </div>
       </div>
     </section>

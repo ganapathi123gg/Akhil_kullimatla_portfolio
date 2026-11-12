@@ -1,4 +1,7 @@
-/* Custom Luxury Gold Cursor Styles */
+/* ==========================================================================
+   CUSTOM LUXURY GOLD CURSOR STYLESHEET
+   Always floats above all layers with maximum 32-bit z-index
+   ========================================================================== */
 
 .custom-cursor-dot {
   position: fixed;
@@ -6,14 +9,20 @@
   left: 0;
   width: 8px;
   height: 8px;
-  background-color: var(--gold);
+  background-color: var(--gold, #e5a93c);
   border-radius: 50%;
   pointer-events: none !important;
-  z-index: 100002;
+  z-index: 2147483647 !important;
+  /* Top-most layer above all pages and modals */
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 10px var(--gold-glow);
+  box-shadow: 0 0 10px var(--gold-glow, rgba(229, 169, 60, 0.6));
+  opacity: 0;
   transition: opacity 0.2s ease, width 0.25s ease, height 0.25s ease, background-color 0.25s ease;
   will-change: transform;
+}
+
+.custom-cursor-dot.is-visible {
+  opacity: 1;
 }
 
 .custom-cursor-follower {
@@ -22,25 +31,30 @@
   left: 0;
   width: 38px;
   height: 38px;
-  border: 1.5px solid var(--gold);
+  border: 1.5px solid var(--gold, #e5a93c);
   border-radius: 50%;
   pointer-events: none !important;
-  z-index: 100001;
+  z-index: 2147483646 !important;
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 15px var(--gold-glow);
+  box-shadow: 0 0 15px var(--gold-glow, rgba(229, 169, 60, 0.5));
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 0;
   transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              background-color 0.35s ease,
-              border-color 0.35s ease,
-              box-shadow 0.35s ease,
-              opacity 0.2s ease;
+    height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    opacity 0.2s ease;
   will-change: transform;
 }
 
-/* Subtle rotating golden sheen around follower */
+.custom-cursor-follower.is-visible {
+  opacity: 1;
+}
+
+/* Rotating golden sheen around follower */
 .custom-cursor-follower::before {
   content: '';
   position: absolute;
@@ -49,34 +63,35 @@
   right: -2px;
   bottom: -2px;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--gold-glow, rgba(229, 169, 60, 0.4)) 0%, transparent 70%);
   opacity: 0.6;
   pointer-events: none;
 }
 
-/* Hover over interactive buttons / links */
+/* Hover over interactive buttons / links / cards */
 .custom-cursor-follower.is-hovered {
-  width: 60px;
-  height: 60px;
-  background-color: rgba(212, 175, 55, 0.15);
-  border-color: var(--gold-light);
-  box-shadow: 0 0 25px var(--gold-glow);
+  width: 58px;
+  height: 58px;
+  background-color: rgba(229, 169, 60, 0.15);
+  border-color: var(--gold-light, #f3cf7a);
+  box-shadow: 0 0 25px var(--gold-glow, rgba(229, 169, 60, 0.7));
   backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
 .custom-cursor-dot.is-hovered {
   width: 5px;
   height: 5px;
-  background-color: var(--gold-light);
+  background-color: var(--gold-light, #f3cf7a);
 }
 
 /* Hover over media / video trigger cards */
 .custom-cursor-follower.is-media {
   width: 76px;
   height: 76px;
-  background-color: rgba(212, 175, 55, 0.88);
+  background-color: rgba(229, 169, 60, 0.9);
   border-color: #ffffff;
-  box-shadow: 0 0 35px var(--gold-glow);
+  box-shadow: 0 0 35px var(--gold-glow, rgba(229, 169, 60, 0.8));
 }
 
 .custom-cursor-follower.is-media .cursor-label {
@@ -95,12 +110,12 @@
 }
 
 .cursor-label {
-  font-family: var(--font-sans);
+  font-family: var(--font-sans, inherit);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: var(--text-primary);
+  color: var(--text-primary, #ffffff);
   opacity: 0;
   transform: scale(0.6);
   transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -114,26 +129,14 @@
   transform: scale(1);
 }
 
-@media (max-width: 768px) {
-  .custom-cursor-dot {
-    width: 7px;
-    height: 7px;
-    opacity: 0.95;
-  }
+/* ==========================================================================
+   TOUCH DEVICES: COMPLETELY DISABLE FAKE CURSOR
+   Preserves 100% native touch gestures and accessibility on mobile & tablet
+   ========================================================================== */
+@media (hover: none) or (pointer: coarse) {
 
+  .custom-cursor-dot,
   .custom-cursor-follower {
-    width: 32px;
-    height: 32px;
-    border-width: 1.5px;
-  }
-
-  .custom-cursor-follower.is-hovered {
-    width: 48px;
-    height: 48px;
-  }
-
-  .custom-cursor-follower.is-media {
-    width: 62px;
-    height: 62px;
+    display: none !important;
   }
 }

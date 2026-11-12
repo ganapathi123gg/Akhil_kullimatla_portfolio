@@ -5,7 +5,7 @@ import { ImageLightbox } from './ImageLightbox'
 import { getYoutubeEmbedUrl } from '../utils/mediaUtils'
 import '../styles/WorkSection.css'
 
-export function WorkSection({ onSelectVideo }) {
+export function WorkSection({ onSelectVideo, onOpenAllWorks }) {
   const [activeCategory, setActiveCategory] = useState('ALL')
   const [activeMediaId, setActiveMediaId] = useState(null)
   const [lightboxIndex, setLightboxIndex] = useState(null)
@@ -61,10 +61,10 @@ export function WorkSection({ onSelectVideo }) {
   }
 
   const handleOpenAllWorks = () => {
-    window.dispatchEvent(new CustomEvent('open-video-archive', { detail: { category: 'All' } }))
-    const el = document.getElementById('watch-more-deck') || document.getElementById('showreel')
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' })
+    if (onOpenAllWorks) {
+      onOpenAllWorks('All')
+    } else {
+      window.dispatchEvent(new CustomEvent('open-video-archive', { detail: { category: 'All' } }))
     }
   }
 
