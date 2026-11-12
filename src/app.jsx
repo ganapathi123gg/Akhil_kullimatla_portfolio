@@ -52,6 +52,21 @@ export function App() {
   })
   const [inViewSections, setInViewSections] = useState({ home: true })
 
+  // One-time forward scroll transition tracking scoped to current page load
+  const [revealedSections, setRevealedSections] = useState({ home: true })
+  const revealedSectionsRef = useRef(new Set(['home']))
+  const pendingRevealedRef = useRef(new Set())
+
+  const hasSectionBeenRevealed = (id) => {
+    return revealedSectionsRef.current.has(id)
+  }
+
+  const markSectionRevealed = (id) => {
+    revealedSectionsRef.current.add(id)
+    pendingRevealedRef.current.delete(id)
+    setRevealedSections((prev) => (prev[id] ? prev : { ...prev, [id]: true }))
+  }
+
   const [theme, setTheme] = useState('dark')
   const [soundEnabled, setSoundEnabled] = useState(true)
   const [selectedVideo, setSelectedVideo] = useState(null)
@@ -102,10 +117,40 @@ export function App() {
   }
 
   // Centralized Cinematic Navigation Handler
-  const handleNavigate = (targetId, updateHistory = true) => {
+  const handleNavigate = (targetId, updateHistory = true, forceTransition = false) => {
     const validTarget = VALID_ROUTES.includes(targetId) ? targetId : 'home'
     if (isTransitioningRef.current && validTarget === transitionTarget) return
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768
+    const isAlreadyRevealed = hasSectionBeenRevealed(validTarget)
+
+    // ONE-TIME FORWARD NAVIGATION TRANSITION:
+    // If a section has already been revealed during this page load,
+    // do NOT replay the screen transition or veil. Perform smooth scroll.
+    if (isAlreadyRevealed && !forceTransition) {
+      const headerHeight = isMobile ? 72 : 84
+      if (validTarget === 'home') {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      } else {
+        const el = document.getElementById(validTarget)
+        if (el) {
+          const targetTop = el.getBoundingClientRect().top + window.scrollY - headerHeight
+          window.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' })
+        }
+      }
+
+      activeTabRef.current = validTarget
+      setActiveTab(validTarget)
+
+      if (updateHistory && window.history && window.history.pushState) {
+        window.history.pushState(null, '', `#${validTarget}`)
+      }
+      return
+    }
+
+    // FIRST TIME FORWARD NAVIGATION:
+    // Play the full cinematic veil wipe with enhanced smooth timing
+    pendingRevealedRef.current.add(validTarget)
     const transType = getTransitionTypeForTarget(validTarget)
     setTransitionType(transType)
 
@@ -125,10 +170,9 @@ export function App() {
     }
 
     // Coordinate scroll at the apex of the luxury transition veil (when screen is fully masked)
-    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768
     const isSlatsOrHome = validTarget === 'about' || validTarget === 'home'
-    const scrollTiming = isSlatsOrHome ? (isMobile ? 260 : 300) : (isMobile ? 390 : 440)
-    const duration = isSlatsOrHome ? (isMobile ? 680 : 760) : (isMobile ? 1000 : 1080)
+    const scrollTiming = isSlatsOrHome ? (isMobile ? 340 : 400) : (isMobile ? 480 : 540)
+    const duration = isSlatsOrHome ? (isMobile ? 900 : 1020) : (isMobile ? 1200 : 1320)
 
     setTimeout(() => {
       if (validTarget === 'home') {
@@ -158,6 +202,16 @@ export function App() {
       setTransitionTarget(null)
       isTransitioningRef.current = false
       lastTransitionFinishTimeRef.current = Date.now()
+
+      // Mark the target section and any preceding sections in sequence as revealed
+      const targetIdx = VALID_ROUTES.indexOf(validTarget)
+      if (targetIdx !== -1) {
+        for (let i = 0; i <= targetIdx; i++) {
+          markSectionRevealed(VALID_ROUTES[i])
+        }
+      } else {
+        markSectionRevealed(validTarget)
+      }
     }, duration)
   }
 
@@ -258,14 +312,14 @@ export function App() {
 
     // 3. Mouse Wheel Boundary Navigation
     // Allows full natural scrolling through section content.
-    // Triggers transition ONLY when user reaches the complete ending (or top) of a section.
+    // Triggers forward transition ONLY ONCE when user reaches the complete ending of a section.
     let wheelAcc = 0
     let wheelTimer = null
 
     const handleWheel = (e) => {
       if (!scrollTransitionsReadyRef.current) return
       if (isTransitioningRef.current) return
-      if (Date.now() - lastTransitionFinishTimeRef.current < 450) return
+      if (Date.now() - lastTransitionFinishTimeRef.current < 500) return
 
       const currentId = activeTabRef.current
       const currentIndex = sectionIds.indexOf(currentId)
@@ -276,7 +330,7 @@ export function App() {
 
       const windowHeight = window.innerHeight
 
-      // Scrolling Down -> Next Section
+      // Scrolling Down -> Forward Navigation (Next Section)
       if (e.deltaY > 0) {
         if (currentIndex < sectionIds.length - 1) {
           // Check if current section has reached its complete bottom ending
@@ -286,7 +340,18 @@ export function App() {
             return // Allow natural scroll through section
           }
 
-          // User is at the very ending of the section and scrolling down further -> trigger transition
+          const nextTarget = sectionIds[currentIndex + 1]
+
+          // ONE-TIME FORWARD CHECK:
+          // If the next section has ALREADY been revealed during this page load,
+          // do NOT trigger the page navigation transition effect.
+          // Allow normal natural downward scrolling.
+          if (hasSectionBeenRevealed(nextTarget) || pendingRevealedRef.current.has(nextTarget)) {
+            wheelAcc = 0
+            return
+          }
+
+          // User is at the ending of the section and scrolling down -> trigger one-time forward transition
           wheelAcc += e.deltaY
           if (wheelTimer) clearTimeout(wheelTimer)
           wheelTimer = setTimeout(() => {
@@ -295,34 +360,18 @@ export function App() {
 
           if (wheelAcc >= 35) {
             wheelAcc = 0
-            const nextTarget = sectionIds[currentIndex + 1]
-            handleNavigate(nextTarget, true)
+            pendingRevealedRef.current.add(nextTarget)
+            handleNavigate(nextTarget, true, true)
           }
         }
       }
-      // Scrolling Up -> Previous Section
+      // Scrolling Up -> Reverse Navigation (Bottom to Top)
       else if (e.deltaY < 0) {
-        if (currentIndex > 0) {
-          // Check if current section has reached its top
-          const isAtTop = currentRect.top >= -35
-          if (!isAtTop) {
-            wheelAcc = 0
-            return // Allow natural scroll through section
-          }
-
-          // User is at top of section and scrolling up further -> trigger transition
-          wheelAcc += e.deltaY
-          if (wheelTimer) clearTimeout(wheelTimer)
-          wheelTimer = setTimeout(() => {
-            wheelAcc = 0
-          }, 200)
-
-          if (wheelAcc <= -40) {
-            wheelAcc = 0
-            const prevTarget = sectionIds[currentIndex - 1]
-            handleNavigate(prevTarget, true)
-          }
-        }
+        // REVERSE SCROLLING:
+        // Requirement C: Do NOT trigger page navigation transition effect.
+        // Do NOT replay page reveal animation. Allow normal reverse scrolling.
+        wheelAcc = 0
+        return
       }
     }
 
@@ -340,7 +389,7 @@ export function App() {
     const handleTouchEnd = (e) => {
       if (!scrollTransitionsReadyRef.current) return
       if (isTransitioningRef.current) return
-      if (Date.now() - lastTransitionFinishTimeRef.current < 450) return
+      if (Date.now() - lastTransitionFinishTimeRef.current < 500) return
       if (!e.changedTouches || !e.changedTouches[0]) return
 
       const deltaY = touchStartY - e.changedTouches[0].clientY
@@ -358,21 +407,21 @@ export function App() {
 
       const windowHeight = window.innerHeight
 
-      // Swipe Up -> Scrolling Down
+      // Swipe Up -> Scrolling Down (Forward Navigation)
       if (deltaY > 40 && currentIndex < sectionIds.length - 1) {
         const isAtBottom = currentRect.bottom <= windowHeight + 45
         if (isAtBottom) {
           const nextTarget = sectionIds[currentIndex + 1]
-          handleNavigate(nextTarget, true)
+          if (!hasSectionBeenRevealed(nextTarget) && !pendingRevealedRef.current.has(nextTarget)) {
+            pendingRevealedRef.current.add(nextTarget)
+            handleNavigate(nextTarget, true, true)
+          }
         }
       }
-      // Swipe Down -> Scrolling Up
+      // Swipe Down -> Scrolling Up (Reverse Navigation)
       else if (deltaY < -40 && currentIndex > 0) {
-        const isAtTop = currentRect.top >= -35
-        if (isAtTop) {
-          const prevTarget = sectionIds[currentIndex - 1]
-          handleNavigate(prevTarget, true)
-        }
+        // REVERSE SCROLLING: Do NOT trigger any transition! Allow normal upward touch scrolling.
+        return
       }
     }
 
@@ -382,7 +431,7 @@ export function App() {
       const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : ''
       if (activeTag === 'input' || activeTag === 'textarea' || activeTag === 'select') return
       if (isTransitioningRef.current) return
-      if (Date.now() - lastTransitionFinishTimeRef.current < 450) return
+      if (Date.now() - lastTransitionFinishTimeRef.current < 500) return
 
       const currentId = activeTabRef.current
       const currentIndex = sectionIds.indexOf(currentId)
@@ -391,24 +440,23 @@ export function App() {
       const currentRect = getSectionRect(currentId)
       if (!currentRect) return
 
+      const windowHeight = window.innerHeight
+
       if (e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) {
         if (currentIndex < sectionIds.length - 1) {
           const isAtBottom = currentRect.bottom <= windowHeight + 50
           if (isAtBottom) {
-            e.preventDefault()
             const nextTarget = sectionIds[currentIndex + 1]
-            handleNavigate(nextTarget, true)
+            if (!hasSectionBeenRevealed(nextTarget) && !pendingRevealedRef.current.has(nextTarget)) {
+              e.preventDefault()
+              pendingRevealedRef.current.add(nextTarget)
+              handleNavigate(nextTarget, true, true)
+            }
           }
         }
       } else if (e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) {
-        if (currentIndex > 0) {
-          const isAtTop = currentRect.top >= -35
-          if (isAtTop) {
-            e.preventDefault()
-            const prevTarget = sectionIds[currentIndex - 1]
-            handleNavigate(prevTarget, true)
-          }
-        }
+        // REVERSE SCROLLING: Do NOT trigger transition! Allow normal scrolling up.
+        return
       }
     }
 
@@ -436,6 +484,15 @@ export function App() {
       const hash = window.location.hash.replace('#', '').toLowerCase()
       if (VALID_ROUTES.includes(hash) && hash !== 'home') {
         setActiveTab(hash)
+        activeTabRef.current = hash
+        // Mark target and all preceding sections as already revealed
+        const targetIdx = VALID_ROUTES.indexOf(hash)
+        const initRevealed = { home: true }
+        for (let i = 0; i <= targetIdx; i++) {
+          revealedSectionsRef.current.add(VALID_ROUTES[i])
+          initRevealed[VALID_ROUTES[i]] = true
+        }
+        setRevealedSections(initRevealed)
         setTimeout(() => {
           const el = document.getElementById(hash)
           if (el) {
@@ -652,9 +709,15 @@ export function App() {
           {/* 1. HOME SECTION matching Home.png */}
           <div
             id="home"
-            class={`section-anchor cinematic-section ${activeTab === 'home' ? 'is-active' : ''
-              } ${transitionTarget === 'home' ? transitionPair.enterClass : ''} ${inViewSections.home ? 'is-in-view' : ''
-              }`}
+            class={`section-anchor cinematic-section ${
+              activeTab === 'home' ? 'is-active' : ''
+            } ${
+              transitionTarget === 'home' && !hasSectionBeenRevealed('home')
+                ? transitionPair.enterClass
+                : ''
+            } ${inViewSections.home ? 'is-in-view' : ''} ${
+              revealedSections.home ? 'is-revealed' : ''
+            }`}
           >
             <Hero
               onExploreWork={() => handleNavigate('work')}
@@ -674,9 +737,15 @@ export function App() {
           {/* 2. ABOUT SECTION matching About.png */}
           <div
             id="about"
-            class={`section-anchor cinematic-section ${activeTab === 'about' ? 'is-active' : ''
-              } ${transitionTarget === 'about' ? transitionPair.enterClass : ''} ${inViewSections.about ? 'is-in-view' : ''
-              }`}
+            class={`section-anchor cinematic-section ${
+              activeTab === 'about' ? 'is-active' : ''
+            } ${
+              transitionTarget === 'about' && !hasSectionBeenRevealed('about')
+                ? transitionPair.enterClass
+                : ''
+            } ${inViewSections.about ? 'is-in-view' : ''} ${
+              revealedSections.about ? 'is-revealed' : ''
+            }`}
           >
             <AboutSection onInspectTrophy={handleOpenTrophyDetails} />
             <QuoteBanner
@@ -691,9 +760,15 @@ export function App() {
           {/* 3. WORK SECTION matching Work.png */}
           <div
             id="work"
-            class={`section-anchor cinematic-section ${activeTab === 'work' ? 'is-active' : ''
-              } ${transitionTarget === 'work' ? transitionPair.enterClass : ''} ${inViewSections.work ? 'is-in-view' : ''
-              }`}
+            class={`section-anchor cinematic-section ${
+              activeTab === 'work' ? 'is-active' : ''
+            } ${
+              transitionTarget === 'work' && !hasSectionBeenRevealed('work')
+                ? transitionPair.enterClass
+                : ''
+            } ${inViewSections.work ? 'is-in-view' : ''} ${
+              revealedSections.work ? 'is-revealed' : ''
+            }`}
           >
             <WorkSection
               onSelectVideo={handleSelectVideo}
@@ -704,9 +779,15 @@ export function App() {
           {/* 4. SHOWREEL SECTION matching Showreel.png */}
           <div
             id="showreel"
-            class={`section-anchor cinematic-section ${activeTab === 'showreel' ? 'is-active' : ''
-              } ${transitionTarget === 'showreel' ? transitionPair.enterClass : ''
-              } ${inViewSections.showreel ? 'is-in-view' : ''}`}
+            class={`section-anchor cinematic-section ${
+              activeTab === 'showreel' ? 'is-active' : ''
+            } ${
+              transitionTarget === 'showreel' && !hasSectionBeenRevealed('showreel')
+                ? transitionPair.enterClass
+                : ''
+            } ${inViewSections.showreel ? 'is-in-view' : ''} ${
+              revealedSections.showreel ? 'is-revealed' : ''
+            }`}
           >
             <ShowreelSection onSelectVideo={handleSelectVideo} />
             {/* BRAND SPONSORS MARQUEE matching Work.png */}
@@ -716,9 +797,15 @@ export function App() {
           {/* 5. CONTACT & FAQS SECTION matching Contact.png */}
           <div
             id="contact"
-            class={`section-anchor cinematic-section ${activeTab === 'contact' ? 'is-active' : ''
-              } ${transitionTarget === 'contact' ? transitionPair.enterClass : ''
-              } ${inViewSections.contact ? 'is-in-view' : ''}`}
+            class={`section-anchor cinematic-section ${
+              activeTab === 'contact' ? 'is-active' : ''
+            } ${
+              transitionTarget === 'contact' && !hasSectionBeenRevealed('contact')
+                ? transitionPair.enterClass
+                : ''
+            } ${inViewSections.contact ? 'is-in-view' : ''} ${
+              revealedSections.contact ? 'is-revealed' : ''
+            }`}
           >
             <ContactSection />
           </div>

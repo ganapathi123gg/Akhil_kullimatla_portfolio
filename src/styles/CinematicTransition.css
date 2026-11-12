@@ -325,11 +325,11 @@
 
 /* 7. SMOKE & MIST ENTRANCE KEYFRAMES (Any -> Home) */
 .trans-enter-smoke {
-  animation: smokeEnter 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: smokeEnter 0.92s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .trans-exit-smoke {
-  animation: smokeExit 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: smokeExit 0.34s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes smokeEnter {
@@ -365,11 +365,11 @@
 
 /* 8. PINTEREST EDITORIAL TRANSITION KEYFRAMES */
 .trans-enter-slats {
-  animation: slatsSectionEnter 0.68s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slatsSectionEnter 0.88s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .trans-exit-slats {
-  animation: slatsSectionExit 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: slatsSectionExit 0.34s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes slatsSectionEnter {
@@ -399,11 +399,11 @@
 }
 
 .trans-enter-blade {
-  animation: bladeSectionEnter 0.92s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: bladeSectionEnter 1.15s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .trans-exit-blade {
-  animation: bladeSectionExit 0.32s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: bladeSectionExit 0.36s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes bladeSectionEnter {
@@ -439,11 +439,11 @@
 }
 
 .trans-enter-letterbox {
-  animation: letterboxSectionEnter 0.95s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: letterboxSectionEnter 1.18s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .trans-exit-letterbox {
-  animation: letterboxSectionExit 0.32s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: letterboxSectionExit 0.36s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes letterboxSectionEnter {
@@ -479,11 +479,11 @@
 }
 
 .trans-enter-split {
-  animation: splitSectionEnter 0.95s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: splitSectionEnter 1.18s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .trans-exit-split {
-  animation: splitSectionExit 0.32s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: splitSectionExit 0.36s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes splitSectionEnter {
@@ -562,7 +562,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  animation: editorialBadgePulse 0.74s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: editorialBadgePulse 0.92s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .trans-badge-monogram {
@@ -570,7 +570,7 @@
   color: var(--gold, #d4af37);
   filter: drop-shadow(0 0 12px var(--gold, #d4af37));
   margin-bottom: 8px;
-  animation: monogramShine 0.74s ease-in-out infinite alternate;
+  animation: monogramShine 0.92s ease-in-out infinite alternate;
 }
 
 .trans-badge-eyebrow {
@@ -615,7 +615,7 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(90deg, transparent, var(--gold, #d4af37), transparent);
-  animation: lineSweep 0.74s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: lineSweep 0.92s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes editorialBadgePulse {
@@ -692,7 +692,7 @@
   height: 100%;
   background: linear-gradient(180deg, #070709 0%, #12100d 50%, #060608 100%);
   transform: translateY(-101%);
-  animation: slatSlideCascade 0.76s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+  animation: slatSlideCascade 0.96s cubic-bezier(0.7, 0, 0.2, 1) forwards;
   box-shadow: 0 12px 50px rgba(0, 0, 0, 0.95);
   will-change: transform;
 }
@@ -719,19 +719,19 @@
 }
 
 .slat-col-2 {
-  animation-delay: 0.04s;
+  animation-delay: 0.05s;
 }
 
 .slat-col-3 {
-  animation-delay: 0.08s;
+  animation-delay: 0.10s;
 }
 
 .slat-col-4 {
-  animation-delay: 0.12s;
+  animation-delay: 0.15s;
 }
 
 .slat-col-5 {
-  animation-delay: 0.16s;
+  animation-delay: 0.20s;
 }
 
 @keyframes slatSlideCascade {
@@ -772,7 +772,7 @@
   background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.18), transparent 70%);
   filter: blur(40px);
   transform: translateX(-120%);
-  animation: bladeFlareSweep 1.05s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+  animation: bladeFlareSweep 1.25s cubic-bezier(0.7, 0, 0.2, 1) forwards;
 }
 
 .blade-runner {
@@ -787,14 +787,14 @@
 .blade-trail {
   background: linear-gradient(90deg, rgba(8, 7, 10, 0.8) 0%, rgba(212, 175, 55, 0.25) 100%);
   filter: blur(12px);
-  animation: bladeRunnerSweep 1.05s 0.02s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+  animation: bladeRunnerSweep 1.25s 0.02s cubic-bezier(0.7, 0, 0.2, 1) forwards;
 }
 
 .blade-master {
   background: linear-gradient(90deg, #050507 0%, #0d0c0a 82%, #1a160e 100%);
   border-right: none;
   box-shadow: 25px 0 70px rgba(0, 0, 0, 0.98);
-  animation: bladeRunnerSweep 1.05s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+  animation: bladeRunnerSweep 1.25s cubic-bezier(0.7, 0, 0.2, 1) forwards;
 }
 
 .blade-light-streak {
@@ -857,12 +857,12 @@
 
 .letterbox-curtain.curtain-top {
   border-bottom: 2.5px solid var(--gold, #d4af37);
-  animation: letterboxTopMatte 1.08s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+  animation: letterboxTopMatte 1.28s cubic-bezier(0.7, 0, 0.2, 1) forwards;
 }
 
 .letterbox-curtain.curtain-bottom {
   border-top: 2.5px solid var(--gold, #d4af37);
-  animation: letterboxBottomMatte 1.08s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+  animation: letterboxBottomMatte 1.28s cubic-bezier(0.7, 0, 0.2, 1) forwards;
 }
 
 .letterbox-gold-rim {
@@ -892,7 +892,7 @@
   box-shadow: 0 0 35px var(--gold, #d4af37), 0 0 70px rgba(212, 175, 55, 0.85);
   transform: scaleX(0);
   opacity: 0;
-  animation: letterboxFlareBeam 1.08s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: letterboxFlareBeam 1.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .letterbox-flare-halo {
@@ -903,7 +903,7 @@
   background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.6) 0%, transparent 70%);
   filter: blur(14px);
   opacity: 0;
-  animation: letterboxHaloGlow 1.08s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: letterboxHaloGlow 1.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes letterboxTopMatte {
@@ -1013,13 +1013,13 @@
 .split-wing.wing-left {
   left: 0;
   border-right: 2.5px solid var(--gold, #d4af37);
-  animation: splitWingLeftCascade 1.08s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+  animation: splitWingLeftCascade 1.28s cubic-bezier(0.7, 0, 0.2, 1) forwards;
 }
 
 .split-wing.wing-right {
   right: 0;
   border-left: 2.5px solid var(--gold, #d4af37);
-  animation: splitWingRightCascade 1.08s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+  animation: splitWingRightCascade 1.28s cubic-bezier(0.7, 0, 0.2, 1) forwards;
 }
 
 .wing-gold-border {
@@ -1054,7 +1054,7 @@
   transform: translateX(-50%);
   background: var(--gold, #d4af37);
   box-shadow: 0 0 25px var(--gold, #d4af37), 0 0 50px rgba(212, 175, 55, 0.85);
-  animation: splitCenterLaserFlash 1.08s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: splitCenterLaserFlash 1.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes splitWingLeftCascade {
@@ -1157,7 +1157,7 @@
 .cinematic-section.is-in-view .showreel-header-row,
 .cinematic-section.is-in-view .contact-section .section-tag,
 .cinematic-section.is-in-view .contact-section h2 {
-  animation: staggerHeading 0.58s 0.08s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: staggerHeading 0.74s 0.10s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* 2. Main Visuals */
@@ -1176,7 +1176,7 @@
 .cinematic-section.is-in-view .featured-film-box,
 .cinematic-section.is-in-view .master-player-card,
 .cinematic-section.is-in-view .contact-form-box {
-  animation: staggerVisual 0.62s 0.16s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: staggerVisual 0.78s 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* 3. Supporting Content */
@@ -1207,7 +1207,7 @@
 .cinematic-section.is-in-view .filter-tabs-row,
 .cinematic-section.is-in-view .showreel-desc-metrics-grid,
 .cinematic-section.is-in-view .contact-left-col {
-  animation: staggerSupporting 0.55s 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: staggerSupporting 0.72s 0.26s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* 4. Cards and Details */
@@ -1262,7 +1262,58 @@
 .cinematic-section.is-in-view .contact-social-grid,
 .cinematic-section.is-in-view .faqs-section,
 .cinematic-section.is-in-view .faq-item {
-  animation: staggerCards 0.5s 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: staggerCards 0.68s 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ==========================================================================
+   ONE-TIME FORWARD REVEAL PERSISTENCE
+   Once a section's forward reveal completes, lock elements at resting state
+   so reverse scrolling or re-scrolling will never restart animations.
+   ========================================================================== */
+.cinematic-section.is-revealed .section-tag,
+.cinematic-section.is-revealed .hero-tag,
+.cinematic-section.is-revealed .hero-title,
+.cinematic-section.is-revealed .page-title,
+.cinematic-section.is-revealed .work-header h2,
+.cinematic-section.is-revealed .about-heading,
+.cinematic-section.is-revealed .about-signature-text,
+.cinematic-section.is-revealed .showreel-header-row,
+.cinematic-section.is-revealed .contact-section .section-tag,
+.cinematic-section.is-revealed .contact-section h2,
+.cinematic-section.is-revealed .hero-visual-wrapper,
+.cinematic-section.is-revealed .about-visual-col,
+.cinematic-section.is-revealed .featured-film-box,
+.cinematic-section.is-revealed .master-player-card,
+.cinematic-section.is-revealed .contact-form-box,
+.cinematic-section.is-revealed .hero-description,
+.cinematic-section.is-revealed .hero-btn-group,
+.cinematic-section.is-revealed .hero-social-strip,
+.cinematic-section.is-revealed .about-sub,
+.cinematic-section.is-revealed .about-paragraphs,
+.cinematic-section.is-revealed .work-header .about-p,
+.cinematic-section.is-revealed .filter-tabs-row,
+.cinematic-section.is-revealed .showreel-desc-metrics-grid,
+.cinematic-section.is-revealed .contact-left-col,
+.cinematic-section.is-revealed .stats-bar-section,
+.cinematic-section.is-revealed .stat-item,
+.cinematic-section.is-revealed .skills-block,
+.cinematic-section.is-revealed .skills-pills,
+.cinematic-section.is-revealed .journey-subsection,
+.cinematic-section.is-revealed .awards-modern-container,
+.cinematic-section.is-revealed .awards-filter-bar,
+.cinematic-section.is-revealed .award-modern-card,
+.cinematic-section.is-revealed .work-cards-grid,
+.cinematic-section.is-revealed .work-card,
+.cinematic-section.is-revealed .watch-more-deck-container,
+.cinematic-section.is-revealed .bts-card,
+.cinematic-section.is-revealed .testi-card,
+.cinematic-section.is-revealed .contact-social-grid,
+.cinematic-section.is-revealed .faqs-section,
+.cinematic-section.is-revealed .faq-item {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
 }
 
 @keyframes staggerHeading {
